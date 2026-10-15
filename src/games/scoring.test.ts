@@ -13,6 +13,7 @@ import { reporterMood } from './sciema-z-ogloszenia/logic'
 import { judgeMood } from './ukryte-kryterium/logic'
 import gadgets from './ustrojstwo/data.json'
 import zonk from './zonk/data.json'
+import { banish, gameStatus, PLAYER, residentMood, statementText, type Resident } from './zdrajca/logic'
 import { addMontyResult, hostOpens, remainingDoor } from './zonk/logic'
 
 describe('Gdzie jest Martyna', () => {
@@ -75,6 +76,37 @@ describe('Rajskie Rozdanie', () => {
   it('lets a fresh reaction override the mood, but not elimination', () => {
     expect(contestantMood({ affection: 2, reaction: 'smitten', alive: true })).toBe('smitten')
     expect(contestantMood({ affection: 9, reaction: 'hurt', alive: false })).toBe('out')
+  })
+})
+
+describe('Zdrajca', () => {
+  it('builds statements with gendered forms and instrumental names', () => {
+    expect(statementText('Lady Pamela', 'Kuchnia', ['Ty', 'Lokaj Alfred', 'Major Ryszard'])).toBe('Byłam w Kuchni z Tobą, Lokajem Alfredem i Majorem Ryszardem.')
+    expect(statementText('Profesor Wit', 'Ogród', [])).toBe('Byłem w Ogrodzie sam.')
+  })
+
+  const calm = { alive: true, unmasked: false, votesAgainst: 0, votedByPlayer: false, accusesPlayer: false }
+  const castle = (roles: Resident['role'][], dead: number[] = []): Resident[] =>
+    roles.map((role, i) => ({ name: `R${i}`, role, alive: !dead.includes(i) }))
+
+  it('picks the resident mood in priority order', () => {
+    expect(residentMood(calm)).toBe('calm')
+    expect(residentMood({ ...calm, accusesPlayer: true })).toBe('suspicious')
+    expect(residentMood({ ...calm, accusesPlayer: true, votesAgainst: 2 })).toBe('nervous')
+    expect(residentMood({ ...calm, votesAgainst: 3, votedByPlayer: true })).toBe('offended')
+    expect(residentMood({ ...calm, votedByPlayer: true, unmasked: true })).toBe('sly')
+    expect(residentMood({ ...calm, unmasked: true, alive: false })).toBe('out')
+  })
+
+  it('ends the game when traitors are gone, outnumber loyals or the player dies', () => {
+    expect(gameStatus(castle(['lojalny', 'zdrajca', 'lojalny', 'zdrajca', 'lojalny']))).toBe('ongoing')
+    expect(gameStatus(castle(['lojalny', 'zdrajca', 'lojalny', 'zdrajca'], [1, 3]))).toBe('win')
+    expect(gameStatus(castle(['lojalny', 'zdrajca', 'lojalny', 'zdrajca'], [2]))).toBe('lose')
+    expect(gameStatus(castle(['lojalny', 'zdrajca', 'lojalny', 'lojalny', 'lojalny'], [PLAYER]))).toBe('lose')
+  })
+
+  it('banishes the resident with the most votes', () => {
+    expect(banish([{ voter: 0, target: 2 }, { voter: 1, target: 2 }, { voter: 2, target: 1 }], () => 0)).toBe(2)
   })
 })
 

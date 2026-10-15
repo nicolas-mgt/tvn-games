@@ -3,28 +3,33 @@ import { pickOne, shuffle, type Rng } from '@/shared/daily'
 export const PLAYER = 0
 export const LOCATIONS = ['Biblioteka', 'Kuchnia', 'Ogród', 'Piwnica']
 export const TRAITOR_HIDEOUT = 'Wieża'
+export const LOCATIVE: Record<string, string> = { Biblioteka: 'Bibliotece', Kuchnia: 'Kuchni', Ogród: 'Ogrodzie', Piwnica: 'Piwnicy' }
+const FEMALE = new Set(['Hrabina Zofia', 'Lady Pamela', 'Influencerka Mia'])
+export const gendered = (name: string, male: string, female: string) => (FEMALE.has(name) ? female : male)
+export const POINTS_PER_TRAITOR = 50
+export const PENALTY_PER_LOYAL = 10
 
 export type Role = 'lojalny' | 'zdrajca'
-export type Resident = { name: string; emoji: string; role: Role; alive: boolean }
+export type Resident = { name: string; role: Role; alive: boolean }
 export type Statement = { who: number; claimed: string; companions: number[] }
 export type Day = { actual: Record<number, string>; statements: Statement[] }
 export type Vote = { voter: number; target: number }
 
 const BOTS = [
-  { name: 'Hrabina Zofia', emoji: '👒' },
-  { name: 'Kucharz Bogdan', emoji: '👨‍🍳' },
-  { name: 'Ogrodnik Staś', emoji: '🧑‍🌾' },
-  { name: 'Lady Pamela', emoji: '💅' },
-  { name: 'Profesor Wit', emoji: '🧐' },
-  { name: 'Influencerka Mia', emoji: '🤳' },
-  { name: 'Major Ryszard', emoji: '🎖️' },
-  { name: 'Lokaj Alfred', emoji: '🤵' },
+  { name: 'Hrabina Zofia' },
+  { name: 'Kucharz Bogdan' },
+  { name: 'Ogrodnik Staś' },
+  { name: 'Lady Pamela' },
+  { name: 'Profesor Wit' },
+  { name: 'Influencerka Mia' },
+  { name: 'Major Ryszard' },
+  { name: 'Lokaj Alfred' },
 ]
 
 export function createCastle(rng: Rng): Resident[] {
   const traitors = new Set(shuffle(BOTS.map((_, i) => i), rng).slice(0, 2))
   return [
-    { name: 'Ty', emoji: '🙂', role: 'lojalny', alive: true },
+    { name: 'Ty', role: 'lojalny', alive: true },
     ...BOTS.map((bot, i) => ({ ...bot, role: traitors.has(i) ? ('zdrajca' as const) : ('lojalny' as const), alive: true })),
   ]
 }
@@ -84,4 +89,53 @@ export function gameStatus(residents: readonly Resident[]): 'win' | 'lose' | 'on
   if (!residents[PLAYER].alive) return 'lose'
   if (traitors === 0) return 'win'
   return traitors >= alive.length - traitors ? 'lose' : 'ongoing'
+}
+
+const INSTRUMENTAL: Record<string, string> = {
+  Ty: 'Tobą',
+  'Hrabina Zofia': 'Hrabiną Zofią',
+  'Kucharz Bogdan': 'Kucharzem Bogdanem',
+  'Ogrodnik Staś': 'Ogrodnikiem Stasiem',
+  'Lady Pamela': 'Lady Pamelą',
+  'Profesor Wit': 'Profesorem Witem',
+  'Influencerka Mia': 'Influencerką Mią',
+  'Major Ryszard': 'Majorem Ryszardem',
+  'Lokaj Alfred': 'Lokajem Alfredem',
+}
+
+function withList(names: string[]) {
+  const forms = names.map((n) => INSTRUMENTAL[n])
+  return forms.length > 1 ? `${forms.slice(0, -1).join(', ')} i ${forms.at(-1)}` : forms[0]
+}
+
+export const shortName = (name: string) => (name === 'Ty' ? 'TY' : name.split(' ').at(-1)!)
+
+export function statementText(name: string, room: string, companions: string[]) {
+  const company = companions.length > 0 ? `z ${withList(companions)}` : gendered(name, 'sam', 'sama')
+  return `${gendered(name, 'Byłem', 'Byłam')} w ${LOCATIVE[room]} ${company}.`
+}
+
+export const alibiText = (room: string, companions: string[]) =>
+  `Byłeś w ${LOCATIVE[room]} ${companions.length > 0 ? `z ${withList(companions)}` : 'sam'}.`
+
+export type ResidentMood = 'calm' | 'suspicious' | 'nervous' | 'offended' | 'sly' | 'out'
+
+export function residentMood({
+  alive,
+  unmasked,
+  votesAgainst,
+  votedByPlayer,
+  accusesPlayer,
+}: {
+  alive: boolean
+  unmasked: boolean
+  votesAgainst: number
+  votedByPlayer: boolean
+  accusesPlayer: boolean
+}): ResidentMood {
+  if (!alive) return 'out'
+  if (unmasked) return 'sly'
+  if (votedByPlayer) return 'offended'
+  if (votesAgainst >= 2) return 'nervous'
+  return accusesPlayer ? 'suspicious' : 'calm'
 }

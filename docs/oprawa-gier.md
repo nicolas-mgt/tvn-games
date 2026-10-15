@@ -26,8 +26,9 @@ Dokument opisuje, jak zamieniamy POC gry w wersję z pełną oprawą („tryb im
 | Ile za tego grata? | komis „U Zbyszka” pod wieczór | `gr-` | zdjęcia CC aut, handlarz SVG |
 | Ściema z ogłoszenia | nocna redakcja śledcza | `sc-` | zdjęcia CC aut, reporterka SVG |
 | Rajskie Rozdanie | willa: dzień przy basenie, ceremonia nocą | `rr-` | 7 uczestników SVG |
+| Zdrajca | szkocki zamek nocą | `zd-` | 8 postaci SVG + plan zamku |
 
-Zostało 12 gier (sekcja 10).
+Zostało 11 gier (sekcja 10).
 
 ## 3. Proces pracy nad jedną grą
 
@@ -153,7 +154,7 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
 - Typowy zestaw na grę to 5–7 próbek (wejście rekwizytu, akcja, błąd, mocny akcent, jingle `good` i `bad`) plus 2–4 syntezy (tykanie, szum, werbel, stukot).
 - **Jingle `good` i `bad` dobieramy analizą przebiegu wysokości dźwięku** (autokorelacja na ramkach po 2048 próbek). `good` musi wyraźnie rosnąć (stosunek końca do początku > 1,15), a `bad` wyraźnie opadać (< 0,8). Zestaw dobieramy do klimatu: Sax do noir i studia, Steel do tropików, Pizzicato do komedii, 8-Bit do retro.
 - **Nie powtarzamy plików jingli między grami.** Na pewno są już zajęte:
-  - Sax: SAX00, SAX01, SAX02, SAX10, SAX14, SAX16;
+  - Sax: SAX00, SAX01, SAX02, SAX05, SAX10, SAX14, SAX15, SAX16;
   - Steel: STEEL01, STEEL02, STEEL15;
   - Pizzicato: PIZZI01, PIZZI02;
   - 8-Bit: NES11, NES12.
@@ -221,6 +222,8 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
 Kolejność zgodna z `registry.ts`. Przy każdej grze jest obecna mechanika (ta zostaje), propozycja oprawy i rzeczy do rozstrzygnięcia. Propozycje to punkt wyjścia do pytań w trybie planu, a nie gotowa decyzja.
 
 ### 10.1 Zdrajca (`zdrajca`, inspiracja: The Traitors)
+
+Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 
 - **Mechanika:**
   - 9 mieszkańców (gracz i 8 botów), wśród nich 2 losowych zdrajców;

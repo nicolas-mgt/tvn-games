@@ -133,6 +133,7 @@ export const GAMES: GameMeta[] = [
     size: 'M',
     description: 'Wśród ośmiu mieszkańców zamku ukrywa się dwóch zdrajców. Wyłap sprzeczne alibi.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./zdrajca')),
   },
   {
