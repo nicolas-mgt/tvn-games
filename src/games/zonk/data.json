@@ -1,24 +1,207 @@
 {
   "prizes": [
-    { "name": "Nowy samochód", "emoji": "🚗", "value": 60000 },
-    { "name": "Wycieczka do Tajlandii", "emoji": "✈️", "value": 15000 },
-    { "name": "Skuter", "emoji": "🛵", "value": 12000 },
-    { "name": "Komplet mebli do salonu", "emoji": "🛋️", "value": 9000 },
-    { "name": "Rower elektryczny", "emoji": "🚲", "value": 7000 },
-    { "name": "Tydzień w Zakopanem", "emoji": "🏔️", "value": 6000 },
-    { "name": "Laptop", "emoji": "💻", "value": 5000 },
-    { "name": "Telewizor 65 cali", "emoji": "📺", "value": 4000 }
+    {
+      "id": "classic-car",
+      "name": "Odrestaurowany klasyk z lat 60.",
+      "value": 60000,
+      "photo": {
+        "author": "gabitobalderas",
+        "license": "CC BY 2.0",
+        "source": "https://www.flickr.com/photos/53801973@N02/8302494744"
+      }
+    },
+    {
+      "id": "thailand",
+      "name": "Wycieczka do Tajlandii",
+      "value": 15000,
+      "photo": {
+        "author": "Mark Fischer",
+        "license": "CC BY-SA 2.0",
+        "source": "https://www.flickr.com/photos/80854685@N08/7420420048"
+      }
+    },
+    {
+      "id": "scooter",
+      "name": "Skuter",
+      "value": 12000,
+      "photo": {
+        "author": "www.calvinwest.com",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/w/index.php?curid=85784099"
+      }
+    },
+    {
+      "id": "sofa",
+      "name": "Komplet mebli do salonu",
+      "value": 9000,
+      "photo": {
+        "author": "Wonderlane",
+        "license": "CC BY 2.0",
+        "source": "https://www.flickr.com/photos/71401718@N00/5027516478"
+      }
+    },
+    {
+      "id": "ebike",
+      "name": "Rower elektryczny",
+      "value": 7000,
+      "photo": {
+        "author": "Janitors",
+        "license": "CC BY 2.0",
+        "source": "https://www.flickr.com/photos/65265630@N03/14694160596"
+      }
+    },
+    {
+      "id": "zakopane",
+      "name": "Tydzień w Zakopanem",
+      "value": 6000,
+      "photo": {
+        "author": "Opioła Jerzy",
+        "license": "CC BY 2.5",
+        "source": "https://commons.wikimedia.org/w/index.php?curid=927737"
+      }
+    },
+    {
+      "id": "laptop",
+      "name": "Laptop",
+      "value": 5000,
+      "photo": {
+        "author": "Image Catalog",
+        "license": "CC0",
+        "source": "https://www.flickr.com/photos/132795455@N08/17652700524"
+      }
+    },
+    {
+      "id": "tv",
+      "name": "Telewizor 65 cali",
+      "value": 4000,
+      "photo": {
+        "author": "LGEPR",
+        "license": "CC BY 2.0",
+        "source": "https://www.flickr.com/photos/32985045@N08/3464536170"
+      }
+    }
   ],
   "zonks": [
-    { "name": "Zapas kiszonej kapusty na trzy zimy", "emoji": "🥬" },
-    { "name": "Kurs tańca z teściową", "emoji": "💃" },
-    { "name": "Krasnal ogrodowy z pretensjami", "emoji": "🧙" },
-    { "name": "Dywan po cioci Krysi", "emoji": "🧶" },
-    { "name": "Kaseta VHS „Wesele Zdzicha 1997”", "emoji": "📼" },
-    { "name": "Rok pobudek o 5:00 z dostawą", "emoji": "⏰" },
-    { "name": "Kalendarz na rok 2009", "emoji": "📅" },
-    { "name": "Puszka powietrza znad Bałtyku", "emoji": "🥫" },
-    { "name": "Pluszowy Zonk w skali 1:1", "emoji": "🧸" },
-    { "name": "Karnet na siłownię, której już nie ma", "emoji": "🏋️" }
-  ]
+    {
+      "id": "sauerkraut",
+      "name": "Zapas kiszonej kapusty na trzy zimy",
+      "photo": {
+        "author": "ccbarr",
+        "license": "CC BY-SA 2.0",
+        "source": "https://www.flickr.com/photos/30458688@N00/16704191286"
+      }
+    },
+    {
+      "id": "flamingo",
+      "name": "Komplet wyblakłych flamingów ogrodowych",
+      "photo": {
+        "author": "ernie_nh7l",
+        "license": "Public domain",
+        "source": "https://www.flickr.com/photos/37789131@N08/37479087771"
+      }
+    },
+    {
+      "id": "garden-gnome",
+      "name": "Krasnal ogrodowy z pretensjami",
+      "photo": {
+        "author": "dvanzuijlekom",
+        "license": "CC BY-SA 2.0",
+        "source": "https://www.flickr.com/photos/52365139@N05/26141162974"
+      }
+    },
+    {
+      "id": "carpet",
+      "name": "Dywan po cioci Krysi",
+      "photo": {
+        "author": "Mr Thinktank",
+        "license": "CC BY 2.0",
+        "source": "https://www.flickr.com/photos/34621580@N00/4048780556"
+      }
+    },
+    {
+      "id": "vhs",
+      "name": "Kaseta VHS „Wesele Zdzicha 1997”",
+      "photo": {
+        "author": "Toby Hudson",
+        "license": "CC BY-SA 2.5",
+        "source": "https://commons.wikimedia.org/w/index.php?curid=23266238"
+      }
+    },
+    {
+      "id": "alarm-clock",
+      "name": "Budzik, który dzwoni o 5:00 i nie ma wyłącznika",
+      "photo": {
+        "author": "Alan Cleaver",
+        "license": "CC BY 2.0",
+        "source": "https://www.flickr.com/photos/11121568@N06/4293345631"
+      }
+    },
+    {
+      "id": "calendar",
+      "name": "Kalendarz na rok 2009",
+      "photo": {
+        "author": "gruntzooki",
+        "license": "CC BY-SA 2.0",
+        "source": "https://www.flickr.com/photos/37996580417@N01/5309672184"
+      }
+    },
+    {
+      "id": "cookie-tin",
+      "name": "Puszka po ciastkach (w środku przybory do szycia)",
+      "photo": {
+        "author": "Creative Tools",
+        "license": "CC BY 2.0",
+        "source": "https://www.flickr.com/photos/33907867@N02/4328694810"
+      }
+    },
+    {
+      "id": "teddy-bear",
+      "name": "Pluszowy miś w skali 1:1",
+      "photo": {
+        "author": "TwisterMc",
+        "license": "CC BY-SA 2.0",
+        "source": "https://www.flickr.com/photos/13112188@N00/25446728863"
+      }
+    },
+    {
+      "id": "gym",
+      "name": "Karnet na siłownię, której już nie ma",
+      "photo": {
+        "author": "mcclanahoochie",
+        "license": "CC BY-SA 2.0",
+        "source": "https://www.flickr.com/photos/53223109@N04/7433227946"
+      }
+    }
+  ],
+  "host": {
+    "intro": [
+      "Witam w studiu! Trzy bramki, jedna nagroda. Która to będzie?",
+      "Proszę państwa, oto nasze bramki! Wybieraj śmiało!",
+      "Za jedną bramką czeka coś pięknego. Za dwiema… cóż, zobaczymy!"
+    ],
+    "opens": [
+      "Wybrałeś nr {picked}. Ale zanim cokolwiek… otwórzmy bramkę nr {door}!",
+      "Nr {picked}, dobrze. Dla podniesienia napięcia zajrzyjmy za bramkę nr {door}…"
+    ],
+    "offer": [
+      "Za nr {door}: {item}! Zostajesz przy nr {picked}, zamieniasz czy bierzesz kopertę?",
+      "Ha! {item} za nr {door}. Mam tu kopertę z gotówką. Grasz dalej?"
+    ],
+    "reveal": [
+      "Werble, proszę! Otwieramy bramkę nr {door}…",
+      "Decyzja zapadła. Bramka nr {door}, pokaż się!"
+    ],
+    "prize": [
+      "Brawo! {item} jedzie do ciebie!",
+      "Gratulacje! Wygrywasz: {item}!"
+    ],
+    "zonk": [
+      "ZONK! Za bramką: {item}. Ale pamiątka jest!",
+      "Ojej… {item}. Głowa do góry, następna runda!"
+    ],
+    "cash": [
+      "Pewna kasa to pewna kasa! Zobaczmy, co cię ominęło…",
+      "Gotówka w kieszeni! A za bramkami było…"
+    ]
+  }
 }

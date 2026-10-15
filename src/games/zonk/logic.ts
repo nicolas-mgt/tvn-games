@@ -19,3 +19,5 @@ export function addMontyResult(stats: MontyStats, switched: boolean, won: boolea
     ? { ...stats, switchPlays: stats.switchPlays + 1, switchWins: stats.switchWins + Number(won) }
     : { ...stats, stayPlays: stats.stayPlays + 1, stayWins: stats.stayWins + Number(won) }
 }
+
+export const formatZl = (value: number) => `${value.toLocaleString('pl-PL')} zł`

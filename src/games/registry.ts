@@ -61,6 +61,7 @@ export const GAMES: GameMeta[] = [
     size: 'S',
     description: 'Trzy bramki, jedna nagroda i absurdalne zonki. Zamieniasz, zostajesz czy bierzesz kasę?',
     scoreLabel: 'zł',
+    immersive: true,
     Component: lazy(() => import('./zonk')),
   },
   {

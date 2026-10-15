@@ -61,20 +61,29 @@ export function createSfx<Sample extends string, Synthesized extends string = ne
   }
 }
 
-export function tone(ctx: AudioContext, type: OscillatorType, frequency: number, duration: number, volume: number): void {
+export function tone(
+  ctx: AudioContext,
+  type: OscillatorType,
+  frequency: number,
+  duration: number,
+  volume: number,
+  delay = 0,
+): void {
+  const start = ctx.currentTime + delay
   const osc = ctx.createOscillator()
   const gain = ctx.createGain()
   osc.type = type
   osc.frequency.value = frequency
-  gain.gain.setValueAtTime(volume, ctx.currentTime)
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration)
+  gain.gain.setValueAtTime(volume, start)
+  gain.gain.exponentialRampToValueAtTime(0.001, start + duration)
   osc.connect(gain).connect(ctx.destination)
-  osc.start()
-  osc.stop(ctx.currentTime + duration)
+  osc.start(start)
+  osc.stop(start + duration)
 }
 
 /** White noise through a band-pass filter, for tearing, rumbling and similar textures. */
-export function noise(ctx: AudioContext, frequency: number, duration: number, volume: number, q = 1): void {
+export function noise(ctx: AudioContext, frequency: number, duration: number, volume: number, q = 1, delay = 0): void {
+  const start = ctx.currentTime + delay
   const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * duration), ctx.sampleRate)
   const data = buffer.getChannelData(0)
   for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1
@@ -85,8 +94,8 @@ export function noise(ctx: AudioContext, frequency: number, duration: number, vo
   filter.type = 'bandpass'
   filter.frequency.value = frequency
   filter.Q.value = q
-  gain.gain.setValueAtTime(volume, ctx.currentTime)
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration)
+  gain.gain.setValueAtTime(volume, start)
+  gain.gain.exponentialRampToValueAtTime(0.001, start + duration)
   source.connect(filter).connect(gain).connect(ctx.destination)
-  source.start()
+  source.start(start)
 }

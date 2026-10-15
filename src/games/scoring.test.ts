@@ -6,6 +6,7 @@ import { distance, emojiImage } from './podloga/logic'
 import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type Temperatures } from './pogodynka/logic'
 import { cellsAt, fits, LEVELS, parseLevel, rotate } from './poukladani/logic'
 import gadgets from './ustrojstwo/data.json'
+import zonk from './zonk/data.json'
 import { addMontyResult, hostOpens, remainingDoor } from './zonk/logic'
 
 describe('Gdzie jest Martyna', () => {
@@ -86,6 +87,13 @@ describe('Zonk', () => {
   it('tracks switch and stay results separately', () => {
     const empty = { switchPlays: 0, switchWins: 0, stayPlays: 0, stayWins: 0 }
     expect(addMontyResult(addMontyResult(empty, true, true), false, false)).toEqual({ switchPlays: 1, switchWins: 1, stayPlays: 1, stayWins: 0 })
+  })
+
+  it('has a credited photo for every prize and zonk', () => {
+    const photos = import.meta.glob('/public/zonk/items/*.jpg')
+    const items = [...zonk.prizes, ...zonk.zonks]
+    expect(items.filter((i) => !photos[`/public/zonk/items/${i.id}.jpg`]).map((i) => i.id)).toEqual([])
+    expect(items.filter((i) => !i.photo.author || !i.photo.license || !i.photo.source).map((i) => i.id)).toEqual([])
   })
 })
 
