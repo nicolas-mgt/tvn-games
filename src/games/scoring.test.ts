@@ -7,6 +7,8 @@ import { dealersOnlyResult, nextDealerBid } from './paleta-w-ciemno/logic'
 import { distance, emojiImage } from './podloga/logic'
 import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type Temperatures } from './pogodynka/logic'
 import { cellsAt, fits, LEVELS, parseLevel, rotate } from './poukladani/logic'
+import sciema from './sciema-z-ogloszenia/data.json'
+import { reporterMood } from './sciema-z-ogloszenia/logic'
 import { judgeMood } from './ukryte-kryterium/logic'
 import gadgets from './ustrojstwo/data.json'
 import zonk from './zonk/data.json'
@@ -43,6 +45,21 @@ describe('Ile za tego grata', () => {
     const photos = import.meta.glob('/public/ile-za-grata/cars/*.jpg')
     expect(cars.listings.filter((c) => !photos[`/public/ile-za-grata/cars/${c.id}.jpg`]).map((c) => c.id)).toEqual([])
     expect(cars.listings.filter((c) => !c.photo.author || !c.photo.license || !c.photo.source).map((c) => c.id)).toEqual([])
+  })
+})
+
+describe('Ściema z ogłoszenia', () => {
+  it('picks the reporter mood from the last click and the clock', () => {
+    expect(reporterMood({ lastClick: 'hit', remaining: 30, reviewing: false })).toBe('pleased')
+    expect(reporterMood({ lastClick: 'miss', remaining: 30, reviewing: false })).toBe('disappointed')
+    expect(reporterMood({ lastClick: null, remaining: 5, reviewing: false })).toBe('alarmed')
+    expect(reporterMood({ lastClick: null, remaining: 30, reviewing: false })).toBe('suspicious')
+  })
+
+  it('has a credited photo for every ad', () => {
+    const photos = import.meta.glob('/public/sciema-z-ogloszenia/cars/*.jpg')
+    expect(sciema.listings.filter((a) => !photos[`/public/sciema-z-ogloszenia/cars/${a.id}.jpg`]).map((a) => a.id)).toEqual([])
+    expect(sciema.listings.filter((a) => !a.photo.author || !a.photo.license || !a.photo.source).map((a) => a.id)).toEqual([])
   })
 })
 

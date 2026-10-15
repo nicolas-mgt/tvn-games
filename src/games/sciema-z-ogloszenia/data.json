@@ -1,60 +1,201 @@
-[
-  {
-    "title": "Volkswagen Passat B6 2.0 TDI, 2008",
-    "segments": [
-      { "text": "Sprzedam zadbanego Passata, auto prywatne, nie handlarz." },
-      { "text": "Przebieg 98 000 km – oryginał, mogę przysiąc na babcię.", "flag": "Szesnastoletni diesel z przebiegiem poniżej 100 tys. km to klasyczny cofnięty licznik." },
-      { "text": "Serwisowany regularnie, wymieniony rozrząd i olej." },
-      { "text": "Niemiec płakał jak sprzedawał.", "flag": "Najsłynniejszy frazes handlarzy – i sprzeczność z „nie handlarz”." },
-      { "text": "Opony zimowe w komplecie." },
-      { "text": "VIN podam tylko poważnym kupcom po wpłacie zaliczki.", "flag": "Brak VIN-u przed oględzinami uniemożliwia sprawdzenie historii pojazdu." },
-      { "text": "Cena do negocjacji przy aucie." }
+{
+  "comments": {
+    "reading": [
+      "Czytaj uważnie. Handlarze kłamią w szczegółach.",
+      "Coś mi tu śmierdzi. Szukaj dalej.",
+      "Każde zdanie to potencjalny trop."
+    ],
+    "hit": [
+      "Mam cię! Notuję.",
+      "O, to pójdzie na pierwszą stronę.",
+      "Bingo. Klasyka gatunku.",
+      "Dokładnie to samo zauważyłam."
+    ],
+    "miss": [
+      "Hola, to akurat brzmi uczciwie.",
+      "Za to nas pozwą. Spokojnie.",
+      "Pudło. Nie każde zdanie to ściema."
+    ],
+    "allFound": [
+      "Komplet! Redaktor naczelny będzie zachwycony.",
+      "Wszystko wyłapane. Materiał idzie do druku."
+    ],
+    "missed": [
+      "Kilka ściem się prześlizgnęło. Patrz na zakreślone.",
+      "Nie wszystko. Sprzedawca by się ucieszył."
+    ],
+    "timeout": [
+      "Koniec czasu! Drukarnia nie czeka.",
+      "Za późno, gazeta już poszła do druku."
     ]
   },
-  {
-    "title": "Toyota Corolla 1.6, 2015",
-    "segments": [
-      { "text": "Pierwszy właściciel, kupiona w polskim salonie." },
-      { "text": "Jeździła nią tylko starsza pani do kościoła w niedziele.", "flag": "Legenda o babci jeżdżącej do kościoła to jedna z najstarszych bajek ogłoszeniowych." },
-      { "text": "Komplet kluczyków i książka serwisowa." },
-      { "text": "Lakier oryginalny, grubość 300–600 mikronów na każdym elemencie.", "flag": "Fabryczny lakier ma ok. 100–150 µm. 300–600 µm oznacza szpachlę i lakierowanie." },
-      { "text": "Klimatyzacja sprawna." },
-      { "text": "Obecnie auto stoi u kuzyna w Niemczech, wyślę kurierem po przelewie całości.", "flag": "Przelew całości za auto, którego nie da się obejrzeć – podręcznikowe oszustwo." }
-    ]
-  },
-  {
-    "title": "BMW X5 3.0d, 2017",
-    "segments": [
-      { "text": "Pełne wyposażenie, skóra, panorama." },
-      { "text": "Cena 39 900 zł – szybka sprzedaż z powodu wyjazdu.", "flag": "Cena kilka razy niższa od rynkowej plus „pilny wyjazd” to typowy wabik." },
-      { "text": "Auto zarejestrowane i ubezpieczone." },
-      { "text": "Kontakt tylko przez WhatsApp, nie odbieram telefonów.", "flag": "Unikanie rozmowy telefonicznej często oznacza, że sprzedający jest za granicą lub nie istnieje." },
-      { "text": "Opony letnie na alufelgach 20 cali." },
-      { "text": "Możliwa jazda próbna w umówionym miejscu." },
-      { "text": "Lekko stuknięty przód, ale tylko kosmetycznie, poduszki nie wystrzeliły, kontrolka sama zgasła.", "flag": "„Kontrolka sama zgasła” po stłuczce sugeruje problem z systemem poduszek – ktoś ją mógł wykasować." }
-    ]
-  },
-  {
-    "title": "Ford Fiesta 1.25, 2012",
-    "segments": [
-      { "text": "Ekonomiczne autko do miasta, idealne dla kobiety lub na pierwsze auto." },
-      { "text": "Nowe klocki i tarcze." },
-      { "text": "Silnik pracuje jak żyleta, pali od strzała." },
-      { "text": "Lekki dymek z wydechu, to normalne w tym modelu.", "flag": "Niebieski dym to zwykle zużyte pierścienie lub uszczelniacze – to nie jest „normalne w modelu”." },
-      { "text": "Przegląd ważny do przyszłego roku." },
-      { "text": "Sprowadzona z Holandii, opłacona." },
-      { "text": "Woda w bagażniku tylko po dużych ulewach.", "flag": "Woda w bagażniku to nieszczelność lub auto po zalaniu – korozja i elektryka pod znakiem zapytania." }
-    ]
-  },
-  {
-    "title": "Audi A4 B8 1.8 TFSI, 2010",
-    "segments": [
-      { "text": "Auto w stanie idealnym, bezwypadkowe." },
-      { "text": "Pali ok. 1 litr oleju na 1000 km, ale to cecha tego silnika.", "flag": "Tak duże spalanie oleju w 1.8 TFSI to znana usterka wymagająca drogiej naprawy, nie „cecha”." },
-      { "text": "Wymienione rozrząd i pompa wody." },
-      { "text": "Brak dowodu rejestracyjnego, w trakcie wyrabiania.", "flag": "Auto bez dowodu rejestracyjnego może być kradzione lub zadłużone – nie kupuj bez dokumentów." },
-      { "text": "Skrzynia biegów manualna, sprzęgło nie ślizga się." },
-      { "text": "Zamiana na kosiarkę samojezdną + dopłata." }
-    ]
-  }
-]
+  "listings": [
+    {
+      "id": "passat",
+      "title": "Volkswagen Passat B6 2.0 TDI, 2008",
+      "segments": [
+        {
+          "text": "Sprzedam zadbanego Passata, auto prywatne, nie handlarz."
+        },
+        {
+          "text": "Przebieg 98 000 km – oryginał, mogę przysiąc na babcię.",
+          "flag": "Szesnastoletni diesel z przebiegiem poniżej 100 tys. km to klasyczny cofnięty licznik."
+        },
+        {
+          "text": "Serwisowany regularnie, wymieniony rozrząd i olej."
+        },
+        {
+          "text": "Niemiec płakał jak sprzedawał.",
+          "flag": "Najsłynniejszy frazes handlarzy – i sprzeczność z „nie handlarz”."
+        },
+        {
+          "text": "Opony zimowe w komplecie."
+        },
+        {
+          "text": "VIN podam tylko poważnym kupcom po wpłacie zaliczki.",
+          "flag": "Brak VIN-u przed oględzinami uniemożliwia sprawdzenie historii pojazdu."
+        },
+        {
+          "text": "Cena do negocjacji przy aucie."
+        }
+      ],
+      "photo": {
+        "author": "Dinkun Chen",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:VOLKSWAGEN_PASSAT_VARIANT_B6_China_(3).jpg"
+      }
+    },
+    {
+      "id": "corolla",
+      "title": "Toyota Corolla 1.6, 2015",
+      "segments": [
+        {
+          "text": "Pierwszy właściciel, kupiona w polskim salonie."
+        },
+        {
+          "text": "Jeździła nią tylko starsza pani do kościoła w niedziele.",
+          "flag": "Legenda o babci jeżdżącej do kościoła to jedna z najstarszych bajek ogłoszeniowych."
+        },
+        {
+          "text": "Komplet kluczyków i książka serwisowa."
+        },
+        {
+          "text": "Lakier oryginalny, grubość 300–600 mikronów na każdym elemencie.",
+          "flag": "Fabryczny lakier ma ok. 100–150 µm. 300–600 µm oznacza szpachlę i lakierowanie."
+        },
+        {
+          "text": "Klimatyzacja sprawna."
+        },
+        {
+          "text": "Obecnie auto stoi u kuzyna w Niemczech, wyślę kurierem po przelewie całości.",
+          "flag": "Przelew całości za auto, którego nie da się obejrzeć – podręcznikowe oszustwo."
+        }
+      ],
+      "photo": {
+        "author": "EurovisionNim",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:2013-2016_Toyota_Corolla_(ZRE172R)_SX_sedan_(2018-09-17)_01.jpg"
+      }
+    },
+    {
+      "id": "x5",
+      "title": "BMW X5 3.0d, 2017",
+      "segments": [
+        {
+          "text": "Pełne wyposażenie, skóra, panorama."
+        },
+        {
+          "text": "Cena 39 900 zł – szybka sprzedaż z powodu wyjazdu.",
+          "flag": "Cena kilka razy niższa od rynkowej plus „pilny wyjazd” to typowy wabik."
+        },
+        {
+          "text": "Auto zarejestrowane i ubezpieczone."
+        },
+        {
+          "text": "Kontakt tylko przez WhatsApp, nie odbieram telefonów.",
+          "flag": "Unikanie rozmowy telefonicznej często oznacza, że sprzedający jest za granicą lub nie istnieje."
+        },
+        {
+          "text": "Opony letnie na alufelgach 20 cali."
+        },
+        {
+          "text": "Możliwa jazda próbna w umówionym miejscu."
+        },
+        {
+          "text": "Lekko stuknięty przód, ale tylko kosmetycznie, poduszki nie wystrzeliły, kontrolka sama zgasła.",
+          "flag": "„Kontrolka sama zgasła” po stłuczce sugeruje problem z systemem poduszek – ktoś ją mógł wykasować."
+        }
+      ],
+      "photo": {
+        "author": "Dinkun Chen",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:BMW_X5_(F15)_China_(13).jpg"
+      }
+    },
+    {
+      "id": "fiesta",
+      "title": "Ford Fiesta 1.25, 2012",
+      "segments": [
+        {
+          "text": "Ekonomiczne autko do miasta, idealne dla kobiety lub na pierwsze auto."
+        },
+        {
+          "text": "Nowe klocki i tarcze."
+        },
+        {
+          "text": "Silnik pracuje jak żyleta, pali od strzała."
+        },
+        {
+          "text": "Lekki dymek z wydechu, to normalne w tym modelu.",
+          "flag": "Niebieski dym to zwykle zużyte pierścienie lub uszczelniacze – to nie jest „normalne w modelu”."
+        },
+        {
+          "text": "Przegląd ważny do przyszłego roku."
+        },
+        {
+          "text": "Sprowadzona z Holandii, opłacona."
+        },
+        {
+          "text": "Woda w bagażniku tylko po dużych ulewach.",
+          "flag": "Woda w bagażniku to nieszczelność lub auto po zalaniu – korozja i elektryka pod znakiem zapytania."
+        }
+      ],
+      "photo": {
+        "author": "Charles01",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Ford_Fiesta_998cc_registered_June_2014_ie_post_2013_facelift.JPG"
+      }
+    },
+    {
+      "id": "a4",
+      "title": "Audi A4 B8 1.8 TFSI, 2010",
+      "segments": [
+        {
+          "text": "Auto w stanie idealnym, bezwypadkowe."
+        },
+        {
+          "text": "Pali ok. 1 litr oleju na 1000 km, ale to cecha tego silnika.",
+          "flag": "Tak duże spalanie oleju w 1.8 TFSI to znana usterka wymagająca drogiej naprawy, nie „cecha”."
+        },
+        {
+          "text": "Wymienione rozrząd i pompa wody."
+        },
+        {
+          "text": "Brak dowodu rejestracyjnego, w trakcie wyrabiania.",
+          "flag": "Auto bez dowodu rejestracyjnego może być kradzione lub zadłużone – nie kupuj bez dokumentów."
+        },
+        {
+          "text": "Skrzynia biegów manualna, sprzęgło nie ślizga się."
+        },
+        {
+          "text": "Zamiana na kosiarkę samojezdną + dopłata."
+        }
+      ],
+      "photo": {
+        "author": "Charles01",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Audi_A4_B8_Avant_aus_Koeln.jpg"
+      }
+    }
+  ]
+}

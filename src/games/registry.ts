@@ -109,6 +109,7 @@ export const GAMES: GameMeta[] = [
     size: 'S',
     description: 'Wyłap czerwone flagi w ogłoszeniach samochodowych, zanim skończy się czas.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./sciema-z-ogloszenia')),
   },
   {
