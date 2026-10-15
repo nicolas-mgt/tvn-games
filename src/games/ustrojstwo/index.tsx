@@ -1,13 +1,36 @@
-import { AnimatePresence, motion } from 'motion/react'
+import '@fontsource/bebas-neue'
+import '@fontsource/caveat/700.css'
+import confetti from 'canvas-confetti'
+import { MotionConfig, motion, useAnimate, useReducedMotion } from 'motion/react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { shuffle } from '@/shared/daily'
-import { Hud, ResultScreen } from '@/shared/GameShell'
+import { Hud, MuteButton, ResultScreen } from '@/shared/GameShell'
 import gadgets from './data.json'
+import { Parcel, type ParcelStage } from './Parcel'
+import { play, sfx } from './sfx'
+import { Fact, Labels, Stamp } from './Verdict'
+import { WarehouseBackdrop, type Mood } from './WarehouseBackdrop'
 
 type Gadget = (typeof gadgets)[number]
 type Question = Gadget & { options: string[] }
+type Phase = 'lobby' | 'arrive' | 'cut' | 'open' | 'verdict' | 'depart' | 'result'
+
+function moodFor(phase: Phase, correct: boolean): Mood {
+  switch (phase) {
+    case 'lobby':
+      return 'idle'
+    case 'arrive':
+    case 'depart':
+      return 'arrive'
+    case 'verdict':
+      return correct ? 'correct' : 'wrong'
+    case 'result':
+      return 'result'
+    default:
+      return 'open'
+  }
+}
 
 function buildQuestions(): Question[] {
   return shuffle(gadgets).map((gadget) => ({ ...gadget, options: shuffle([gadget.answer, ...gadget.decoys]) }))
@@ -16,107 +39,150 @@ function buildQuestions(): Question[] {
 export default function UstrojstwoGame() {
   const [questions, setQuestions] = useState(buildQuestions)
   const [index, setIndex] = useState(0)
-  const [opened, setOpened] = useState(false)
+  const [phase, setPhase] = useState<Phase>('lobby')
   const [chosen, setChosen] = useState<string | null>(null)
-  const [finished, setFinished] = useState(false)
+  const [landed, setLanded] = useState(false)
+  const [scope, animate] = useAnimate<HTMLDivElement>()
+  const reducedMotion = useReducedMotion()
 
   const question = questions[index]
-  const streak = index + (chosen === question?.answer ? 1 : 0)
+  const correct = chosen === question.answer
+  const streak = index + (correct ? 1 : 0)
+  const last = index === questions.length - 1
+
+  const parcelStage: ParcelStage = phase === 'verdict' ? 'open' : (phase as ParcelStage)
+
+  function startConveyor() {
+    play('rumble')
+    setPhase('arrive')
+  }
+
+  function enterWarehouse() {
+    sfx.unlock()
+    startConveyor()
+  }
+
+  function choose(option: string) {
+    play('select')
+    setChosen(option)
+    setPhase('verdict')
+  }
+
+  function stampLanded() {
+    play('stamp')
+    setTimeout(() => play(correct ? 'correct' : 'wrong'), 150)
+    if (!reducedMotion) void animate(scope.current, { x: [0, -10, 9, -6, 4, 0], y: [0, 5, -4, 2, 0] }, { duration: 0.4 })
+    if (correct) {
+      confetti({ particleCount: 50, spread: 60, origin: { y: 0.35 }, colors: ['#4ade80', '#fde68a', '#ffffff'], disableForReducedMotion: true })
+      if (last) play('win')
+    }
+    setLanded(true)
+  }
 
   function next() {
-    if (chosen !== question.answer || index === questions.length - 1) {
-      setFinished(true)
+    if (!correct || last) {
+      setPhase('result')
       return
     }
+    play('rumble')
+    setPhase('depart')
+  }
+
+  function departed() {
     setIndex(index + 1)
-    setOpened(false)
     setChosen(null)
+    setLanded(false)
+    startConveyor()
   }
 
   function restart() {
     setQuestions(buildQuestions())
     setIndex(0)
-    setOpened(false)
     setChosen(null)
-    setFinished(false)
+    setLanded(false)
+    startConveyor()
   }
 
-  if (finished) {
-    const perfect = streak === questions.length
-    return (
-      <ResultScreen
-        slug="ustrojstwo"
-        score={streak}
-        maxScore={questions.length}
-        summary={
-          perfect
-            ? 'Wszystkie paczki rozpoznane! Kurier wręcza ci order.'
-            : `Seria skończyła się na: ${question.emoji} ${question.look}`
-        }
-        onRestart={restart}
-      />
-    )
-  }
+  const showContents = phase === 'open' || phase === 'verdict'
 
   return (
-    <>
-      <Hud items={[['Seria', streak], ['Paczka', `${index + 1}/${questions.length}`]]} />
-      <Card>
-        <CardContent className="flex flex-col items-center gap-5">
-          <AnimatePresence mode="wait">
-            {!opened ? (
-              <motion.button
-                key="box"
-                data-testid="open-box"
-                onClick={() => setOpened(true)}
-                className="flex flex-col items-center gap-2"
-                whileHover={{ rotate: [0, -6, 6, 0] }}
-                exit={{ scale: 1.4, opacity: 0 }}
-              >
-                <span className="text-8xl">📦</span>
-                <span className="text-sm text-muted-foreground">Kliknij, żeby otworzyć paczkę</span>
-              </motion.button>
-            ) : (
+    <MotionConfig reducedMotion="user">
+      <WarehouseBackdrop mood={moodFor(phase, correct)} />
+      <MuteButton sfx={sfx} />
+
+      {phase === 'lobby' && (
+        <motion.div
+          className="flex min-h-[60svh] flex-col items-center justify-center gap-5 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <p className="marker -rotate-2 text-3xl text-amber-200">Sortownia nr 7 · zmiana nocna</p>
+          <h2 className="font-display text-6xl tracking-wider text-amber-50 sm:text-8xl">Co to za ustrojstwo?</h2>
+          <p className="max-w-md text-amber-50/75">
+            Na taśmę wjeżdżają paczki z dziwnymi gadżetami. Rozetnij taśmę, obejrzyj zawartość i zgadnij, do czego naprawdę służy. Jedna
+            pomyłka i seria się kończy.
+          </p>
+          <Button size="lg" className="h-14 px-10 font-display text-2xl tracking-widest" onClick={enterWarehouse} data-testid="enter-warehouse">
+            Wejdź na sortownię
+          </Button>
+        </motion.div>
+      )}
+
+      {phase !== 'lobby' && phase !== 'result' && (
+        <>
+          <Hud items={[['Seria', streak], ['Paczka', `${index + 1}/${questions.length}`]]} />
+          <div ref={scope} className="relative h-[290px] sm:h-[350px]">
+            <div className="belt" data-running={phase === 'arrive' || phase === 'depart'}>
+              <div className="belt-surface" />
+              <div className="belt-rail" />
+            </div>
+            <Parcel
+              key={index}
+              gadgetId={question.id}
+              number={index + 1}
+              total={questions.length}
+              stage={parcelStage}
+              onArrived={() => {
+                play('land')
+                setPhase('cut')
+              }}
+              onOpened={() => setPhase('open')}
+              onDeparted={departed}
+            />
+            {phase === 'verdict' && <Stamp correct={correct} onLanded={stampLanded} />}
+          </div>
+
+          {showContents && (
+            <div className="flex flex-col items-center gap-5">
               <motion.div
-                key={`gadget-${index}`}
-                initial={{ scale: 0.6, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="flex flex-col items-center gap-2 text-center"
+                className="relative max-w-md -rotate-1 rounded-sm bg-[#fdf6d8] px-5 pb-4 pt-5 text-[#2a1a0c] shadow-lg shadow-black/40"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                data-testid="look"
               >
-                <span className="text-8xl">{question.emoji}</span>
-                <p className="max-w-md text-lg">{question.look}</p>
+                <span className="absolute -top-2 left-1/2 size-4 -translate-x-1/2 rounded-full bg-red-600 shadow" />
+                <p className="text-[10px] font-bold uppercase tracking-widest text-black/50">Opis od nadawcy</p>
+                <p className="marker text-2xl text-[#2a1a0c]">{question.look}</p>
               </motion.div>
-            )}
-          </AnimatePresence>
-          {opened && (
-            <div className="grid w-full gap-2 sm:grid-cols-2">
-              {question.options.map((option) => {
-                const isAnswer = option === question.answer
-                const state = chosen === null ? '' : isAnswer ? 'border-green-500 bg-green-50' : option === chosen ? 'border-red-500 bg-red-50' : 'opacity-60'
-                return (
-                  <Button
-                    key={option}
-                    variant="outline"
-                    className={`h-auto whitespace-normal py-3 ${state}`}
-                    disabled={chosen !== null}
-                    data-correct={isAnswer}
-                    onClick={() => setChosen(option)}
-                  >
-                    {option}
-                  </Button>
-                )
-              })}
+              <Labels options={question.options} answer={question.answer} chosen={chosen} onChoose={choose} />
+              {phase === 'verdict' && landed && <Fact correct={correct} fact={question.fact} last={last} onNext={next} />}
             </div>
           )}
-          {chosen && (
-            <div className="flex flex-col items-center gap-3 text-center">
-              <p className="font-semibold">{chosen === question.answer ? '✅ Zgadza się!' : '❌ Pudło!'}</p>
-              <p className="max-w-md text-sm text-muted-foreground">{question.fact}</p>
-              <Button onClick={next}>{chosen === question.answer ? 'Następna paczka' : 'Zobacz wynik'}</Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </>
+        </>
+      )}
+
+      {phase === 'result' && (
+        <ResultScreen
+          slug="ustrojstwo"
+          score={streak}
+          maxScore={questions.length}
+          summary={streak === questions.length ? 'Wszystkie paczki rozpoznane! Kurier wręcza ci order.' : `Paczka nr ${index + 1} wróciła do nadawcy: ${question.look}`}
+          onRestart={restart}
+        />
+      )}
+
+      <p className="mt-auto pt-6 text-center text-[11px] text-white/40">Dźwięki: Kenney (CC0) · Ilustracje: własne</p>
+    </MotionConfig>
   )
 }

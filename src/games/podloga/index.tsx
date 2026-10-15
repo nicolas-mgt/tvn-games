@@ -4,12 +4,12 @@ import { MotionConfig, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { dailyRng } from '@/shared/daily'
-import { Hud, ResultScreen } from '@/shared/GameShell'
+import { Hud, MuteButton, ResultScreen } from '@/shared/GameShell'
 import { CATEGORIES, categoryById } from './categories'
 import { Duel, TOKEN_BONUS } from './Duel'
 import { Floor, type Wave } from './Floor'
 import { challengeable, createBoard, PLAYER_COLOR, SIZE, type Tile } from './logic'
-import { isMuted, play, setMuted, unlockAudio } from './sfx'
+import { play, sfx } from './sfx'
 import { StudioBackdrop, type Mood } from './StudioBackdrop'
 
 const SLUG = 'podloga'
@@ -29,7 +29,6 @@ export default function PodlogaGame() {
   const [winStreak, setWinStreak] = useState(0)
   const [tokens, setTokens] = useState(0)
   const [lostTo, setLostTo] = useState<Tile | null>(null)
-  const [muted, setMutedState] = useState(isMuted)
   const owned = board.filter((t) => t.owner === 'player').length
 
   useEffect(() => {
@@ -39,7 +38,7 @@ export default function PodlogaGame() {
   }, [mood, phase])
 
   function enterStudio() {
-    unlockAudio()
+    sfx.unlock()
     play('intro')
     setPhase('intro')
   }
@@ -87,22 +86,10 @@ export default function PodlogaGame() {
     setPhase(next.every((t) => t.owner === 'player') ? 'result' : 'floor')
   }
 
-  function toggleMute() {
-    setMuted(!muted)
-    setMutedState(!muted)
-  }
-
   return (
     <MotionConfig reducedMotion="user">
       <StudioBackdrop mood={mood} />
-      <button
-        onClick={toggleMute}
-        className="fixed right-4 top-2 z-30 rounded-full border border-white/20 bg-black/50 px-3 py-1 text-sm text-white backdrop-blur hover:bg-black/70"
-        aria-label={muted ? 'Włącz dźwięk' : 'Wycisz'}
-        data-testid="mute"
-      >
-        {muted ? '🔇 Dźwięk' : '🔊 Dźwięk'}
-      </button>
+      <MuteButton sfx={sfx} />
 
       {phase === 'lobby' && (
         <motion.div

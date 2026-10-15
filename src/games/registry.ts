@@ -49,6 +49,7 @@ export const GAMES: GameMeta[] = [
     size: 'S',
     description: 'Otwierasz paczkę z dziwnym gadżetem. Zgadnij, do czego naprawdę służy.',
     scoreLabel: 'seria',
+    immersive: true,
     Component: lazy(() => import('./ustrojstwo')),
   },
   {

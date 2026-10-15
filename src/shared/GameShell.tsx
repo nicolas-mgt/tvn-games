@@ -5,17 +5,18 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { getGame, type GameMeta } from '@/games/registry'
+import type { Sfx } from './sfx'
 import { recordResult, type GameStats } from './storage'
 
 export function GameShell({ game, children }: { game: GameMeta; children: ReactNode }) {
   if (game.immersive) {
     return (
       <div className="dark relative min-h-svh overflow-x-hidden text-foreground">
-        <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-white/10 bg-black/40 px-4 py-2 backdrop-blur-md">
-          <Link to="/" className="text-sm text-white/70 hover:text-white">
+        <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-white/10 bg-black/40 py-2 pl-4 pr-32 backdrop-blur-md">
+          <Link to="/" className="shrink-0 text-sm text-white/70 hover:text-white">
             ← Wszystkie gry
           </Link>
-          <h1 className="font-display text-2xl tracking-wider text-white">{game.title}</h1>
+          <h1 className="truncate font-display text-2xl tracking-wider text-white">{game.title}</h1>
         </header>
         <main className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-6">{children}</main>
       </div>
@@ -34,6 +35,27 @@ export function GameShell({ game, children }: { game: GameMeta; children: ReactN
       </header>
       <main className="flex flex-1 flex-col gap-4">{children}</main>
     </div>
+  )
+}
+
+/** Sound toggle pinned to the immersive top bar. */
+export function MuteButton({ sfx }: { sfx: Pick<Sfx<string>, 'isMuted' | 'setMuted'> }) {
+  const [muted, setMuted] = useState(sfx.isMuted)
+
+  function toggle() {
+    sfx.setMuted(!muted)
+    setMuted(!muted)
+  }
+
+  return (
+    <button
+      onClick={toggle}
+      className="fixed right-4 top-2 z-30 rounded-full border border-white/20 bg-black/50 px-3 py-1 text-sm text-white backdrop-blur hover:bg-black/70"
+      aria-label={muted ? 'Włącz dźwięk' : 'Wycisz'}
+      data-testid="mute"
+    >
+      {muted ? '🔇 Dźwięk' : '🔊 Dźwięk'}
+    </button>
   )
 }
 

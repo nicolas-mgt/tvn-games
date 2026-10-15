@@ -5,6 +5,8 @@ import { dealersOnlyResult, nextDealerBid } from './paleta-w-ciemno/logic'
 import { distance, emojiImage } from './podloga/logic'
 import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type Temperatures } from './pogodynka/logic'
 import { cellsAt, fits, LEVELS, parseLevel, rotate } from './poukladani/logic'
+import { GADGET_ART } from './ustrojstwo/GadgetArt'
+import gadgets from './ustrojstwo/data.json'
 import { addMontyResult, hostOpens, remainingDoor } from './zonk/logic'
 
 describe('Gdzie jest Martyna', () => {
@@ -59,6 +61,12 @@ describe('Podłoga', () => {
   it('maps emoji to OpenMoji file names without the variation selector', () => {
     expect(emojiImage('🐘')).toBe('/podloga/items/1F418.svg')
     expect(emojiImage('🐿️')).toBe('/podloga/items/1F43F.svg')
+  })
+})
+
+describe('Co to za ustrojstwo', () => {
+  it('has an illustration for every gadget', () => {
+    expect(gadgets.map((g) => g.id).filter((id) => !(id in GADGET_ART))).toEqual([])
   })
 })
 
