@@ -1,0 +1,656 @@
+.kn-hand {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* Backdrop */
+.kn-backdrop {
+  background: #3a2a1a;
+}
+.kn-interior,
+.kn-facade,
+.kn-tint,
+.kn-vignette,
+.kn-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.kn-swap {
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+}
+.kn-swap[data-on='true'] {
+  opacity: 1;
+}
+.kn-facade {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+.kn-tint {
+  background: transparent;
+  transition: background 0.8s;
+}
+.kn-vignette {
+  background: radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.35));
+}
+.kn-chalk {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  fill: #f4f1e6;
+}
+.kn-chalk-line {
+  stroke: #f4f1e6;
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+.kn-display {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  fill: #7dff8a;
+}
+.kn-sign-text {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.06em;
+}
+.kn-closed {
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+.kn-door-l,
+.kn-door-r,
+.kn-front-door {
+  transform-box: view-box;
+  transition: transform 0.9s ease-in-out;
+}
+.kn-door-l {
+  transform-origin: 1080px 405px;
+}
+.kn-door-r {
+  transform-origin: 1240px 405px;
+}
+.kn-front-door {
+  transform-origin: 710px 650px;
+}
+.kn-doors .kn-door-l,
+.kn-doors .kn-door-r {
+  animation: kn-swing 1.4s ease-out;
+}
+.kn-doors[data-open='true'] .kn-door-l,
+.kn-doors[data-open='true'] .kn-door-r {
+  transform: scaleX(0.25);
+}
+.kn-drips ellipse {
+  transform-box: fill-box;
+  animation: kn-drip 2.4s ease-in infinite;
+}
+.kn-drips ellipse:nth-child(2) {
+  animation-delay: -0.9s;
+}
+.kn-drips ellipse:nth-child(3) {
+  animation-delay: -1.6s;
+}
+.kn-steam circle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: kn-steam 2.1s ease-out infinite;
+}
+.kn-fly {
+  transform-box: view-box;
+  animation: kn-fly 3.3s linear infinite;
+}
+.kn-flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: kn-flame 0.5s ease-in-out infinite alternate;
+}
+.kn-bulbs circle {
+  animation: kn-twinkle 1.2s ease-in-out infinite alternate;
+}
+.kn-bulbs circle:nth-child(2n) {
+  animation-delay: -0.6s;
+}
+.kn-wiggle {
+  animation: kn-twinkle 0.9s ease-in-out infinite alternate;
+}
+.kn-tv[data-loud='true'] .kn-tv-screen {
+  animation: kn-static 0.25s steps(2) infinite;
+}
+.kn-waves {
+  animation: kn-twinkle 0.4s steps(2) infinite;
+}
+.kn-prop {
+  animation: kn-pop-in 0.6s ease-out;
+}
+
+/* Moods */
+:is([data-mood='idle'], [data-mood='fail'], [data-mood='revisit']) .kn-facade {
+  opacity: 1;
+}
+[data-mood='idle'] .kn-tint {
+  background: rgb(40 20 60 / 0.2);
+}
+[data-mood='good'] .kn-tint {
+  background: rgb(255 170 80 / 0.18);
+}
+[data-mood='bad'] .kn-tint {
+  background: rgb(40 70 120 / 0.3);
+}
+[data-mood='bad'] .kn-tube {
+  animation: kn-flicker 1.6s steps(1) infinite;
+}
+[data-mood='fail'] .kn-tint {
+  background: rgb(8 8 30 / 0.55);
+}
+[data-mood='fail'] .kn-closed {
+  opacity: 1;
+}
+[data-mood='revisit'] .kn-interior {
+  clip-path: circle(0% at 50% 72%);
+}
+[data-mood='revisit'][data-open='true'] .kn-interior {
+  clip-path: circle(150% at 50% 72%);
+  transition: clip-path 2.4s ease-in-out 0.6s;
+}
+[data-mood='revisit'][data-open='true'] .kn-front-door {
+  transform: scaleX(0.08);
+}
+[data-mood='revisit'][data-open='true'] .kn-facade {
+  opacity: 0;
+  transition-delay: 1s;
+  transition-duration: 1.8s;
+}
+
+@keyframes kn-swing {
+  0% {
+    transform: scaleX(1);
+  }
+  25% {
+    transform: scaleX(0.3);
+  }
+  55% {
+    transform: scaleX(0.9);
+  }
+  75% {
+    transform: scaleX(0.7);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+@keyframes kn-drip {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+}
+@keyframes kn-steam {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-70px) scale(1.8);
+    opacity: 0;
+  }
+}
+@keyframes kn-fly {
+  0% {
+    transform: translate(800px, 640px);
+  }
+  25% {
+    transform: translate(900px, 600px);
+  }
+  50% {
+    transform: translate(960px, 660px);
+  }
+  75% {
+    transform: translate(860px, 690px);
+  }
+  100% {
+    transform: translate(800px, 640px);
+  }
+}
+@keyframes kn-flame {
+  from {
+    transform: scale(0.9, 0.95);
+  }
+  to {
+    transform: scale(1.05, 1.1);
+  }
+}
+@keyframes kn-twinkle {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes kn-static {
+  0% {
+    fill: #8ab0c8;
+  }
+  50% {
+    fill: #d8e4ec;
+  }
+}
+@keyframes kn-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 0.2;
+  }
+  14% {
+    opacity: 1;
+  }
+  52% {
+    opacity: 0.35;
+  }
+  55% {
+    opacity: 1;
+  }
+}
+@keyframes kn-pop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kn-doors .kn-door-l,
+  .kn-doors .kn-door-r,
+  .kn-drips ellipse,
+  .kn-steam circle,
+  .kn-fly,
+  .kn-flame,
+  .kn-bulbs circle,
+  .kn-wiggle,
+  .kn-tv-screen,
+  .kn-waves,
+  [data-mood='bad'] .kn-tube {
+    animation: none !important;
+  }
+  .kn-fly {
+    transform: translate(880px, 650px);
+  }
+}
+
+/* Lobby, bar, gauges */
+.kn-lobby {
+  margin-top: 2rem;
+  padding: 1.6rem 1.4rem;
+  border-radius: 14px;
+  background: rgb(40 20 10 / 0.6);
+  backdrop-filter: blur(3px);
+}
+.kn-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.25rem;
+  padding: 0.45rem 1.1rem;
+  border: 6px solid #8a5a3a;
+  border-radius: 8px;
+  background: #2f3a32;
+  color: #f4f1e6;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.05em;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.35);
+}
+.kn-bar-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  font-size: 1.6rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.kn-bar-title em {
+  font-family: 'Caveat', cursive;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0;
+  color: #ffd34d;
+}
+.kn-gauges {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.kn-gauge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.kn-gauge svg {
+  width: 2rem;
+  height: 1.8rem;
+  overflow: visible;
+}
+.kn-gauge b {
+  display: inline-block;
+  min-width: 1.2em;
+  font-weight: 400;
+  font-size: 1.5rem;
+}
+.kn-gauge-steam {
+  animation: kn-twinkle 0.8s ease-in-out infinite alternate;
+}
+
+/* Stage */
+.kn-stage {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 1.2rem;
+  align-items: start;
+}
+.kn-host {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 0.6rem;
+  align-items: end;
+}
+.kn-chef {
+  width: 9rem;
+  height: 10.8rem;
+}
+.kn-bubble {
+  position: relative;
+  padding: 0.8rem 1rem;
+  border-radius: 14px;
+  background: #fffaf0;
+  color: #3a2614;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.3);
+}
+.kn-host .kn-bubble {
+  align-self: start;
+}
+.kn-host .kn-bubble::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  bottom: 30px;
+  border: 10px solid transparent;
+  border-right: 14px solid #fffaf0;
+  border-left: 0;
+}
+.kn-intro {
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #7a5a3a;
+}
+.kn-scene-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.9rem;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  color: #b0302a;
+}
+.kn-owners {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+.kn-owners figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.2rem 0.4rem 0.3rem;
+  border-radius: 10px;
+  background: rgb(255 250 240 / 0.85);
+  color: #3a2614;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.kn-owners svg {
+  width: 4.6rem;
+  height: 6.5rem;
+}
+.kn-pad {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0 0.9rem 0.9rem;
+  border-radius: 6px;
+  background: #f6f1dc;
+  box-shadow: 0 12px 28px rgb(0 0 0 / 0.35);
+}
+.kn-pad-top {
+  margin: 0 -0.9rem 0.3rem;
+  padding: 0.55rem 0.9rem 0.4rem;
+  border-radius: 6px 6px 0 0;
+  background: repeating-linear-gradient(90deg, #8a5a3a 0 18px, #6a3f20 18px 22px);
+  color: #fbe9c0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+}
+.kn-ticket {
+  position: relative;
+  padding: 0.6rem 0.9rem;
+  border: 0;
+  border-bottom: 2px dashed #c9b98a;
+  background:
+    repeating-linear-gradient(transparent 0 25px, rgb(80 120 160 / 0.22) 25px 26px),
+    #fffdf4;
+  color: #1f2a5a;
+  text-align: left;
+  font-size: 1.35rem;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.12);
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+.kn-ticket:not(:disabled):hover {
+  transform: translateX(4px) rotate(-0.6deg);
+  box-shadow: 0 6px 12px rgb(0 0 0 / 0.2);
+}
+.kn-ticket:disabled {
+  padding-right: 8rem;
+  cursor: default;
+}
+.kn-served {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  margin-top: -1rem;
+  padding: 0 0.6rem;
+  border: 3px solid #2f9e55;
+  border-radius: 6px;
+  color: #2f9e55;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  background: rgb(255 255 255 / 0.6);
+}
+.kn-reaction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding-top: 0.3rem;
+  text-align: center;
+  color: #3a2614;
+}
+.kn-reaction-text {
+  font-size: 1.45rem;
+}
+.kn-deltas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.kn-delta {
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.kn-delta[data-sign='plus'] {
+  background: #2f9e55;
+}
+.kn-delta[data-sign='minus'] {
+  background: #d8323a;
+}
+.kn-next {
+  padding: 0.55rem 2.2rem;
+  border-radius: 999px;
+  background: #d8323a;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  box-shadow: 0 6px 0 #8a1a1a;
+  cursor: pointer;
+}
+.kn-next:active {
+  transform: translateY(3px);
+  box-shadow: 0 3px 0 #8a1a1a;
+}
+
+/* Fail, ending, result */
+.kn-fail,
+.kn-ending {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 36rem;
+  margin: 0 auto;
+  text-align: center;
+}
+.kn-fail-stage {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0;
+}
+.kn-fail-owner svg {
+  width: 8rem;
+  height: 11rem;
+}
+.kn-fail-chef {
+  position: relative;
+}
+.kn-fail-chef svg {
+  width: 10rem;
+  height: 12rem;
+}
+.kn-klusek {
+  position: absolute;
+  top: 1.5rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 2px solid #c9b080;
+  border-radius: 50%;
+  background: #fbf2d8;
+}
+.kn-fail-text {
+  font-size: 1.45rem;
+}
+.kn-ending .kn-chef {
+  width: 10rem;
+  height: 12rem;
+}
+.kn-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+.kn-result-chef {
+  width: 7rem;
+  height: 8.4rem;
+}
+
+@media (max-width: 767px) {
+  .kn-bar {
+    gap: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    border-width: 4px;
+  }
+  .kn-bar-title {
+    flex-direction: column;
+    gap: 0;
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+  .kn-bar-title em {
+    font-size: 1.05rem;
+  }
+  .kn-gauges {
+    gap: 0.45rem;
+  }
+  .kn-gauge svg {
+    width: 1.5rem;
+    height: 1.4rem;
+  }
+  .kn-gauge b {
+    font-size: 1.15rem;
+  }
+  .kn-stage {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+  .kn-host {
+    grid-template-columns: 5.5rem 1fr;
+  }
+  .kn-chef {
+    width: 5.5rem;
+    height: 6.6rem;
+  }
+  .kn-bubble {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.92rem;
+  }
+  .kn-scene-title {
+    font-size: 1.5rem;
+  }
+  .kn-owners svg {
+    width: 3.4rem;
+    height: 4.8rem;
+  }
+  .kn-ticket {
+    font-size: 1.2rem;
+  }
+  .kn-ticket:disabled {
+    padding-right: 6.5rem;
+  }
+  .kn-next {
+    position: sticky;
+    bottom: 0.5rem;
+    z-index: 5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kn-gauge-steam {
+    animation: none !important;
+  }
+}

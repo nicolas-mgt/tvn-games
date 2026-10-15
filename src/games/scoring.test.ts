@@ -12,6 +12,7 @@ import { contestantMood } from './rajskie-rozdanie/logic'
 import sciema from './sciema-z-ogloszenia/data.json'
 import { reporterMood } from './sciema-z-ogloszenia/logic'
 import { judgeMood } from './ukryte-kryterium/logic'
+import { applyEffects, chefMood, endingFor, ownerMood, START_STATS, statLevel } from './uratuj-knajpe/logic'
 import gadgets from './ustrojstwo/data.json'
 import zonk from './zonk/data.json'
 import { banish, gameStatus, PLAYER, residentMood, statementText, type Resident } from './zdrajca/logic'
@@ -286,5 +287,43 @@ describe('Express za dolara', () => {
     expect(teamMood(base)).toBe('happy')
     expect(teamMood({ ...base, place: 2 })).toBe('tired')
     expect(teamMood({ ...base, place: 3 })).toBe('worried')
+  })
+})
+
+describe('Uratuj knajpę', () => {
+  it('clamps stats to 0–10', () => {
+    expect(applyEffects(START_STATS, { jakosc: 2, kasa: -1 })).toEqual({ jakosc: 5, atmosfera: 3, kasa: 2 })
+    expect(applyEffects({ jakosc: 9, atmosfera: 1, kasa: 3 }, { jakosc: 3, atmosfera: -2 })).toEqual({ jakosc: 10, atmosfera: 0, kasa: 3 })
+    expect(applyEffects(START_STATS)).toEqual(START_STATS)
+  })
+
+  it('maps stats to three room levels', () => {
+    expect([0, 3, 4, 6, 7, 10].map(statLevel)).toEqual([0, 0, 1, 1, 2, 2])
+  })
+
+  it('picks the ending by score thresholds', () => {
+    expect(endingFor(30).min).toBe(19)
+    expect(endingFor(19).min).toBe(19)
+    expect(endingFor(18).min).toBe(15)
+    expect(endingFor(15).min).toBe(15)
+    expect(endingFor(11).min).toBe(11)
+    expect(endingFor(10).min).toBe(0)
+    expect(endingFor(0).min).toBe(0)
+  })
+
+  it('picks the chef mood in priority order', () => {
+    expect(chefMood(null)).toBe('stern')
+    expect(chefMood({ text: '', ending: 'kluski', effects: { jakosc: 3 } })).toBe('appalled')
+    expect(chefMood({ text: '', effects: { jakosc: 2, atmosfera: 1, kasa: -1 } })).toBe('delighted')
+    expect(chefMood({ text: '', effects: { jakosc: 2, atmosfera: -1 } })).toBe('approving')
+    expect(chefMood({ text: '', effects: { kasa: 1, atmosfera: -1 } })).toBe('stern')
+    expect(chefMood({ text: '', effects: { atmosfera: -2 } })).toBe('appalled')
+  })
+
+  it('picks the owner mood by the sign of the effects', () => {
+    expect(ownerMood({ text: '', effects: { atmosfera: 2 } })).toBe('happy')
+    expect(ownerMood({ text: '', effects: { kasa: 1, atmosfera: -1 } })).toBe('neutral')
+    expect(ownerMood({ text: '', effects: { jakosc: -2, kasa: -1 } })).toBe('upset')
+    expect(ownerMood({ text: '', ending: 'kluski' })).toBe('upset')
   })
 })

@@ -2,8 +2,10 @@
   "intro": "Gospoda „Pod Złotym Kurczakiem” w Pcimiu Dolnym ledwo zipie. Masz tydzień, żeby ją uratować.",
   "scenes": [
     {
+      "id": "degustacja",
       "title": "Degustacja",
-      "text": "Szefowa Halina z dumą podaje „domowe” pierogi. Są lodowate w środku i pachną mikrofalą.",
+      "cast": ["halina"],
+      "text": "Pani Halina z dumą podaje „domowe” pierogi. Są lodowate w środku i pachną mikrofalą.",
       "choices": [
         { "text": "Powiedzieć prosto z mostu: to jest niejadalne", "effects": { "jakosc": 2, "atmosfera": -1 }, "reaction": "Halina płacze, ale po godzinie przyznaje: „Pierogi są z hurtowni”." },
         { "text": "Pochwalić, żeby nikogo nie urazić", "effects": { "atmosfera": 1, "jakosc": -1 }, "reaction": "Wszyscy się uśmiechają. Pierogi z hurtowni zostają w menu." },
@@ -11,7 +13,9 @@
       ]
     },
     {
+      "id": "kuchnia",
       "title": "Kuchnia",
+      "cast": ["zbyszek"],
       "text": "Zaglądasz do kuchni. Okap ocieka tłuszczem, w lodówce mieszka coś, co ma własną świadomość. Kucharz Zbyszek wzrusza ramionami.",
       "choices": [
         { "text": "Wszyscy sprzątają razem do rana", "effects": { "jakosc": 2, "atmosfera": 1, "kasa": -1 }, "reaction": "O 4:00 Zbyszek śpiewa disco polo i szoruje okap. Zespół się zgrywa." },
@@ -20,7 +24,9 @@
       ]
     },
     {
+      "id": "menu",
       "title": "Menu",
+      "cast": ["halina"],
       "text": "Karta ma 46 pozycji: od żurku przez sushi po „kebab po meksykańsku”.",
       "choices": [
         { "text": "Skrócić do 8 dań regionalnych", "effects": { "jakosc": 2, "kasa": 1 }, "reaction": "Mniej dań, świeże składniki, mniej strat. Halina pierwszy raz od lat gotuje z przyjemnością." },
@@ -29,7 +35,9 @@
       ]
     },
     {
+      "id": "wystroj",
       "title": "Wystrój",
+      "cast": ["marian"],
       "text": "Boazeria z lat 90., plastikowe kwiaty i telewizor na pełny regulator.",
       "choices": [
         { "text": "Remont w stylu nowoczesnej gospody", "effects": { "atmosfera": 2, "kasa": -1 }, "reaction": "Drewno, len i ciepłe światło. Sąsiadka przychodzi tylko zrobić zdjęcia." },
@@ -38,7 +46,9 @@
       ]
     },
     {
+      "id": "rodzina",
       "title": "Rodzina",
+      "cast": ["marian", "kamil"],
       "text": "Właściciel pan Marian i jego syn Kamil nie rozmawiają ze sobą od trzech miesięcy. Poszło o parking.",
       "choices": [
         { "text": "Posadzić ich przy jednym stole i pogadać", "effects": { "atmosfera": 2 }, "reaction": "Po godzinie i dwóch kompotach padają sobie w ramiona. Ekipa filmowa płacze." },
@@ -47,7 +57,9 @@
       ]
     },
     {
+      "id": "otwarcie",
       "title": "Wielkie otwarcie",
+      "cast": ["halina", "kamil"],
       "text": "Nowa nazwa wisi nad drzwiami. Jak ściągnąć gości?",
       "choices": [
         { "text": "Darmowa degustacja dla całej wsi", "effects": { "atmosfera": 1, "jakosc": 1, "kasa": -1 }, "reaction": "Przychodzi pół gminy. Wszyscy chwalą, nikt nie płaci." },

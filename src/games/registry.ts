@@ -157,6 +157,7 @@ export const GAMES: GameMeta[] = [
     size: 'S',
     description: 'Twoja restauracja tonie. Podejmij decyzje i poczekaj na werdykt po miesiącu.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./uratuj-knajpe')),
   },
   {

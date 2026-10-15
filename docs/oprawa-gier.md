@@ -28,8 +28,9 @@ Dokument opisuje, jak zamieniamy POC gry w wersję z pełną oprawą („tryb im
 | Rajskie Rozdanie | willa: dzień przy basenie, ceremonia nocą | `rr-` | 7 uczestników SVG |
 | Zdrajca | szkocki zamek nocą | `zd-` | 8 postaci SVG + plan zamku |
 | Express za dolara | wyprawa przez Azję, scena na każdy przystanek | `ex-` | 3 pary SVG, prowadząca, pocztówki SVG |
+| Uratuj knajpę | gospoda w Pcimiu Dolnym, sala zmienia się ze statystykami | `kn-` | Szefowa Bożena i 4 właścicieli SVG |
 
-Zostało 10 gier (sekcja 10).
+Zostało 9 gier (sekcja 10).
 
 ## 3. Proces pracy nad jedną grą
 
@@ -157,7 +158,7 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
 - **Nie powtarzamy plików jingli między grami.** Na pewno są już zajęte:
   - Sax: SAX00, SAX01, SAX02, SAX05, SAX10, SAX14, SAX15, SAX16;
   - Steel: STEEL01, STEEL02, STEEL10, STEEL14, STEEL15;
-  - Pizzicato: PIZZI01, PIZZI02;
+  - Pizzicato: PIZZI01, PIZZI02, PIZZI10, PIZZI14;
   - 8-Bit: NES11, NES12.
 
   Po każdej grze dopisz tu nowe.
@@ -373,6 +374,8 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 - **Do rozstrzygnięcia:** pocztówki ze zdjęciami czy wyłącznie SVG.
 
 ### 10.3 Uratuj knajpę (`uratuj-knajpe`, inspiracja: Kuchenne rewolucje)
+
+Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 
 - **Mechanika:**
   - 6 scen fabularnych, 3 statystyki (jakość, atmosfera, kasa; 0–10, start 3);
