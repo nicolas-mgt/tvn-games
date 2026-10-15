@@ -145,6 +145,7 @@ export const GAMES: GameMeta[] = [
     size: 'M',
     description: 'Wyścig z Bali do Singapuru za dolara dziennie. Autostop, praca czy bus?',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./express-za-dolara')),
   },
   {

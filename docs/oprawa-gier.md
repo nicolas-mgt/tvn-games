@@ -27,8 +27,9 @@ Dokument opisuje, jak zamieniamy POC gry w wersję z pełną oprawą („tryb im
 | Ściema z ogłoszenia | nocna redakcja śledcza | `sc-` | zdjęcia CC aut, reporterka SVG |
 | Rajskie Rozdanie | willa: dzień przy basenie, ceremonia nocą | `rr-` | 7 uczestników SVG |
 | Zdrajca | szkocki zamek nocą | `zd-` | 8 postaci SVG + plan zamku |
+| Express za dolara | wyprawa przez Azję, scena na każdy przystanek | `ex-` | 3 pary SVG, prowadząca, pocztówki SVG |
 
-Zostało 11 gier (sekcja 10).
+Zostało 10 gier (sekcja 10).
 
 ## 3. Proces pracy nad jedną grą
 
@@ -155,7 +156,7 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
 - **Jingle `good` i `bad` dobieramy analizą przebiegu wysokości dźwięku** (autokorelacja na ramkach po 2048 próbek). `good` musi wyraźnie rosnąć (stosunek końca do początku > 1,15), a `bad` wyraźnie opadać (< 0,8). Zestaw dobieramy do klimatu: Sax do noir i studia, Steel do tropików, Pizzicato do komedii, 8-Bit do retro.
 - **Nie powtarzamy plików jingli między grami.** Na pewno są już zajęte:
   - Sax: SAX00, SAX01, SAX02, SAX05, SAX10, SAX14, SAX15, SAX16;
-  - Steel: STEEL01, STEEL02, STEEL15;
+  - Steel: STEEL01, STEEL02, STEEL10, STEEL14, STEEL15;
   - Pizzicato: PIZZI01, PIZZI02;
   - 8-Bit: NES11, NES12.
 
@@ -204,7 +205,7 @@ Gra jest gotowa dopiero wtedy, gdy przechodzą testy i build, pełne gry w przeg
 npx tsc -b && npx oxlint && npx vitest run && npm run build
 ```
 
-oxlint ma obecnie 4 ostrzeżenia bazowe (shadcn `badge` i `button` oraz `Math.random` w handlerach Express za dolara i Rajskiego Rozdania). Nowa gra nie może dodać żadnego, więc liczymy je: `npx oxlint 2>&1 | grep -c "warning "`.
+oxlint ma obecnie 3 ostrzeżenia bazowe (shadcn `badge` i `button` oraz `Math.random` w handlerze Rajskiego Rozdania). Nowa gra nie może dodać żadnego, więc liczymy je: `npx oxlint 2>&1 | grep -c "warning "`.
 
 ### 8.3 Przeglądarka: przygotowanie
 
@@ -344,6 +345,8 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 - **Do rozstrzygnięcia:** czy plan zamku pokazuje lokalizacje z alibi graficznie (zalecane), czy zostaje lista.
 
 ### 10.2 Express za dolara (`express-za-dolara`, inspiracja: Azja Express)
+
+Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 
 - **Mechanika:**
   - 5 etapów z Bali do Singapuru; transport na każdym etapie: autostop (3–14 h), praca (9 h, +1 $) albo bus (5 h, −3 $);

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { playLeg, placeOf, slowestTeam, START_TEAMS, teamMood, travel, type Team } from './express-za-dolara/logic'
 import { distanceKm, MAX_ROUND_SCORE, roundScore } from './gdzie-jest-martyna/logic'
 import cars from './ile-za-grata/data.json'
 import { dealerMood, priceScore } from './ile-za-grata/logic'
@@ -225,5 +226,65 @@ describe('Poukładani', () => {
     const shape = parseLevel(LEVELS[2]).pieces.find((p) => p.id === 'G')!.cells
     expect(rotate(rotate(rotate(rotate(shape))))).toEqual(shape)
     expect(rotate(shape)).not.toEqual(shape)
+  })
+})
+
+describe('Express za dolara', () => {
+  const seq = (...values: number[]) => {
+    let i = 0
+    return () => values[i++ % values.length]
+  }
+  const teams = (...hours: (number | null)[]): Team[] => hours.map((h, i) => ({ name: `T${i}`, hours: h ?? 0, alive: h !== null }))
+
+  it('prices each transport', () => {
+    expect(travel('autostop', () => 0)).toEqual({ hours: 3, money: 0 })
+    expect(travel('autostop', () => 0.999)).toEqual({ hours: 14, money: 0 })
+    expect(travel('praca', Math.random)).toEqual({ hours: 9, money: 1 })
+    expect(travel('bus', Math.random)).toEqual({ hours: 5, money: -3 })
+  })
+
+  it('finds the slowest racing team, first one on a tie', () => {
+    expect(slowestTeam(teams(10, 10, 5))).toBe(0)
+    expect(slowestTeam(teams(null, 10, 5))).toBe(1)
+  })
+
+  it('ranks teams by hours with shared places on a tie', () => {
+    expect(placeOf(teams(8, 5, 8), 0)).toBe(2)
+    expect(placeOf(teams(8, 5, 8), 1)).toBe(1)
+    expect(placeOf(teams(8, null, 3), 0)).toBe(2)
+  })
+
+  it('adds the daily dollar and bot hours on a quiet leg', () => {
+    const result = playLeg({ teams: START_TEAMS, leg: 0, money: 1, amulet: false }, 'praca', seq(0.9, 0, 0.99))
+    expect(result.event).toBeNull()
+    expect(result.money).toBe(3)
+    expect(result.teams.map((t) => t.hours)).toEqual([9, 5, 11])
+    expect(result.eliminated).toBeNull()
+  })
+
+  it('applies a drawn event', () => {
+    const result = playLeg({ teams: START_TEAMS, leg: 0, money: 3, amulet: false }, 'bus', seq(0.1, 0.3, 0, 0))
+    expect(result.event?.id).toBe('amulet')
+    expect(result.amulet).toBe(true)
+    expect(result.money).toBe(1)
+  })
+
+  it('eliminates the slowest team after leg 2 unless the player has the amulet', () => {
+    const state = { teams: START_TEAMS, leg: 1, money: 1 }
+    const out = playLeg({ ...state, amulet: false }, 'praca', seq(0.9, 0, 0))
+    expect(out.eliminated).toBe(0)
+    expect(out.teams[0].alive).toBe(false)
+    const saved = playLeg({ ...state, amulet: true }, 'praca', seq(0.9, 0, 0))
+    expect(saved).toMatchObject({ eliminated: null, saved: true, amulet: false })
+    expect(saved.teams.every((t) => t.alive)).toBe(true)
+  })
+
+  it('picks team moods in priority order', () => {
+    const base = { alive: true, place: 1, saved: false, eliminatedNow: false }
+    expect(teamMood({ ...base, eliminatedNow: true, saved: true })).toBe('out')
+    expect(teamMood({ ...base, place: 3, saved: true })).toBe('cheer')
+    expect(teamMood(base)).toBe('happy')
+    expect(teamMood({ ...base, place: 2 })).toBe('tired')
+    expect(teamMood({ ...base, place: 3 })).toBe('worried')
   })
 })
