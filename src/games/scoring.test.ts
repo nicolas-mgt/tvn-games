@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import { DISHES, dishScore, ingredientIcon, juryMood } from './danie-po-skladnikach/logic'
+import dishIcons from './danie-po-skladnikach/icons.json'
 import { playLeg, placeOf, slowestTeam, START_TEAMS, teamMood, travel, type Team } from './express-za-dolara/logic'
 import { distanceKm, MAX_ROUND_SCORE, roundScore } from './gdzie-jest-martyna/logic'
 import cars from './ile-za-grata/data.json'
@@ -325,5 +327,40 @@ describe('Uratuj knajpę', () => {
     expect(ownerMood({ text: '', effects: { kasa: 1, atmosfera: -1 } })).toBe('neutral')
     expect(ownerMood({ text: '', effects: { jakosc: -2, kasa: -1 } })).toBe('upset')
     expect(ownerMood({ text: '', ending: 'kluski' })).toBe('upset')
+  })
+})
+
+describe('Danie po składnikach', () => {
+  it('scores 7 minus revealed ingredients on a win', () => {
+    expect(dishScore(1, true)).toBe(6)
+    expect(dishScore(6, true)).toBe(1)
+    expect(dishScore(6, false)).toBe(0)
+  })
+
+  it('makes the jury happier with fewer ingredients, with per-juror bias', () => {
+    expect(juryMood({ revealed: 2, outcome: 'won', juror: 'molekularny' })).toBe('delighted')
+    expect(juryMood({ revealed: 2, outcome: 'won', juror: 'szef' })).toBe('pleased')
+    expect(juryMood({ revealed: 4, outcome: 'won', juror: 'molekularny' })).toBe('pleased')
+    expect(juryMood({ revealed: 6, outcome: 'won', juror: 'cukierniczka' })).toBe('pleased')
+    expect(juryMood({ revealed: 6, outcome: 'lost', juror: 'szef' })).toBe('disappointed')
+    expect(juryMood({ revealed: 6, outcome: 'lost', juror: 'cukierniczka' })).toBe('doubtful')
+    expect(juryMood({ revealed: 3, outcome: null, juror: 'molekularny' })).toBe('pleased')
+    expect(juryMood({ revealed: 5, outcome: null, juror: 'szef' })).toBe('disappointed')
+    expect(juryMood({ revealed: 1, outcome: null, juror: 'cukierniczka' })).toBe('delighted')
+  })
+
+  it('maps every ingredient to an OpenMoji file or a hint', () => {
+    const files = import.meta.glob('/public/danie-po-skladnikach/icons/*.svg')
+    const ingredients = [...new Set(DISHES.flatMap((d) => d.ingredients))]
+    expect(ingredients.filter((i) => !(i in dishIcons))).toEqual([])
+    expect(ingredients.map(ingredientIcon).filter((code) => code && !files[`/public/danie-po-skladnikach/icons/${code}.svg`])).toEqual([])
+    expect(ingredientIcon('jajko')).toBe('1F95A')
+    expect(ingredientIcon('duszone kilka dni')).toBeNull()
+  })
+
+  it('has a credited photo for every dish', () => {
+    const photos = import.meta.glob('/public/danie-po-skladnikach/dishes/*.jpg')
+    expect(DISHES.filter((d) => !photos[`/public/danie-po-skladnikach/dishes/${d.id}.jpg`]).map((d) => d.id)).toEqual([])
+    expect(DISHES.filter((d) => !d.photo?.author || !d.photo.license || !d.photo.source).map((d) => d.id)).toEqual([])
   })
 })

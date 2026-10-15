@@ -169,6 +169,7 @@ export const GAMES: GameMeta[] = [
     size: 'S',
     description: 'Codzienna zagadka: składniki odsłaniają się po jednym. Zgadnij danie jak najszybciej.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./danie-po-skladnikach')),
   },
   {

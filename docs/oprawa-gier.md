@@ -7,7 +7,7 @@ Dokument opisuje, jak zamieniamy POC gry w wersję z pełną oprawą („tryb im
 - **Mechanika zostaje bez zmian.** Zasady, punktacja, maksymalny wynik i logika botów są takie jak w POC. Refinement zmienia wyłącznie to, jak gra wygląda, brzmi i jak się w nią gra (feedback, czytelność, mobile). Jeśli przy okazji wychodzi błąd w mechanice, naprawiamy go i opisujemy w podsumowaniu.
 - **Jedna gra na raz, w kolejności z [`registry.ts`](../src/games/registry.ts).**
 - **Bez nowych zależności.** Wystarcza to, co jest: React 19, Tailwind v4, shadcn/ui, `motion` (`motion/react`), `canvas-confetti`, `@dnd-kit/core`, fonty `@fontsource/bebas-neue` i `@fontsource/caveat`. Canvas, Pixi czy biblioteki 3D nie są potrzebne.
-- **Grafika to własne SVG i CSS.** Emoji znikają z interfejsu gry (zostają tylko w `shareLine` udostępnianego wyniku). Jedyny wyjątek to OpenMoji (CC BY-SA 4.0) w Podłodze, bo tam obrazki są treścią zagadek.
+- **Grafika to własne SVG i CSS.** Emoji znikają z interfejsu gry (zostają tylko w `shareLine` udostępnianego wyniku). Jedyny wyjątek to OpenMoji (CC BY-SA 4.0) w Podłodze i w Daniu po składnikach, bo tam obrazki są treścią zagadek.
 - **Postacie są fikcyjne.** Prowadzący, jurorzy, handlarze i uczestnicy to nasze własne postacie w SVG, z polskimi imionami. Nie rysujemy ani nie podpisujemy prawdziwych osób z telewizji (żadnej Gessler, Szelągowskiej itp.), a format programu jest tylko inspiracją.
 - **Zdjęcia tylko na wolnych licencjach** (CC0, domena publiczna, CC BY, CC BY-SA), z autorem i licencją przy zdjęciu. Bez zdjęć rozpoznawalnych ludzi.
 - **Mobile jest pełnoprawny.** Każdy ekran musi działać w 390 px bez poziomego przewijania, z przyciskami w zasięgu kciuka.
@@ -29,8 +29,9 @@ Dokument opisuje, jak zamieniamy POC gry w wersję z pełną oprawą („tryb im
 | Zdrajca | szkocki zamek nocą | `zd-` | 8 postaci SVG + plan zamku |
 | Express za dolara | wyprawa przez Azję, scena na każdy przystanek | `ex-` | 3 pary SVG, prowadząca, pocztówki SVG |
 | Uratuj knajpę | gospoda w Pcimiu Dolnym, sala zmienia się ze statystykami | `kn-` | Szefowa Bożena i 4 właścicieli SVG |
+| Danie po składnikach | studio kulinarne, składniki spod kloszy, trzech jurorów | `dp-` | OpenMoji, zdjęcia CC dań, 3 jurorów SVG |
 
-Zostało 9 gier (sekcja 10).
+Zostało 8 gier (sekcja 10).
 
 ## 3. Proces pracy nad jedną grą
 
@@ -158,7 +159,7 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
 - **Nie powtarzamy plików jingli między grami.** Na pewno są już zajęte:
   - Sax: SAX00, SAX01, SAX02, SAX05, SAX10, SAX14, SAX15, SAX16;
   - Steel: STEEL01, STEEL02, STEEL10, STEEL14, STEEL15;
-  - Pizzicato: PIZZI01, PIZZI02, PIZZI10, PIZZI14;
+  - Pizzicato: PIZZI01, PIZZI02, PIZZI05, PIZZI10, PIZZI14, PIZZI15;
   - 8-Bit: NES11, NES12.
 
   Po każdej grze dopisz tu nowe.
@@ -398,6 +399,8 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 - **Do rozstrzygnięcia:** jak bardzo sala ma się zmieniać, czyli ile wariantów każdego elementu.
 
 ### 10.4 Danie po składnikach (`danie-po-skladnikach`, inspiracja: MasterChef)
+
+Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 
 - **Mechanika:**
   - jedna potrawa dziennie (`dailyRng`, blokada w localStorage), potem tryb treningowy;
