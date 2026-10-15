@@ -43,6 +43,15 @@ export function judgeComment(points: number): string {
   return 'Sędzia prosi, żebyś nigdy więcej tego nie robił.'
 }
 
+export type JudgeMood = 'neutral' | 'thinking' | 'bored' | 'disgusted' | 'impressed'
+
+export function judgeMood(points: number): JudgeMood {
+  if (points === MAX_TASK_POINTS) return 'impressed'
+  if (points >= 3) return 'neutral'
+  if (points >= 1) return 'bored'
+  return 'disgusted'
+}
+
 export function excuseMetrics(text: string): Metrics {
   return {
     length: text.length,

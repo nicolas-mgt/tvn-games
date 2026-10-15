@@ -5,6 +5,7 @@ import { dealersOnlyResult, nextDealerBid } from './paleta-w-ciemno/logic'
 import { distance, emojiImage } from './podloga/logic'
 import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type Temperatures } from './pogodynka/logic'
 import { cellsAt, fits, LEVELS, parseLevel, rotate } from './poukladani/logic'
+import { judgeMood } from './ukryte-kryterium/logic'
 import gadgets from './ustrojstwo/data.json'
 import zonk from './zonk/data.json'
 import { addMontyResult, hostOpens, remainingDoor } from './zonk/logic'
@@ -69,6 +70,15 @@ describe('Co to za ustrojstwo', () => {
     const photos = import.meta.glob('/public/ustrojstwo/items/*.jpg')
     expect(gadgets.filter((g) => !photos[`/public/ustrojstwo/items/${g.id}.jpg`]).map((g) => g.id)).toEqual([])
     expect(gadgets.filter((g) => !g.photo.author || !g.photo.license || !g.photo.source).map((g) => g.id)).toEqual([])
+  })
+})
+
+describe('Ukryte kryterium', () => {
+  it('picks the judge mood from the points', () => {
+    expect(judgeMood(5)).toBe('impressed')
+    expect(judgeMood(3)).toBe('neutral')
+    expect(judgeMood(1)).toBe('bored')
+    expect(judgeMood(0)).toBe('disgusted')
   })
 })
 

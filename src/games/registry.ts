@@ -73,6 +73,7 @@ export const GAMES: GameMeta[] = [
     size: 'M',
     description: 'Absurdalne mikro-zadania. Za co naprawdę są punkty, sędzia zdradzi dopiero po fakcie.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./ukryte-kryterium')),
   },
   {
