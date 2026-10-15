@@ -7,6 +7,18 @@ export type Verdict = { votes: Vote[]; banished: number }
 
 const BUBBLES: Partial<Record<ResidentMood, string>> = { suspicious: 'hmm…', nervous: 'to nie ja!', offended: 'ja?!' }
 
+function TableCandle() {
+  return (
+    <svg viewBox="0 0 24 56" className="zd-table-candle" aria-hidden>
+      <circle cx="12" cy="14" r="11" fill="#ffb347" opacity="0.3" />
+      <path className="zd-flame-outer" d="M12 22 C6 22 7 13 12 4 C17 13 18 22 12 22 Z" fill="#ff8a1f" />
+      <path className="zd-flame-inner" d="M12 22 C9 22 9.5 17 12 12 C14.5 17 15 22 12 22 Z" fill="#ffe27a" />
+      <rect x="7" y="22" width="10" height="28" rx="2" fill="#efe3c4" />
+      <rect x="3" y="50" width="18" height="5" rx="2" fill="#b8892e" />
+    </svg>
+  )
+}
+
 type Props = {
   residents: Resident[]
   step: TableStep
@@ -26,9 +38,13 @@ export function RoundTable({ residents, step, verdict, revealed, nextLabel, onVo
   return (
     <section className="zd-table" data-testid="round-table" data-step={step}>
       <p className="zd-title">
-        {step === 'table' && 'Okrągły stół. Kogo wygnać z zamku?'}
-        {step === 'reveal' && 'Tabliczki w górę…'}
-        {step === 'verdict' && banished !== null && (banished === PLAYER ? 'Zamek wskazał ciebie!' : `${residents[banished].name} opuszcza zamek`)}
+        <TableCandle />
+        <span>
+          {step === 'table' && 'Okrągły stół. Kogo wygnać z zamku?'}
+          {step === 'reveal' && 'Tabliczki w górę…'}
+          {step === 'verdict' && banished !== null && (banished === PLAYER ? 'Zamek wskazał ciebie!' : `${residents[banished].name} opuszcza zamek`)}
+        </span>
+        <TableCandle />
       </p>
       <div className="zd-seats">
         {seats.map((i) => {
@@ -69,8 +85,14 @@ export function RoundTable({ residents, step, verdict, revealed, nextLabel, onVo
                 </AnimatePresence>
                 <motion.span
                   className="zd-figure"
-                  animate={banished === i && !unmasked ? { opacity: 0.55, filter: 'grayscale(1)' } : mood === 'nervous' ? { x: [0, -2, 2, -2, 0] } : {}}
-                  transition={{ duration: 0.6 }}
+                  animate={
+                    banished === i
+                      ? { y: [0, -10, -10], x: [0, 0, 26], opacity: [1, 1, 0.55], filter: unmasked ? 'none' : 'grayscale(1)' }
+                      : mood === 'nervous'
+                        ? { x: [0, -2, 2, -2, 0] }
+                        : {}
+                  }
+                  transition={{ duration: banished === i ? 1.6 : 0.6, delay: banished === i ? 0.5 : 0 }}
                 >
                   <ResidentFigure name={residents[i].name} mood={mood} hooded={unmasked} />
                 </motion.span>

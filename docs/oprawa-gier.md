@@ -183,27 +183,117 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
 
 - **Kiedy nie zdjęcia:** ludzie (zawsze SVG), rzeczy, których jest bardzo dużo (np. >100 składników; wtedy OpenMoji albo własne ikony SVG), i sceny, które muszą się animować.
 
-## 8. Weryfikacja
+## 8. Testy i weryfikacja
 
-- **Statyczne:**
+Gra jest gotowa dopiero wtedy, gdy przechodzą testy i build, pełne gry w przeglądarce kończą się bez problemów na obu rozmiarach ekranu, a zrzuty każdej fazy obejrzeliśmy i poprawiliśmy wszystko, co wygląda źle. Kolejność: testy jednostkowe → statyczne → przeglądarka → przegląd zrzutów → regresja → commit. Po każdej poprawce wracamy do kroku, którego dotyczyła.
+
+### 8.1 Testy jednostkowe
+
+- Wszystko w `src/games/scoring.test.ts`, po jednym `describe` na grę. Testujemy tylko czyste funkcje z `logic.ts`, nie komponenty.
+- Co testujemy przy oprawie:
+  - funkcję miny (`…Mood`) – każdy warunek i ich kolejność (np. `out` wygrywa z `sly`, `sly` z `offended`);
+  - punktację i warunki końca gry (wygrana, każda droga do przegranej);
+  - teksty składane z danych, zwłaszcza formy żeńskie i męskie oraz odmianę (np. „Byłam w Kuchni z Tobą, Lokajem Alfredem i Majorem Ryszardem.”);
+  - kompletność danych (zdjęcia i podpisy, sekcja 7).
+- Losowość podajemy jako parametr (`rng`), więc w testach przekazujemy stałą funkcję albo budujemy stan ręcznie.
+- Szybkie uruchomienie samego pliku: `npx vitest run src/games/scoring.test.ts`.
+
+### 8.2 Statyczne
+
+```sh
+npx tsc -b && npx oxlint && npx vitest run && npm run build
+```
+
+oxlint ma obecnie 4 ostrzeżenia bazowe (shadcn `badge` i `button` oraz `Math.random` w handlerach Express za dolara i Rajskiego Rozdania). Nowa gra nie może dodać żadnego, więc liczymy je: `npx oxlint 2>&1 | grep -c "warning "`.
+
+### 8.3 Przeglądarka: przygotowanie
+
+- **Dev server:** `npm run dev -- --port 5199 --strictPort` w osobnym terminalu, gra pod `http://localhost:5199/gra/<slug>`. Szybki test, czy żyje: `curl -s -o /dev/null -w "%{http_code}" http://localhost:5199/gra/<slug>`.
+- **Playwright tylko przez `mcporter`:**
 
   ```sh
-  npx tsc -b && npx oxlint && npx vitest run && npm run build
+  mcporter daemon restart >/dev/null 2>&1
+  mcporter call playwright.browser_run_code_unsafe filename=$PWD/slop-<gra>-full.js --timeout 900000 | head -3
   ```
 
-  oxlint ma obecnie 4 ostrzeżenia bazowe (shadcn `badge` i `button` oraz `Math.random` w handlerach Express za dolara i Rajskiego Rozdania). Nowa gra nie może dodać żadnego.
-- **Dev server:** `npm run dev -- --port 5199`, gra pod `http://localhost:5199/gra/<slug>`.
-- **Playwright przez `mcporter`** (`mcporter call playwright.browser_run_code_unsafe filename=<skrypt.js> --timeout <ms>`). Skrypty trzymamy w `~/Library/Caches/playwright-mcp/` (np. `slop-sc-real.js`, `slop-rr-full.js`, `slop-reg.js`).
-  - Dwa konteksty: desktop 1280×860 i telefon 390×844 z `isMobile: true, hasTouch: true, deviceScaleFactor: 2`.
-  - Pełne gry na prawdziwym czasie, z każdą ścieżką mechaniki: trafienie, błąd, koniec czasu, każda karta mocy, wygrana i przegrana. Gdy coś jest losowe, rozgrywamy kilka gier, aż wszystkie ścieżki wystąpią.
-  - Jedna z gier z `page.emulateMedia({ reducedMotion: 'reduce' })`.
-  - Asercje na `data-*` (mina, stan, liczba żetonów, pieczątka, wynik), zebrane do tablicy `problems`. Do tego `errors` z `pageerror` i `console.error`, sprawdzenie, że zdjęcia się załadowały (`naturalWidth > 0`), i brak poziomego przewijania (`scrollWidth > innerWidth`).
-  - Zrzuty ekranu każdej fazy na obu rozmiarach, oglądane na montażu (Pillow), a nie pojedynczo.
-  - Zrzuty regresji lobby dwóch wcześniej zrobionych gier (`slop-reg.js`).
-- **Pułapki narzędzi:**
-  - `page.clock.runFor` zamraża animacje `motion`, także po `resume()`. Ścieżki z odliczaniem testujemy prawdziwym czekaniem.
-  - „Browser is already in use” rozwiązuje `mcporter daemon restart` przed uruchomieniem skryptu.
-  - Narzędzie do podglądu obrazów potrafi pokazać starą wersję nadpisanego pliku, więc każdy nowy montaż zapisujemy pod nową nazwą (`-v2`, `-v3`).
+  Restart demona przed każdym uruchomieniem usuwa błąd „Browser is already in use”. Pierwsze linie wyjścia to `### Result` z JSON-em zwróconym przez skrypt, reszta to echo kodu.
+- **Skrypty** trzymamy w `~/Library/Caches/playwright-mcp/`, po jednym na rozmiar: `slop-<gra>-full.js` (desktop) i `slop-<gra>-fullm.js` (kopia z `const mobile = true`). Skrypt to jedna funkcja `async (page) => { … }`, która tworzy własny kontekst:
+
+  ```js
+  const ctx = mobile
+    ? await page.context().browser().newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 })
+    : await page.context().browser().newContext({ viewport: { width: 1280, height: 860 } })
+  page = await ctx.newPage()
+  const errors = []
+  const problems = []
+  page.on('pageerror', (e) => errors.push(e.message))
+  page.on('console', (m) => m.type() === 'error' && errors.push(m.text()))
+  const click = (loc) => (mobile ? loc.dispatchEvent('click') : loc.click())
+  // … pętla gier …
+  await ctx.close()
+  return { errors, problems, outcomes, overflow }
+  ```
+
+  Na telefonie klikamy przez `dispatchEvent('click')`, bo przyklejony przycisk albo animacja potrafią przesłonić cel zwykłego `click()`.
+
+### 8.4 Przeglądarka: pełne gry
+
+- **Prawdziwy czas.** Gramy od lobby do `ResultScreen` i z powrotem przez „Zagraj jeszcze raz”. Na kolejną fazę czekamy przez `getByTestId(…).waitFor()`, a na animacje krótkim `waitForTimeout`. Nie używamy `page.clock` (sekcja 8.7).
+- **Każda ścieżka mechaniki musi wystąpić:** trafienie i błąd, koniec czasu, każda karta lub moc, każdy wynik werdyktu, wygrana i przegrana. Pętla gier działa, dopóki czegoś brakuje, z górnym limitem:
+
+  ```js
+  for (let game = 0; game < 8 && (game < 3 || !outcomes.includes('won') || !outcomes.includes('lost') || roles.size < 2); game++)
+  ```
+
+  Najmniej 3 gry, bo trzecia (`game === 2`) idzie z `page.emulateMedia({ reducedMotion: 'reduce' })`, a czwarta wraca do `no-preference`.
+- **Strategie gracza wymuszają ścieżki.** Gry parzyste gra „sprytny” gracz, a nieparzyste „naiwny”. Sprytny czyta stan z DOM i wybiera najlepszy ruch, np. w Zdrajcy żeton, który stoi w twojej komnacie, choć nie ma go w twoim alibi. Naiwny celowo gra źle, np. wygania osobę, którą sam widziałeś. Dzięki temu w kilku grach są i wygrane, i przegrane.
+- **Asercje** dopisujemy do tablicy `problems` (zamiast przerywać skrypt), żeby jedno uruchomienie pokazało wszystkie usterki naraz:
+  - liczności: żetony, tabliczki, głosy i wpisy na liście mają się zgadzać ze stanem (np. liczba `plan-token` równa liczbie żywych z paska);
+  - spójność dwóch widoków tych samych danych (np. `data-room` żetonu zgodny z `data-room` zeznania);
+  - `data-mood`, `data-role`, `data-flipped`, `data-won` zgodne z tym, co pokazuje tekst (np. sztandar „Zdrajca!” tylko przy `data-role="zdrajca"`);
+  - nastrój tła (`data-mood` na `…-backdrop`) pasujący do fazy;
+  - zmiany stanu między fazami (np. po nocy żywych o 2 mniej: wygnany i ofiara);
+  - zdjęcia załadowane (`naturalWidth > 0`);
+  - brak poziomego przewijania (`document.documentElement.scrollWidth > window.innerWidth`) w każdej fazie, nie tylko na końcu.
+- **Wynik jest dobry tylko przy** `errors: []`, `problems: []`, `overflow: false` i pełnym zestawie w `outcomes` i podobnych polach na **obu** rozmiarach. Każdy wpis w `problems` traktujemy jako błąd gry albo skryptu i wyjaśniamy go, zanim pójdziemy dalej.
+
+### 8.5 Przegląd zrzutów
+
+Asercje nie wyłapią, że coś jest brzydkie, ucięte albo niewidoczne, dlatego każdą fazę oglądamy.
+
+- **Zrzuty w skrypcie:** pomocnik `shot(name, full)` zapisuje `<prefiks>-<faza>.png` tylko przy pierwszym wystąpieniu fazy (`Set`). Na telefonie długie widoki robimy z `fullPage: true`. Pojedynczy komponent fotografujemy przez `locator.screenshot()`, np. `getByTestId('castle-plan')`.
+- **Zestaw faz:** lobby, start dnia lub rundy, zaznaczony element (dymek, karta), każda akcja z reakcją, odsłanianie, każdy rodzaj werdyktu, noc lub przejście, wynik wygrany i przegrany. Wszystko na obu rozmiarach.
+- **Montaże zamiast pojedynczych plików:** Pillow (`PYTHONPATH=/tmp/np`) skleja 3–4 zrzuty w jeden obraz, a detale wycinamy przez `Image.crop`. Każdy montaż zapisujemy pod nową nazwą (`-v1`, `-v2`).
+- **Na co patrzymy:**
+  - czy wszystkie elementy się rysują (ramki, linie, ikony), czy nic nie chowa się pod innymi warstwami;
+  - nakładanie się tekstu, ucięte napisy, dymki wychodzące za krawędź;
+  - wyrównanie w siatkach (np. dwulinijkowe imiona rozjeżdżające rząd);
+  - czytelność na 390 px i przyklejony przycisk, który niczego ważnego nie zasłania;
+  - kontrast w trybach nocnych i przy nakładkach `multiply`;
+  - polszczyzna: formy żeńskie i męskie, odmiana, liczebniki;
+  - artefakty przeglądarki, np. kontur fokusu po kliknięciu elementu SVG z `tabIndex`;
+  - stopka z atrybucją.
+- **Przykłady usterek znalezionych dopiero na zrzutach:** ramki komnat bez `width`/`height` (rozpakowany obiekt `{ w, h }` w `<rect>`), złote łuki schowane pod żetonami, biały kontur fokusu wokół żetonu, za niska karta mocy z przelewającym się tekstem, pieczątka zasłaniająca nazwę.
+- Po poprawce powtarzamy pełne gry na rozmiarze, którego dotyczyła, i oglądamy nowe zrzuty.
+
+### 8.6 Regresja
+
+- `slop-reg.js` robi zrzuty lobby dwóch ostatnio zrobionych gier i zbiera `pageerror`. Po każdej grze przesuwamy listę slugów (dla Zdrajcy: `rajskie-rozdanie`, `sciema-z-ogloszenia`).
+- Zmiany we wspólnych plikach (`GameShell`, `registry.ts`, `shared/sfx.ts`) wymagają dodatkowo przejścia lobby wszystkich gier immersyjnych.
+
+### 8.7 Pułapki narzędzi
+
+- `page.clock.runFor` zamraża animacje `motion`, także po `resume()`. Ścieżki z odliczaniem testujemy prawdziwym czekaniem.
+- „Browser is already in use” rozwiązuje `mcporter daemon restart` przed uruchomieniem skryptu.
+- Narzędzie do podglądu obrazów potrafi pokazać starą wersję nadpisanego pliku, więc każdy nowy montaż zapisujemy pod nową nazwą (`-v2`, `-v3`).
+- Przy `fullPage: true` tło `fixed` kończy się na wysokości okna, a niżej jest biel. To artefakt zrzutu, a nie błąd.
+- Konfetti z poprzedniej fazy może jeszcze spadać na następnym zrzucie. Też nie jest to błąd.
+
+### 8.8 Na koniec
+
+- Zamykamy dev server i inne procesy uruchomione na czas testów.
+- Robimy lokalny commit (`git add -A public/<slug> src/games docs`). Bez `push`.
+- W podsumowaniu podajemy, co sprawdziliśmy i czego nie dało się sprawdzić.
 
 ## 9. Pułapki techniczne
 

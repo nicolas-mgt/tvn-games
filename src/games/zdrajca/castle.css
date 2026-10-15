@@ -476,12 +476,21 @@
   background: radial-gradient(ellipse at center, rgb(110 70 36 / 0.85), rgb(60 36 18 / 0.75) 70%, transparent 72%);
 }
 .zd-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.75rem;
   text-align: center;
   color: #ffe9b0;
   font-family: 'Bebas Neue', sans-serif;
   font-size: 2rem;
   letter-spacing: 0.06em;
   text-shadow: 0 0 18px rgb(255 160 60 / 0.7);
+}
+.zd-table-candle {
+  width: 20px;
+  height: 46px;
+  flex-shrink: 0;
 }
 .zd-seats {
   display: flex;

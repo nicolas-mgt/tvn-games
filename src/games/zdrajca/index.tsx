@@ -93,7 +93,6 @@ export default function ZdrajcaGame() {
 
   function enterCastle() {
     sfx.unlock()
-    play('door')
     openMorning()
   }
 
@@ -125,23 +124,24 @@ export default function ZdrajcaGame() {
     setVerdict({ votes, banished })
     setRevealed(0)
     setPhase('reveal')
-    play('heartbeat')
-    const start = 900 * pace
-    const step = 450 * pace
-    votes.forEach((_, n) =>
+    const start = 700 * pace
+    const step = 600 * pace
+    votes.forEach((_, n) => {
+      setTimeout(() => play('heartbeat'), start + n * step - 380 * pace)
       setTimeout(() => {
         setRevealed(n + 1)
         play('chalk')
-      }, start + n * step),
-    )
+      }, start + n * step)
+    })
     setTimeout(
       () => {
         setPhase('verdict')
         play('gong')
+        setTimeout(() => play('door'), 500 * pace)
         setTimeout(() => {
           play(role === 'zdrajca' ? 'good' : 'bad')
           if (role === 'zdrajca') sparks()
-        }, 600 * pace)
+        }, 1000 * pace)
       },
       start + votes.length * step + 500 * pace,
     )
