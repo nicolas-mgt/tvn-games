@@ -15,6 +15,8 @@ export type GameMeta = {
   size: 'S' | 'M'
   description: string
   scoreLabel: string
+  /** Full-viewport dark layout; the game draws its own backdrop. */
+  immersive?: boolean
   Component: LazyExoticComponent<ComponentType>
 }
 
@@ -35,6 +37,7 @@ export const GAMES: GameMeta[] = [
     size: 'M',
     description: 'Pojedynki na czas o pola planszy. Rozpoznaj obrazek szybciej niż bot i zajmij całą podłogę.',
     scoreLabel: 'pola',
+    immersive: true,
     Component: lazy(() => import('./podloga')),
   },
   {

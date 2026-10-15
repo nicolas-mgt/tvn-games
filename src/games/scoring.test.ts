@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { distanceKm, MAX_ROUND_SCORE, roundScore } from './gdzie-jest-martyna/logic'
 import { priceScore } from './ile-za-grata/logic'
 import { dealersOnlyResult, nextDealerBid } from './paleta-w-ciemno/logic'
+import { distance, emojiImage } from './podloga/logic'
 import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type Temperatures } from './pogodynka/logic'
 import { cellsAt, fits, LEVELS, parseLevel, rotate } from './poukladani/logic'
 import { addMontyResult, hostOpens, remainingDoor } from './zonk/logic'
@@ -44,6 +45,20 @@ describe('Pogodynka', () => {
     const settled = settle(prediction, temps(10))
     expect(settled.points).toBe(MAX_DAY_POINTS)
     expect(isSettleable(settled, '2026-10-20')).toBe(false)
+  })
+})
+
+describe('Podłoga', () => {
+  it('measures grid distance between tiles', () => {
+    expect(distance(12, 12)).toBe(0)
+    expect(distance(12, 13)).toBe(1)
+    expect(distance(0, 24)).toBe(8)
+    expect(distance(4, 20)).toBe(8)
+  })
+
+  it('maps emoji to OpenMoji file names without the variation selector', () => {
+    expect(emojiImage('🐘')).toBe('/podloga/items/1F418.svg')
+    expect(emojiImage('🐿️')).toBe('/podloga/items/1F43F.svg')
   })
 })
 

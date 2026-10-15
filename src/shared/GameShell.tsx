@@ -8,6 +8,19 @@ import { getGame, type GameMeta } from '@/games/registry'
 import { recordResult, type GameStats } from './storage'
 
 export function GameShell({ game, children }: { game: GameMeta; children: ReactNode }) {
+  if (game.immersive) {
+    return (
+      <div className="dark relative min-h-svh overflow-x-hidden text-foreground">
+        <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-white/10 bg-black/40 px-4 py-2 backdrop-blur-md">
+          <Link to="/" className="text-sm text-white/70 hover:text-white">
+            ← Wszystkie gry
+          </Link>
+          <h1 className="font-display text-2xl tracking-wider text-white">{game.title}</h1>
+        </header>
+        <main className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-6">{children}</main>
+      </div>
+    )
+  }
   return (
     <div className="mx-auto flex min-h-svh max-w-3xl flex-col gap-4 px-4 py-6">
       <header className="flex flex-wrap items-center gap-3">
