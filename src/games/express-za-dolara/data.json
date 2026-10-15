@@ -1,0 +1,9 @@
+[
+  { "text": "Kierowca ciężarówki zaprasza was na obiad do rodziny i podwozi pod same drzwi.", "hours": -2 },
+  { "text": "Monsunowa ulewa. Stoicie pod daszkiem przydrożnego warungu.", "hours": 3 },
+  { "text": "Staruszka na targu wręcza wam tajemniczy amulet. „Przyda się” – mówi.", "amulet": true },
+  { "text": "Z plecaka zniknął dolar. Podejrzanie wygląda pewna małpa.", "money": -1 },
+  { "text": "Turyści z Australii stawiają wam kokosy i dorzucają dolara na drogę.", "money": 1 },
+  { "text": "Skuter kierowcy łapie gumę w szczerym polu.", "hours": 2 },
+  { "text": "Mnich z pobliskiej świątyni pokazuje wam skrót przez pola ryżowe.", "hours": -1 }
+]

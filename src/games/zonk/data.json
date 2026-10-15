@@ -1,0 +1,24 @@
+{
+  "prizes": [
+    { "name": "Nowy samochód", "emoji": "🚗", "value": 60000 },
+    { "name": "Wycieczka do Tajlandii", "emoji": "✈️", "value": 15000 },
+    { "name": "Skuter", "emoji": "🛵", "value": 12000 },
+    { "name": "Komplet mebli do salonu", "emoji": "🛋️", "value": 9000 },
+    { "name": "Rower elektryczny", "emoji": "🚲", "value": 7000 },
+    { "name": "Tydzień w Zakopanem", "emoji": "🏔️", "value": 6000 },
+    { "name": "Laptop", "emoji": "💻", "value": 5000 },
+    { "name": "Telewizor 65 cali", "emoji": "📺", "value": 4000 }
+  ],
+  "zonks": [
+    { "name": "Zapas kiszonej kapusty na trzy zimy", "emoji": "🥬" },
+    { "name": "Kurs tańca z teściową", "emoji": "💃" },
+    { "name": "Krasnal ogrodowy z pretensjami", "emoji": "🧙" },
+    { "name": "Dywan po cioci Krysi", "emoji": "🧶" },
+    { "name": "Kaseta VHS „Wesele Zdzicha 1997”", "emoji": "📼" },
+    { "name": "Rok pobudek o 5:00 z dostawą", "emoji": "⏰" },
+    { "name": "Kalendarz na rok 2009", "emoji": "📅" },
+    { "name": "Puszka powietrza znad Bałtyku", "emoji": "🥫" },
+    { "name": "Pluszowy Zonk w skali 1:1", "emoji": "🧸" },
+    { "name": "Karnet na siłownię, której już nie ma", "emoji": "🏋️" }
+  ]
+}

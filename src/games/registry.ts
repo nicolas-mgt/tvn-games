@@ -1,0 +1,253 @@
+import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
+
+export type GameCategory =
+  | 'Teleturnieje i zgadywanki'
+  | 'Reality i strategia'
+  | 'Lifestyle i kuchnia'
+  | 'Newsy, show-biznes, codzienność'
+
+export type GameMeta = {
+  slug: string
+  title: string
+  emoji: string
+  inspiration: string
+  category: GameCategory
+  size: 'S' | 'M'
+  description: string
+  scoreLabel: string
+  Component: LazyExoticComponent<ComponentType>
+}
+
+export const GAME_CATEGORIES: GameCategory[] = [
+  'Teleturnieje i zgadywanki',
+  'Reality i strategia',
+  'Lifestyle i kuchnia',
+  'Newsy, show-biznes, codzienność',
+]
+
+export const GAMES: GameMeta[] = [
+  {
+    slug: 'podloga',
+    title: 'Podłoga',
+    emoji: '🟦',
+    inspiration: 'The Floor',
+    category: 'Teleturnieje i zgadywanki',
+    size: 'M',
+    description: 'Pojedynki na czas o pola planszy. Rozpoznaj obrazek szybciej niż bot i zajmij całą podłogę.',
+    scoreLabel: 'pola',
+    Component: lazy(() => import('./podloga')),
+  },
+  {
+    slug: 'ustrojstwo',
+    title: 'Co to za ustrojstwo?',
+    emoji: '📦',
+    inspiration: 'Unboxing – Wielkie Otwarcie',
+    category: 'Teleturnieje i zgadywanki',
+    size: 'S',
+    description: 'Otwierasz paczkę z dziwnym gadżetem. Zgadnij, do czego naprawdę służy.',
+    scoreLabel: 'seria',
+    Component: lazy(() => import('./ustrojstwo')),
+  },
+  {
+    slug: 'zonk',
+    title: 'Zonk!',
+    emoji: '🚪',
+    inspiration: 'Idź na całość!',
+    category: 'Teleturnieje i zgadywanki',
+    size: 'S',
+    description: 'Trzy bramki, jedna nagroda i absurdalne zonki. Zamieniasz, zostajesz czy bierzesz kasę?',
+    scoreLabel: 'zł',
+    Component: lazy(() => import('./zonk')),
+  },
+  {
+    slug: 'ukryte-kryterium',
+    title: 'Ukryte kryterium',
+    emoji: '👑',
+    inspiration: 'Taskmaster',
+    category: 'Teleturnieje i zgadywanki',
+    size: 'M',
+    description: 'Absurdalne mikro-zadania. Za co naprawdę są punkty, sędzia zdradzi dopiero po fakcie.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./ukryte-kryterium')),
+  },
+  {
+    slug: 'paleta-w-ciemno',
+    title: 'Paleta w ciemno',
+    emoji: '🎁',
+    inspiration: 'Zakup w ciemno',
+    category: 'Teleturnieje i zgadywanki',
+    size: 'M',
+    description: 'Licytujesz palety z lakonicznym opisem przeciwko trzem handlarzom. Liczy się zysk.',
+    scoreLabel: 'zł zysku',
+    Component: lazy(() => import('./paleta-w-ciemno')),
+  },
+  {
+    slug: 'ile-za-grata',
+    title: 'Ile za tego grata?',
+    emoji: '🚗',
+    inspiration: 'Wojny samochodowe, Zawodowi handlarze',
+    category: 'Teleturnieje i zgadywanki',
+    size: 'S',
+    description: 'Fikcyjne ogłoszenia aut. Zgadnij cenę, za którą poszły.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./ile-za-grata')),
+  },
+  {
+    slug: 'sciema-z-ogloszenia',
+    title: 'Ściema z ogłoszenia',
+    emoji: '🕵️',
+    inspiration: 'Uwaga! Oszust: Ściema z ogłoszenia',
+    category: 'Teleturnieje i zgadywanki',
+    size: 'S',
+    description: 'Wyłap czerwone flagi w ogłoszeniach samochodowych, zanim skończy się czas.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./sciema-z-ogloszenia')),
+  },
+  {
+    slug: 'rajskie-rozdanie',
+    title: 'Rajskie Rozdanie',
+    emoji: '🌴',
+    inspiration: 'Hotel Paradise',
+    category: 'Reality i strategia',
+    size: 'M',
+    description: 'Willa, siedmioro rywali i karty z mocami. Przetrwaj ceremonie aż do finału.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./rajskie-rozdanie')),
+  },
+  {
+    slug: 'zdrajca',
+    title: 'Zdrajca',
+    emoji: '🗡️',
+    inspiration: 'The Traitors. Zdrajcy',
+    category: 'Reality i strategia',
+    size: 'M',
+    description: 'Wśród ośmiu mieszkańców zamku ukrywa się dwóch zdrajców. Wyłap sprzeczne alibi.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./zdrajca')),
+  },
+  {
+    slug: 'express-za-dolara',
+    title: 'Express za dolara',
+    emoji: '🎒',
+    inspiration: 'Azja Express',
+    category: 'Reality i strategia',
+    size: 'M',
+    description: 'Wyścig z Bali do Singapuru za dolara dziennie. Autostop, praca czy bus?',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./express-za-dolara')),
+  },
+  {
+    slug: 'uratuj-knajpe',
+    title: 'Uratuj knajpę',
+    emoji: '🍲',
+    inspiration: 'Kuchenne rewolucje',
+    category: 'Reality i strategia',
+    size: 'S',
+    description: 'Twoja restauracja tonie. Podejmij decyzje i poczekaj na werdykt po miesiącu.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./uratuj-knajpe')),
+  },
+  {
+    slug: 'danie-po-skladnikach',
+    title: 'Danie po składnikach',
+    emoji: '🍝',
+    inspiration: 'MasterChef',
+    category: 'Lifestyle i kuchnia',
+    size: 'S',
+    description: 'Codzienna zagadka: składniki odsłaniają się po jednym. Zgadnij danie jak najszybciej.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./danie-po-skladnikach')),
+  },
+  {
+    slug: 'stylizacja',
+    title: 'Stylizacja w 60 sekund',
+    emoji: '👗',
+    inspiration: 'Top Model, Love the Look',
+    category: 'Lifestyle i kuchnia',
+    size: 'M',
+    description: 'Ubierz manekina pod temat. Czworo jurorów o różnych gustach nie zostawi suchej nitki.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./stylizacja')),
+  },
+  {
+    slug: 'poukladani',
+    title: 'Poukładani: upchnij to',
+    emoji: '📚',
+    inspiration: 'Poukładani, Nowa Szelągowska',
+    category: 'Lifestyle i kuchnia',
+    size: 'M',
+    description: 'Łamigłówka pakowania. Zmieść wszystkie graty w szafie, obracając klocki.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./poukladani')),
+  },
+  {
+    slug: 'gdzie-jest-martyna',
+    title: 'Gdzie jest Martyna?',
+    emoji: '🌍',
+    inspiration: 'Kobieta na krańcu świata, Jestem z Polski',
+    category: 'Lifestyle i kuchnia',
+    size: 'M',
+    description: 'Zdjęcie z podróży i mapa świata. Im bliżej trafisz, tym więcej punktów.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./gdzie-jest-martyna')),
+  },
+  {
+    slug: 'prawda-czy-sciema',
+    title: 'Prawda czy ściema?',
+    emoji: '📰',
+    inspiration: 'Fakty, Szkło kontaktowe',
+    category: 'Newsy, show-biznes, codzienność',
+    size: 'S',
+    description: 'Absurdalne nagłówki: prawdziwy news czy zmyślony? Przesuń w lewo albo w prawo.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./prawda-czy-sciema')),
+  },
+  {
+    slug: 'kto-to-powiedzial',
+    title: 'Kto to powiedział?',
+    emoji: '🎤',
+    inspiration: 'Kuba Wojewódzki, Gogglebox',
+    category: 'Newsy, show-biznes, codzienność',
+    size: 'S',
+    description: 'Gwiazda z kanapy, rodzina sprzed telewizora czy generator bełkotu?',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./kto-to-powiedzial')),
+  },
+  {
+    slug: 'to-pan-tego-nie-wie',
+    title: 'To Pan tego nie wie',
+    emoji: '🧒',
+    inspiration: 'Dzień Dobry TVN',
+    category: 'Newsy, show-biznes, codzienność',
+    size: 'S',
+    description: 'Dziecięce definicje dorosłych spraw. Zgadnij, o jakie słowo chodzi.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./to-pan-tego-nie-wie')),
+  },
+  {
+    slug: 'pogodynka',
+    title: 'Pogodynka',
+    emoji: '🌦️',
+    inspiration: 'Prognoza pogody TVN24',
+    category: 'Newsy, show-biznes, codzienność',
+    size: 'S',
+    description: 'Wytypuj jutrzejsze maksimum w pięciu miastach. Rozliczymy cię prawdziwymi danymi.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./pogodynka')),
+  },
+  {
+    slug: 'co-sie-zaraz-stanie',
+    title: 'Co się zaraz stanie?',
+    emoji: '🚦',
+    inspiration: 'Co tu się odjechało?',
+    category: 'Newsy, show-biznes, codzienność',
+    size: 'S',
+    description: 'Scena drogowa zatrzymana sekundę przed zdarzeniem. Przewidź, co się wydarzy.',
+    scoreLabel: 'pkt',
+    Component: lazy(() => import('./co-sie-zaraz-stanie')),
+  },
+]
+
+export function getGame(slug: string): GameMeta | undefined {
+  return GAMES.find((game) => game.slug === slug)
+}

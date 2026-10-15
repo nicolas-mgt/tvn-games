@@ -1,0 +1,42 @@
+{
+  "items": [
+    { "id": "cylinder", "slot": "glowa", "emoji": "🎩", "name": "Cylinder", "tags": ["elegancki", "retro"] },
+    { "id": "czapka", "slot": "glowa", "emoji": "🧢", "name": "Czapka z daszkiem", "tags": ["sportowy", "casual"] },
+    { "id": "slomkowy", "slot": "glowa", "emoji": "👒", "name": "Kapelusz słomkowy", "tags": ["letni", "romantyczny"] },
+    { "id": "helm", "slot": "glowa", "emoji": "🪖", "name": "Hełm", "tags": ["militarny", "ekstrawagancki"] },
+    { "id": "korona", "slot": "glowa", "emoji": "👑", "name": "Korona", "tags": ["ekstrawagancki", "glamour"] },
+    { "id": "koszula", "slot": "gora", "emoji": "👔", "name": "Koszula z krawatem", "tags": ["elegancki", "biurowy"] },
+    { "id": "tshirt", "slot": "gora", "emoji": "👕", "name": "T-shirt", "tags": ["casual", "sportowy"] },
+    { "id": "plaszcz", "slot": "gora", "emoji": "🧥", "name": "Płaszcz", "tags": ["elegancki", "zimowy"] },
+    { "id": "bluzka", "slot": "gora", "emoji": "👚", "name": "Bluzka w kwiaty", "tags": ["romantyczny", "letni"] },
+    { "id": "fartuch", "slot": "gora", "emoji": "🥼", "name": "Fartuch laboratoryjny", "tags": ["ekstrawagancki", "biurowy"] },
+    { "id": "odblask", "slot": "gora", "emoji": "🦺", "name": "Kamizelka odblaskowa", "tags": ["sportowy", "ekstrawagancki"] },
+    { "id": "dzinsy", "slot": "dol", "emoji": "👖", "name": "Dżinsy", "tags": ["casual"] },
+    { "id": "szorty", "slot": "dol", "emoji": "🩳", "name": "Szorty", "tags": ["letni", "sportowy"] },
+    { "id": "sukienka", "slot": "dol", "emoji": "👗", "name": "Sukienka", "tags": ["romantyczny", "glamour", "elegancki"] },
+    { "id": "kapielowki", "slot": "dol", "emoji": "🩲", "name": "Kąpielówki", "tags": ["letni", "ekstrawagancki"] },
+    { "id": "kimono", "slot": "dol", "emoji": "👘", "name": "Kimono", "tags": ["ekstrawagancki", "retro"] },
+    { "id": "polbuty", "slot": "buty", "emoji": "👞", "name": "Półbuty", "tags": ["elegancki", "biurowy"] },
+    { "id": "sneakersy", "slot": "buty", "emoji": "👟", "name": "Sneakersy", "tags": ["sportowy", "casual"] },
+    { "id": "szpilki", "slot": "buty", "emoji": "👠", "name": "Szpilki", "tags": ["glamour", "elegancki"] },
+    { "id": "trapery", "slot": "buty", "emoji": "🥾", "name": "Trapery", "tags": ["zimowy", "militarny"] },
+    { "id": "klapki", "slot": "buty", "emoji": "🩴", "name": "Klapki", "tags": ["letni", "casual"] },
+    { "id": "kozaki", "slot": "buty", "emoji": "👢", "name": "Kozaki", "tags": ["zimowy", "glamour"] },
+    { "id": "aktowka", "slot": "dodatek", "emoji": "💼", "name": "Aktówka", "tags": ["biurowy"] },
+    { "id": "torebka", "slot": "dodatek", "emoji": "👜", "name": "Torebka", "tags": ["glamour", "elegancki"] },
+    { "id": "okulary", "slot": "dodatek", "emoji": "🕶️", "name": "Okulary przeciwsłoneczne", "tags": ["letni", "glamour"] },
+    { "id": "szalik", "slot": "dodatek", "emoji": "🧣", "name": "Szalik", "tags": ["zimowy", "romantyczny"] },
+    { "id": "parasol", "slot": "dodatek", "emoji": "🌂", "name": "Parasol", "tags": ["retro", "elegancki"] },
+    { "id": "pierscionek", "slot": "dodatek", "emoji": "💍", "name": "Pierścionek", "tags": ["glamour", "romantyczny"] },
+    { "id": "plecak", "slot": "dodatek", "emoji": "🎒", "name": "Plecak", "tags": ["sportowy", "casual"] }
+  ],
+  "themes": [
+    { "name": "Gala w operze", "wanted": ["elegancki", "glamour"], "forbidden": ["sportowy", "letni"] },
+    { "name": "Pierwsza randka", "wanted": ["romantyczny", "casual"], "forbidden": ["militarny", "biurowy"] },
+    { "name": "Rozmowa o pracę w korpo", "wanted": ["biurowy", "elegancki"], "forbidden": ["letni", "ekstrawagancki"] },
+    { "name": "Wesele u cioci na wsi", "wanted": ["glamour", "romantyczny"], "forbidden": ["sportowy", "militarny"] },
+    { "name": "Spacer po Zakopanem w lutym", "wanted": ["zimowy", "casual"], "forbidden": ["letni"] },
+    { "name": "Plaża w Międzyzdrojach", "wanted": ["letni", "casual"], "forbidden": ["zimowy", "elegancki"] },
+    { "name": "Festiwal muzyki alternatywnej", "wanted": ["ekstrawagancki", "retro"], "forbidden": ["biurowy"] }
+  ]
+}

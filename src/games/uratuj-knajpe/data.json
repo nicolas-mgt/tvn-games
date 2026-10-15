@@ -1,0 +1,65 @@
+{
+  "intro": "Gospoda „Pod Złotym Kurczakiem” w Pcimiu Dolnym ledwo zipie. Masz tydzień, żeby ją uratować.",
+  "scenes": [
+    {
+      "title": "Degustacja",
+      "text": "Szefowa Halina z dumą podaje „domowe” pierogi. Są lodowate w środku i pachną mikrofalą.",
+      "choices": [
+        { "text": "Powiedzieć prosto z mostu: to jest niejadalne", "effects": { "jakosc": 2, "atmosfera": -1 }, "reaction": "Halina płacze, ale po godzinie przyznaje: „Pierogi są z hurtowni”." },
+        { "text": "Pochwalić, żeby nikogo nie urazić", "effects": { "atmosfera": 1, "jakosc": -1 }, "reaction": "Wszyscy się uśmiechają. Pierogi z hurtowni zostają w menu." },
+        { "text": "Zamówić jeszcze schabowego dla porównania", "effects": { "kasa": 1 }, "reaction": "Schabowy jest… poprawny. Kasa się cieszy, ty mniej." }
+      ]
+    },
+    {
+      "title": "Kuchnia",
+      "text": "Zaglądasz do kuchni. Okap ocieka tłuszczem, w lodówce mieszka coś, co ma własną świadomość. Kucharz Zbyszek wzrusza ramionami.",
+      "choices": [
+        { "text": "Wszyscy sprzątają razem do rana", "effects": { "jakosc": 2, "atmosfera": 1, "kasa": -1 }, "reaction": "O 4:00 Zbyszek śpiewa disco polo i szoruje okap. Zespół się zgrywa." },
+        { "text": "Wynająć firmę sprzątającą", "effects": { "jakosc": 2, "kasa": -2 }, "reaction": "Lśni jak nowa. Konto lśni pustką." },
+        { "text": "Wykrzyczeć Zbyszkowi, co o nim myślisz", "ending": "Zbyszek bez słowa wylewa ci na głowę garnek klusek śląskich. Ekipa pakuje sprzęt po dwóch dniach. Odcinek bije rekordy oglądalności, ale knajpy już nie ma." }
+      ]
+    },
+    {
+      "title": "Menu",
+      "text": "Karta ma 46 pozycji: od żurku przez sushi po „kebab po meksykańsku”.",
+      "choices": [
+        { "text": "Skrócić do 8 dań regionalnych", "effects": { "jakosc": 2, "kasa": 1 }, "reaction": "Mniej dań, świeże składniki, mniej strat. Halina pierwszy raz od lat gotuje z przyjemnością." },
+        { "text": "Zostawić wszystko i dorzucić ramen, bo modny", "effects": { "jakosc": -2, "kasa": -1 }, "reaction": "Ramen na kostce rosołowej. Goście patrzą w talerze z niedowierzaniem." },
+        { "text": "Trzy dania i pizza", "effects": { "kasa": 1, "atmosfera": -1 }, "reaction": "Pizza się sprzedaje. Halina obraża się na „włoskie wynalazki”." }
+      ]
+    },
+    {
+      "title": "Wystrój",
+      "text": "Boazeria z lat 90., plastikowe kwiaty i telewizor na pełny regulator.",
+      "choices": [
+        { "text": "Remont w stylu nowoczesnej gospody", "effects": { "atmosfera": 2, "kasa": -1 }, "reaction": "Drewno, len i ciepłe światło. Sąsiadka przychodzi tylko zrobić zdjęcia." },
+        { "text": "Zostawić boazerię, dodać żywe kwiaty i wyłączyć TV", "effects": { "atmosfera": 1 }, "reaction": "Tanio i zaskakująco przytulnie. Retro wraca do mody." },
+        { "text": "Neony i kula disco", "effects": { "atmosfera": -1, "kasa": -1 }, "reaction": "Wygląda jak remiza po weselu. Ktoś pyta, o której zaczyna się dyskoteka." }
+      ]
+    },
+    {
+      "title": "Rodzina",
+      "text": "Właściciel pan Marian i jego syn Kamil nie rozmawiają ze sobą od trzech miesięcy. Poszło o parking.",
+      "choices": [
+        { "text": "Posadzić ich przy jednym stole i pogadać", "effects": { "atmosfera": 2 }, "reaction": "Po godzinie i dwóch kompotach padają sobie w ramiona. Ekipa filmowa płacze." },
+        { "text": "Oddać kuchnię Kamilowi", "effects": { "jakosc": 1, "atmosfera": -1 }, "reaction": "Kamil gotuje świetnie, ale Marian trzaska drzwiami." },
+        { "text": "Nie wtrącać się", "effects": { "atmosfera": -2 }, "reaction": "Cicha wojna trwa. Goście czują napięcie w powietrzu i w zupie." }
+      ]
+    },
+    {
+      "title": "Wielkie otwarcie",
+      "text": "Nowa nazwa wisi nad drzwiami. Jak ściągnąć gości?",
+      "choices": [
+        { "text": "Darmowa degustacja dla całej wsi", "effects": { "atmosfera": 1, "jakosc": 1, "kasa": -1 }, "reaction": "Przychodzi pół gminy. Wszyscy chwalą, nikt nie płaci." },
+        { "text": "Kampania w mediach społecznościowych", "effects": { "kasa": 2 }, "reaction": "Rolka z Haliną lepiącą pierogi ma 200 tys. wyświetleń." },
+        { "text": "Zaprosić wójta i koło gospodyń", "effects": { "atmosfera": 1, "kasa": 1 }, "reaction": "Wójt przemawia, KGW śpiewa. Zamówienia na trzy wesela!" }
+      ]
+    }
+  ],
+  "endings": [
+    { "min": 19, "title": "Kolejka przed drzwiami", "text": "Po miesiącu: pełna sala, recenzja w gazecie i rezerwacje na dwa tygodnie do przodu. Halina dostaje fartuch z napisem „Szefowa”." },
+    { "min": 15, "title": "Sukces z gwiazdką", "text": "Po miesiącu: w weekendy komplet, w tygodniu bywa różnie. Ale pierogi są już własne." },
+    { "min": 11, "title": "Na krawędzi", "text": "Po miesiącu: część zmian została, część wróciła do starego. Knajpa żyje, ale ledwo." },
+    { "min": 0, "title": "Powrót do mikrofali", "text": "Po miesiącu: boazeria, 46 pozycji w karcie i mikrofala pracująca na pełnych obrotach. Pan Marian mówi do kamery: „Telewizja nic nie zmieniła”." }
+  ]
+}

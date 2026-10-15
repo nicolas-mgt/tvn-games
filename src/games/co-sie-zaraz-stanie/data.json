@@ -1,0 +1,109 @@
+[
+  {
+    "title": "Skrzyżowanie równorzędne, godzina 7:58",
+    "setup": "Dwa auta dojeżdżają do skrzyżowania w tym samym momencie. Obaj kierowcy się spieszą.",
+    "background": "city",
+    "actors": [
+      { "emoji": "🚗", "x": 15, "y": 55, "toX": 38, "toY": 55 },
+      { "emoji": "🚙", "x": 85, "y": 55, "toX": 62, "toY": 55 },
+      { "emoji": "🙋", "x": 38, "y": 30, "toX": 38, "toY": 30 },
+      { "emoji": "🙋‍♂️", "x": 62, "y": 30, "toX": 62, "toY": 30 }
+    ],
+    "options": ["Zderzają się na środku", "Obaj machają „pan pierwszy” przez 40 sekund", "Jeden zawraca", "Wjeżdża trzecie auto i jedzie pierwsze"],
+    "answer": 1,
+    "comment": "Klasyczny pat uprzejmości. Ekspert przypomina: na skrzyżowaniu równorzędnym pierwszeństwo ma pojazd z prawej."
+  },
+  {
+    "title": "Parking pod marketem, lekki spadek",
+    "setup": "Ktoś zostawił wózek sklepowy przy krawędzi parkingu. Wieje wiatr.",
+    "background": "parking",
+    "actors": [
+      { "emoji": "🛒", "x": 15, "y": 25, "toX": 66, "toY": 62 },
+      { "emoji": "🚘", "x": 72, "y": 65, "toX": 72, "toY": 65 },
+      { "emoji": "🚗", "x": 35, "y": 70, "toX": 35, "toY": 70 }
+    ],
+    "options": ["Wózek staje na krawężniku", "Wózek toczy się prosto w drzwi najdroższego auta", "Ochroniarz łapie go w biegu", "Wózek trafia do zatoczki na wózki"],
+    "answer": 1,
+    "comment": "Prawo Murphy’ego parkingów: wózek zawsze wybiera najdroższy samochód. Odstawiajcie wózki, ludzie!"
+  },
+  {
+    "title": "Wiejska droga, przejście kaczek",
+    "setup": "Na drogę wchodzi mama kaczka z młodymi. Z naprzeciwka jedzie ciężarówka.",
+    "background": "country",
+    "actors": [
+      { "emoji": "🦆", "x": 10, "y": 55, "toX": 85, "toY": 55 },
+      { "emoji": "🐥", "x": 4, "y": 58, "toX": 79, "toY": 58 },
+      { "emoji": "🐥", "x": -2, "y": 58, "toX": 73, "toY": 58 },
+      { "emoji": "🚛", "x": 70, "y": 20, "toX": 70, "toY": 30 }
+    ],
+    "options": ["Ciężarówka trąbi i kaczki uciekają", "Ciężarówka staje, a kaczki przechodzą w swoim tempie", "Kaczki zawracają", "Kaczki odlatują"],
+    "answer": 1,
+    "comment": "Najbardziej pozytywny korek dnia. Ekspert: zwierzęta na drodze – zwalniamy i czekamy."
+  },
+  {
+    "title": "Wjazd do garażu podziemnego, prześwit 2,1 m",
+    "setup": "Kierowca vana z boxem dachowym wjeżdża do garażu galerii handlowej.",
+    "background": "city",
+    "actors": [
+      { "emoji": "🚐", "x": 10, "y": 60, "toX": 70, "toY": 60 },
+      { "emoji": "🧳", "x": 12, "y": 45, "toX": 45, "toY": 45 },
+      { "emoji": "🚧", "x": 48, "y": 35, "toX": 48, "toY": 35 }
+    ],
+    "options": ["Mieści się na styk", "Box dachowy zostaje na belce wjazdu", "Kierowca zawraca w ostatniej chwili", "Szlaban sam się podnosi wyżej"],
+    "answer": 1,
+    "comment": "Box zostaje, auto jedzie dalej. Ekspert: sprawdź wysokość auta z bagażnikiem dachowym przed wyjazdem."
+  },
+  {
+    "title": "Krowy na drodze, sportowe auto",
+    "setup": "Sportowe auto stoi za stadem krów przechodzących przez drogę. Obok, polem, jedzie ciągnik.",
+    "background": "country",
+    "actors": [
+      { "emoji": "🏎️", "x": 15, "y": 60, "toX": 22, "toY": 60 },
+      { "emoji": "🐄", "x": 40, "y": 60, "toX": 45, "toY": 60 },
+      { "emoji": "🐄", "x": 50, "y": 62, "toX": 54, "toY": 62 },
+      { "emoji": "🚜", "x": 10, "y": 22, "toX": 90, "toY": 22 }
+    ],
+    "options": ["Sportowe auto przeskakuje krowy", "Ciągnik polem wyprzedza sportowe auto", "Krowy wsiadają do auta", "Kierowca wysiada i robi selfie"],
+    "answer": 1,
+    "comment": "Na wsi rządzą inne prawa: 600 KM nie wygra z trzema krowami i jednym traktorem."
+  },
+  {
+    "title": "Przystanek autobusowy, ostatnie sekundy",
+    "setup": "Pasażer biegnie do autobusu, który właśnie zamyka drzwi.",
+    "background": "city",
+    "actors": [
+      { "emoji": "🏃", "x": 5, "y": 55, "toX": 50, "toY": 55 },
+      { "emoji": "🚌", "x": 60, "y": 55, "toX": 110, "toY": 55 },
+      { "emoji": "🚍", "x": -20, "y": 55, "toX": 60, "toY": 55 }
+    ],
+    "options": ["Kierowca otwiera drzwi z uśmiechem", "Autobus odjeżdża, a zaraz za nim podjeżdża pusty", "Pasażer dogania autobus na światłach", "Pasażer rezygnuje i idzie pieszo"],
+    "answer": 1,
+    "comment": "Komunikacyjna klątwa: najpierw ten pełny i uciekający, potem pusty po 20 sekundach."
+  },
+  {
+    "title": "Hulajnoga elektryczna na chodniku",
+    "setup": "Hulajnogista mknie chodnikiem między przechodniami, patrząc w telefon.",
+    "background": "city",
+    "actors": [
+      { "emoji": "🛴", "x": 5, "y": 50, "toX": 82, "toY": 30 },
+      { "emoji": "🚶", "x": 40, "y": 55, "toX": 40, "toY": 55 },
+      { "emoji": "🚶‍♀️", "x": 60, "y": 45, "toX": 60, "toY": 45 },
+      { "emoji": "🌳", "x": 85, "y": 25, "toX": 85, "toY": 25 }
+    ],
+    "options": ["Zgrabnie omija wszystkich", "Hamuje… w krzakach", "Zatrzymuje go policja", "Przesiada się na rower"],
+    "answer": 1,
+    "comment": "Krzaki 1 : 0 hulajnoga. Ekspert: na chodniku pieszy ma pierwszeństwo, a telefon – do kieszeni."
+  },
+  {
+    "title": "Droga przez las, zmierzch",
+    "setup": "Przy poboczu stoi jeleń i patrzy w światła nadjeżdżającego auta.",
+    "background": "country",
+    "actors": [
+      { "emoji": "🚗", "x": 0, "y": 60, "toX": 35, "toY": 60 },
+      { "emoji": "🦌", "x": 55, "y": 30, "toX": 75, "toY": 15 }
+    ],
+    "options": ["Jeleń wbiega pod koła", "Kierowca zwalnia, a jeleń spokojnie wraca do lasu", "Jeleń biegnie obok auta", "Kierowca trąbi i jeleń zamiera na drodze"],
+    "answer": 1,
+    "comment": "Tym razem dobrze. Ekspert: o zmierzchu przy znaku „uwaga, zwierzęta” zwolnij – tam, gdzie jeden jeleń, często idzie drugi."
+  }
+]

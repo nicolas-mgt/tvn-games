@@ -1,0 +1,27 @@
+{
+  "sources": [
+    { "id": "celebryta", "label": "Gwiazda na kanapie talk-show", "emoji": "🛋️" },
+    { "id": "rodzina", "label": "Rodzina sprzed telewizora", "emoji": "📺" },
+    { "id": "generator", "label": "Generator bełkotu", "emoji": "🤖" }
+  ],
+  "quotes": [
+    { "text": "Ja w ogóle nie czytam komentarzy. No, chyba że są o mnie.", "source": "celebryta" },
+    { "text": "Moja nowa płyta to tak naprawdę list do mnie samej sprzed dziesięciu lat.", "source": "celebryta" },
+    { "text": "Rozwód? Nie, my po prostu świadomie rozwijamy się w dwóch różnych mieszkaniach.", "source": "celebryta" },
+    { "text": "Ja nigdy nie byłam na żadnej diecie, po prostu jem tylko szparagi i światło.", "source": "celebryta" },
+    { "text": "Nie lubię mówić o pieniądzach. Wolę o nich milczeć w nowym Porsche.", "source": "celebryta" },
+    { "text": "Ten program zmienił moje życie. Głównie grafik.", "source": "celebryta" },
+    { "text": "Zobacz, on znowu je ten makaron. Halina, on cały czas je, a chudy jak patyk.", "source": "rodzina" },
+    { "text": "Ja bym go wyrzucił z tej willi od razu. W ogóle bym go nie wpuścił. W ogóle bym nie budował willi.", "source": "rodzina" },
+    { "text": "Dziadek, nie śpij, zaraz będzie, kto wygrał. – Ja nie śpię, ja oglądam od środka.", "source": "rodzina" },
+    { "text": "Po co mu ta kanapa za trzy tysiące? Ja na tej naszej siedzę od wesela i żyję.", "source": "rodzina" },
+    { "text": "Ona płacze, bo ładnie wychodzi w telewizji. Ja jak płaczę, to wyglądam jak pomidor.", "source": "rodzina" },
+    { "text": "Taki remont w osiem dni? U nas fachowiec od ośmiu lat kończy łazienkę.", "source": "rodzina" },
+    { "text": "Synergia autentyczności to fundament, na którym budujemy most w kierunku jutra wczoraj.", "source": "generator" },
+    { "text": "Każdy poranek jest inwestycją w kapitał emocjonalny twojego wewnętrznego ekosystemu.", "source": "generator" },
+    { "text": "Nie bój się marzyć skalowalnie, bo marzenia też potrzebują strategii wzrostu.", "source": "generator" },
+    { "text": "Prawdziwa zmiana zaczyna się tam, gdzie kończy się strefa komfortu twojej lodówki.", "source": "generator" },
+    { "text": "Bądź jak woda: dopasuj się do kubka, ale pamiętaj o swojej marce osobistej.", "source": "generator" },
+    { "text": "Sukces to nie cel, to proces, który ma swój cel w procesie sukcesu.", "source": "generator" }
+  ]
+}

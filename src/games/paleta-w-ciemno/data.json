@@ -1,0 +1,83 @@
+[
+  {
+    "emoji": "📦",
+    "description": "Zwroty z dużego sklepu z elektroniką. Część działa.",
+    "contents": [
+      { "emoji": "🎧", "name": "Słuchawki bezprzewodowe", "value": 350 },
+      { "emoji": "📱", "name": "Telefon z pękniętym ekranem", "value": 400 },
+      { "emoji": "🔌", "name": "40 kabli do niczego", "value": 120 },
+      { "emoji": "⌚", "name": "Smartwatch", "value": 600 }
+    ]
+  },
+  {
+    "emoji": "🧸",
+    "description": "Likwidacja sklepu z zabawkami.",
+    "contents": [
+      { "emoji": "🧸", "name": "Worek pluszaków", "value": 300 },
+      { "emoji": "🚂", "name": "Kolejka elektryczna", "value": 900 },
+      { "emoji": "🧩", "name": "Puzzle bez kilku elementów", "value": 150 },
+      { "emoji": "🎲", "name": "Gry planszowe w folii", "value": 400 }
+    ]
+  },
+  {
+    "emoji": "📦",
+    "description": "Nieodebrane paczki z magazynu kurierskiego.",
+    "contents": [
+      { "emoji": "🥾", "name": "Kalosze rozmiar 47", "value": 80 },
+      { "emoji": "🧴", "name": "50 balsamów do stóp", "value": 250 },
+      { "emoji": "💄", "name": "Kosmetyki premium", "value": 600 },
+      { "emoji": "🎮", "name": "Konsola w oryginalnym pudełku", "value": 1500 }
+    ]
+  },
+  {
+    "emoji": "🧺",
+    "description": "AGD z wystawki. Sprzedawca mówi, że sprawne.",
+    "contents": [
+      { "emoji": "🍳", "name": "Komplet patelni", "value": 200 },
+      { "emoji": "🔥", "name": "Spalony toster", "value": 0 },
+      { "emoji": "🌀", "name": "Mikser", "value": 150 },
+      { "emoji": "🧹", "name": "Odkurzacz bez rury", "value": 50 }
+    ]
+  },
+  {
+    "emoji": "🛠️",
+    "description": "Ogród i majsterkowanie z hurtowni budowlanej.",
+    "contents": [
+      { "emoji": "🪚", "name": "Piła spalinowa", "value": 300 },
+      { "emoji": "🔨", "name": "Skrzynka młotków", "value": 120 },
+      { "emoji": "🌱", "name": "Przeterminowane nasiona", "value": 10 },
+      { "emoji": "🪓", "name": "Siekiera", "value": 150 },
+      { "emoji": "🚿", "name": "Wąż ogrodowy 50 m", "value": 80 }
+    ]
+  },
+  {
+    "emoji": "👕",
+    "description": "Odzież markowa. Podobno.",
+    "contents": [
+      { "emoji": "👕", "name": "Koszulki „Adidos”", "value": 150 },
+      { "emoji": "👟", "name": "Buty sportowe", "value": 700 },
+      { "emoji": "🧥", "name": "Kurtka zimowa", "value": 450 },
+      { "emoji": "🧦", "name": "1000 par skarpet", "value": 300 }
+    ]
+  },
+  {
+    "emoji": "❓",
+    "description": "Tajemnicza paleta z przechowalni dworcowej. Brak opisu.",
+    "contents": [
+      { "emoji": "🗿", "name": "Figurka z Wysp Wielkanocnych (gips)", "value": 50 },
+      { "emoji": "📻", "name": "Radio retro", "value": 250 },
+      { "emoji": "🎻", "name": "Stare skrzypce z certyfikatem", "value": 2200 },
+      { "emoji": "🧦", "name": "Jedna skarpeta", "value": 0 }
+    ]
+  },
+  {
+    "emoji": "🏋️",
+    "description": "Sprzęt fitness po noworocznych postanowieniach.",
+    "contents": [
+      { "emoji": "🏋️", "name": "Hantle", "value": 400 },
+      { "emoji": "🚴", "name": "Rower stacjonarny", "value": 900 },
+      { "emoji": "🧘", "name": "Maty do jogi", "value": 120 },
+      { "emoji": "🥤", "name": "30 shakerów", "value": 60 }
+    ]
+  }
+]

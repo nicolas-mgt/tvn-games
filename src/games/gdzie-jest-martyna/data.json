@@ -1,0 +1,23 @@
+[
+  { "name": "Pustynia Gobi", "country": "Mongolia", "lat": 42.59, "lng": 103.43, "wikiTitle": "Gobi Desert" },
+  { "name": "Ułan Bator", "country": "Mongolia", "lat": 47.9219, "lng": 106.9153, "wikiTitle": "Ulaanbaatar" },
+  { "name": "Queenstown", "country": "Nowa Zelandia", "lat": -45.0311, "lng": 168.6625, "wikiTitle": "Queenstown, New Zealand" },
+  { "name": "Milford Sound", "country": "Nowa Zelandia", "lat": -44.6481, "lng": 167.9056, "wikiTitle": "Milford Sound" },
+  { "name": "Asyż", "country": "Włochy", "lat": 43.0707, "lng": 12.6196, "wikiTitle": "Assisi" },
+  { "name": "Kuala Lumpur", "country": "Malezja", "lat": 3.1478, "lng": 101.6953, "wikiTitle": "Kuala Lumpur" },
+  { "name": "Malakka", "country": "Malezja", "lat": 2.1944, "lng": 102.2486, "wikiTitle": "Malacca City" },
+  { "name": "Marina Bay Sands", "country": "Singapur", "lat": 1.2825, "lng": 103.86, "wikiTitle": "Marina Bay Sands" },
+  { "name": "Ubud", "country": "Indonezja (Bali)", "lat": -8.5069, "lng": 115.2625, "wikiTitle": "Ubud" },
+  { "name": "Borobudur", "country": "Indonezja (Jawa)", "lat": -7.608, "lng": 110.204, "wikiTitle": "Borobudur" },
+  { "name": "Wulkan Bromo", "country": "Indonezja (Jawa)", "lat": -7.9417, "lng": 112.95, "wikiTitle": "Mount Bromo" },
+  { "name": "Marrakesz", "country": "Maroko", "lat": 31.63, "lng": -8.0089, "wikiTitle": "Marrakesh" },
+  { "name": "Szafszawan", "country": "Maroko", "lat": 35.1714, "lng": -5.2697, "wikiTitle": "Chefchaouen" },
+  { "name": "Valletta", "country": "Malta", "lat": 35.8983, "lng": 14.5125, "wikiTitle": "Valletta" },
+  { "name": "Chania", "country": "Grecja (Kreta)", "lat": 35.5167, "lng": 24.0167, "wikiTitle": "Chania" },
+  { "name": "Dubrownik", "country": "Chorwacja", "lat": 42.6403, "lng": 18.1083, "wikiTitle": "Dubrovnik" },
+  { "name": "Hallstatt", "country": "Austria", "lat": 47.562, "lng": 13.649, "wikiTitle": "Hallstatt" },
+  { "name": "Kapadocja", "country": "Turcja", "lat": 38.6183, "lng": 34.8672, "wikiTitle": "Cappadocia" },
+  { "name": "Bagan", "country": "Mjanma", "lat": 21.1725, "lng": 94.86, "wikiTitle": "Bagan" },
+  { "name": "Petra", "country": "Jordania", "lat": 30.3285, "lng": 35.4444, "wikiTitle": "Petra" },
+  { "name": "Reykjavík", "country": "Islandia", "lat": 64.1458, "lng": -21.9425, "wikiTitle": "Reykjavík" }
+]

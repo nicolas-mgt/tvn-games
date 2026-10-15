@@ -1,0 +1,107 @@
+[
+  {
+    "emoji": "🍌",
+    "look": "Plastikowy łuk z kilkunastoma poprzecznymi ostrzami, wygięty jak uśmiech.",
+    "answer": "Kroi banana w plasterki jednym naciśnięciem",
+    "decoys": ["Grzebień do wąsów dla dwóch osób", "Podpórka pod nadgarstek do myszki", "Uchwyt do noszenia jajek na rowerze"],
+    "fact": "Krajalnica do bananów ma tysiące ironicznych recenzji w sieci – podobno nie radzi sobie z bananami wygiętymi w drugą stronę."
+  },
+  {
+    "emoji": "🥚",
+    "look": "Mała miseczka z dwiema szczelinami po bokach i zaczepem do zawieszenia na kubku.",
+    "answer": "Oddziela żółtko od białka",
+    "decoys": ["Podstawka do suszenia kolczyków", "Sitko do herbaty dla chomika", "Foremka do lodu w kształcie kosmity"],
+    "fact": "Separator żółtek to klasyk kuchennych gadżetów – choć wielu kucharzy i tak robi to przelewając jajko między skorupkami."
+  },
+  {
+    "emoji": "🥄",
+    "look": "Łyżka z ażurową półką przykrywającą część czerpaka.",
+    "answer": "Chroni wąsy przed zamoczeniem w zupie",
+    "decoys": ["Odmierza dokładnie pół łyżeczki cukru", "Służy do łowienia klusek z rosołu", "Jest łyżką dla leworęcznych"],
+    "fact": "Łyżki i filiżanki z osłoną na wąsy były modne w XIX wieku, gdy panowie woskowali zarost."
+  },
+  {
+    "emoji": "🧹",
+    "look": "Para kapci z grubą, puchatą podeszwą z mikrofibry.",
+    "answer": "Mopują podłogę, gdy chodzisz po domu",
+    "decoys": ["Uciszają kroki sąsiada z góry", "Ładują telefon energią z chodzenia", "Służą do jazdy po lodowisku w domu"],
+    "fact": "Kapcie-mopy sprzedawane są jako sposób na sprzątanie bez sprzątania. Skuteczność – dyskusyjna."
+  },
+  {
+    "emoji": "🪖",
+    "look": "Kask z dwoma uchwytami na puszki po bokach i długimi rurkami do ust.",
+    "answer": "Pozwala pić z dwóch puszek bez użycia rąk",
+    "decoys": ["Chłodzi głowę kierowcy w upał", "Wzmacnia sygnał radia samochodowego", "Jest kaskiem dla trębaczy"],
+    "fact": "Kask na puszki to gadżet znany z meczów i piknikowych imprez – czysty, bezużyteczny kicz."
+  },
+  {
+    "emoji": "🛌",
+    "look": "Miękka poduszka zakładana na całą głowę, z otworem na nos i usta oraz dziurami na ręce.",
+    "answer": "Do drzemki przy biurku albo w samolocie",
+    "decoys": ["Maska do ćwiczenia wstrzymywania oddechu", "Kominiarka dla nieśmiałych narciarzy", "Ochraniacz dla dzieci uczących się chodzić"],
+    "fact": "Poduszka-struś powstała z kampanii crowdfundingowej i stała się viralem jako symbol drzemki w open space."
+  },
+  {
+    "emoji": "🟡",
+    "look": "Żółte, plastikowe etui wygięte w łuk, otwierane na zawias.",
+    "answer": "Chroni banana przed zgnieceniem w plecaku",
+    "decoys": ["Futerał na okulary dla papugi", "Ochraniacz na kciuk do gry na konsoli", "Pojemnik na resztki rogalika"],
+    "fact": "Pokrowce na banany istnieją naprawdę i są sprzedawane w kilku kolorach – choć żółty pozostaje bestsellerem."
+  },
+  {
+    "emoji": "✂️",
+    "look": "Nożyczki z pięcioma równoległymi ostrzami zamiast jednego.",
+    "answer": "Szybko siekają zioła",
+    "decoys": ["Strzygą psy rasy pudel", "Tną papier na konfetti weselne", "Przycinają frędzle dywanów"],
+    "fact": "Nożyczki do ziół z wieloma ostrzami siekają natkę pietruszki w kilka sekund."
+  },
+  {
+    "emoji": "🍝",
+    "look": "Płaska drewniana deseczka z kilkoma okrągłymi otworami różnej wielkości.",
+    "answer": "Odmierza porcję spaghetti na 1–4 osoby",
+    "decoys": ["Służy do gry w pchełki", "Sortuje guziki według rozmiaru", "Jest miarką do grubości palców przy zakupie pierścionka"],
+    "fact": "Miarka do makaronu to ratunek dla każdego, kto gotuje „trochę” spaghetti, a wychodzi garnek na dziesięć osób."
+  },
+  {
+    "emoji": "🫖",
+    "look": "Silikonowa, żółta łódź podwodna z peryskopem i dziurkami w kadłubie.",
+    "answer": "Zaparzacz do herbaty liściastej",
+    "decoys": ["Zabawka do wanny z pompką", "Pojemnik na tabletki do zmywarki", "Spławik dla wędkarzy-hobbystów"],
+    "fact": "Zaparzacze w kształcie łodzi podwodnych, rybek i astronautów to popularny prezent dla miłośników herbaty."
+  },
+  {
+    "emoji": "🐕",
+    "look": "Cztery małe gumowe buty z rzepami.",
+    "answer": "Kalosze dla psa na deszcz i sól na chodnikach",
+    "decoys": ["Ochraniacze na nogi krzesła", "Kapturki na palce do pisania na tablecie", "Kubeczki na jajka dla dzieci"],
+    "fact": "Psie buty chronią łapy przed solą drogową zimą – choć wiele psów chodzi w nich jak na szczudłach."
+  },
+  {
+    "emoji": "🌽",
+    "look": "Metalowy pierścień z ząbkami i dwoma uchwytami.",
+    "answer": "Zdziera ziarna z kolby kukurydzy",
+    "decoys": ["Otwiera słoiki z ogórkami", "Wyciska sok z cytryny", "Ostrzy ołówki stolarskie"],
+    "fact": "Obierak do kukurydzy przydaje się, gdy robisz sałatkę i nie chcesz gryźć kolby."
+  },
+  {
+    "emoji": "🍎",
+    "look": "Urządzenie z korbą, przyssawką do blatu i nożykiem na sprężynie.",
+    "answer": "Obiera i kroi jabłko spiralnie, kręcąc korbą",
+    "decoys": ["Ostrzy noże metodą kręcenia", "Nawija wełnę na kłębek", "Ugniata ciasto na pierogi"],
+    "fact": "Obieraczki do jabłek na korbę znane są od XIX wieku i wciąż zachwycają dzieci w kuchni."
+  },
+  {
+    "emoji": "🪥",
+    "look": "Plastikowy kluczyk z wąską szczeliną, przez którą przeciąga się coś płaskiego.",
+    "answer": "Wyciska pastę do zębów do ostatniej kropli",
+    "decoys": ["Nakręca stare zegarki", "Otwiera puszki sardynek", "Prasuje krawaty w podróży"],
+    "fact": "Wyciskacz tubek działa też z kremami i koncentratem pomidorowym. Oszczędność level: babcia."
+  },
+  {
+    "emoji": "☕",
+    "look": "Mała grzałka w kształcie podkładki z kablem USB.",
+    "answer": "Utrzymuje kawę w kubku ciepłą przy komputerze",
+    "decoys": ["Suszy pomalowane paznokcie", "Rozmraża mysz komputerową zimą", "Ogrzewa chomika w klatce"],
+    "fact": "Podgrzewacze kubków na USB to biurowy gadżet dla tych, którzy zapominają o kawie na dwie godziny."
+  }
+]
