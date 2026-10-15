@@ -3,12 +3,21 @@ import { shuffle, type Rng } from '@/shared/daily'
 export const PLAYER = 0
 export const CEREMONIES = 5
 export const MAX_AFFECTION = 10
+export const ACTIONS_PER_ROUND = 2
+export const POINTS_PER_CEREMONY = 20
+
+export type CardId = 'immunitet' | 'podwojny' | 'kradziez' | 'wyrocznia'
+export const CARDS: Record<CardId, { name: string; text: string }> = {
+  immunitet: { name: 'Immunitet', text: 'Na tej ceremonii nikt nie może na ciebie zagłosować.' },
+  podwojny: { name: 'Podwójny głos', text: 'Twój głos liczy się podwójnie.' },
+  kradziez: { name: 'Kradzież partnera', text: 'Wybrana osoba zakochuje się w tobie, ale ktoś inny jest wściekły.' },
+  wyrocznia: { name: 'Rajska Wyrocznia', text: 'Widzisz, na kogo każdy zamierza głosować.' },
+}
 
 export type Personality = 'lojalny' | 'intrygant' | 'zazdrosny'
 
 export type Contestant = {
   name: string
-  emoji: string
   personality: Personality
   /** How much this bot likes the player (unused for the player entry). */
   affection: number
@@ -25,13 +34,13 @@ export type Villa = {
 }
 
 const BOTS: Omit<Contestant, 'affection' | 'alive'>[] = [
-  { name: 'Kamila', emoji: '💃', personality: 'intrygant' },
-  { name: 'Dawid', emoji: '🕺', personality: 'lojalny' },
-  { name: 'Wiktoria', emoji: '👸', personality: 'zazdrosny' },
-  { name: 'Patryk', emoji: '💪', personality: 'lojalny' },
-  { name: 'Oliwia', emoji: '🌺', personality: 'intrygant' },
-  { name: 'Maks', emoji: '😎', personality: 'zazdrosny' },
-  { name: 'Natalia', emoji: '🦋', personality: 'lojalny' },
+  { name: 'Kamila', personality: 'intrygant' },
+  { name: 'Dawid', personality: 'lojalny' },
+  { name: 'Wiktoria', personality: 'zazdrosny' },
+  { name: 'Patryk', personality: 'lojalny' },
+  { name: 'Oliwia', personality: 'intrygant' },
+  { name: 'Maks', personality: 'zazdrosny' },
+  { name: 'Natalia', personality: 'lojalny' },
 ]
 
 export function randomNoise(size: number, rng: Rng): number[][] {
@@ -40,7 +49,7 @@ export function randomNoise(size: number, rng: Rng): number[][] {
 
 export function createVilla(rng: Rng): Villa {
   const bots = shuffle(BOTS, rng).map((bot) => ({ ...bot, affection: 4 + Math.floor(rng() * 3), alive: true }))
-  const contestants: Contestant[] = [{ name: 'Ty', emoji: '🙂', personality: 'lojalny', affection: 0, alive: true }, ...bots]
+  const contestants: Contestant[] = [{ name: 'Ty', personality: 'lojalny', affection: 0, alive: true }, ...bots]
   const size = contestants.length
   const dislike = Array.from({ length: size }, (_, v) => Array.from({ length: size }, (_, t) => (v === t ? 0 : 2 + rng() * 6)))
   return { contestants, dislike, noise: randomNoise(size, rng), datedLast: null }
@@ -76,4 +85,14 @@ export function runCeremony(villa: Villa, playerVote: number, doubleVote: boolea
     return villa.noise[PLAYER][cur[0]] > villa.noise[PLAYER][best[0]] ? cur : best
   })
   return { votes, eliminated }
+}
+
+export type Reaction = 'smitten' | 'jealous' | 'hurt' | 'cheerful'
+export type ContestantMood = 'fan' | 'neutral' | 'cold' | 'out' | Reaction
+
+export function contestantMood({ affection, reaction, alive }: { affection: number; reaction?: Reaction; alive: boolean }): ContestantMood {
+  if (!alive) return 'out'
+  if (reaction) return reaction
+  if (affection >= 7) return 'fan'
+  return affection <= 3 ? 'cold' : 'neutral'
 }

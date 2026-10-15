@@ -7,6 +7,7 @@ import { dealersOnlyResult, nextDealerBid } from './paleta-w-ciemno/logic'
 import { distance, emojiImage } from './podloga/logic'
 import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type Temperatures } from './pogodynka/logic'
 import { cellsAt, fits, LEVELS, parseLevel, rotate } from './poukladani/logic'
+import { contestantMood } from './rajskie-rozdanie/logic'
 import sciema from './sciema-z-ogloszenia/data.json'
 import { reporterMood } from './sciema-z-ogloszenia/logic'
 import { judgeMood } from './ukryte-kryterium/logic'
@@ -60,6 +61,20 @@ describe('Ściema z ogłoszenia', () => {
     const photos = import.meta.glob('/public/sciema-z-ogloszenia/cars/*.jpg')
     expect(sciema.listings.filter((a) => !photos[`/public/sciema-z-ogloszenia/cars/${a.id}.jpg`]).map((a) => a.id)).toEqual([])
     expect(sciema.listings.filter((a) => !a.photo.author || !a.photo.license || !a.photo.source).map((a) => a.id)).toEqual([])
+  })
+})
+
+describe('Rajskie Rozdanie', () => {
+  it('picks the contestant mood from affection thresholds', () => {
+    expect(contestantMood({ affection: 7, alive: true })).toBe('fan')
+    expect(contestantMood({ affection: 6, alive: true })).toBe('neutral')
+    expect(contestantMood({ affection: 4, alive: true })).toBe('neutral')
+    expect(contestantMood({ affection: 3, alive: true })).toBe('cold')
+  })
+
+  it('lets a fresh reaction override the mood, but not elimination', () => {
+    expect(contestantMood({ affection: 2, reaction: 'smitten', alive: true })).toBe('smitten')
+    expect(contestantMood({ affection: 9, reaction: 'hurt', alive: false })).toBe('out')
   })
 })
 

@@ -1,0 +1,955 @@
+.rr-hand {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* Backdrop */
+.rr-backdrop {
+  background: #7fd0ec;
+}
+.rr-layer,
+.rr-sky,
+.rr-sky-dawn,
+.rr-tint,
+.rr-night,
+.rr-vignette {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.rr-sky {
+  background: linear-gradient(#3fa9e0, #8fd7f0 55%, #d9f3f5);
+}
+.rr-sky-dawn {
+  background: linear-gradient(#5b6aa8, #f39a8c 45%, #ffd59a 60%, #ffe9c4);
+  opacity: 0;
+  transition: opacity 2s;
+}
+.rr-sun {
+  fill: #ffe27a;
+  filter: drop-shadow(0 0 30px rgb(255 226 122 / 0.9));
+  transform-box: fill-box;
+  transition:
+    transform 2.5s ease-in-out,
+    fill 2.5s;
+}
+.rr-cloud {
+  opacity: 0;
+  transform: translateX(-260px);
+  transition:
+    transform 1.2s ease-out,
+    opacity 1.2s;
+}
+.rr-fronds {
+  transform-box: view-box;
+  animation: rr-sway 5s ease-in-out infinite alternate;
+}
+.rr-ripples path {
+  stroke-dasharray: 18 14;
+  animation: rr-ripple 3s linear infinite;
+}
+.rr-sparkle {
+  animation: rr-twinkle 2.4s ease-in-out infinite alternate;
+}
+.rr-tint {
+  background: transparent;
+  transition: background 0.8s;
+}
+.rr-night {
+  background: #121c44;
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity 2.5s ease-in-out;
+}
+.rr-stars,
+.rr-moon,
+.rr-windows,
+.rr-pool-glow {
+  opacity: 0;
+  transition: opacity 2.5s;
+}
+.rr-stars circle {
+  animation: rr-twinkle 1.8s ease-in-out infinite alternate;
+}
+.rr-pool-glow {
+  mix-blend-mode: screen;
+}
+.rr-flame {
+  transform-box: view-box;
+  transform: scale(0);
+  transition: transform 0.6s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.rr-flame-outer,
+.rr-flame-inner {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: rr-flicker 0.35s ease-in-out infinite alternate;
+}
+.rr-flame-inner {
+  animation-duration: 0.27s;
+}
+.rr-flame-glow {
+  animation: rr-glow 1.2s ease-in-out infinite alternate;
+}
+.rr-hearts span {
+  position: absolute;
+  bottom: -40px;
+  opacity: 0;
+}
+.rr-suitcase {
+  position: absolute;
+  bottom: 6%;
+  left: -80px;
+  opacity: 0;
+}
+.rr-vignette {
+  background: radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.35));
+}
+
+/* Time of day */
+[data-mood='idle'] .rr-sky-dawn,
+[data-mood='result'][data-won='false'] .rr-sky-dawn {
+  opacity: 1;
+}
+[data-mood='idle'] .rr-sun,
+[data-mood='result'][data-won='false'] .rr-sun {
+  transform: translateY(250px);
+  fill: #ff9f5a;
+}
+:is([data-mood='ceremony'], [data-mood='farewell'], [data-mood='result'][data-won='true']) .rr-sun {
+  transform: translateY(420px);
+  fill: #ff7a3a;
+}
+:is([data-mood='ceremony'], [data-mood='farewell'], [data-mood='result'][data-won='true']) .rr-night {
+  opacity: 0.88;
+}
+:is([data-mood='ceremony'], [data-mood='farewell'], [data-mood='result'][data-won='true']) :is(.rr-stars, .rr-moon, .rr-windows) {
+  opacity: 1;
+}
+:is([data-mood='ceremony'], [data-mood='farewell'], [data-mood='result'][data-won='true']) .rr-pool-glow {
+  opacity: 0.35;
+}
+:is([data-mood='ceremony'], [data-mood='farewell'], [data-mood='result'][data-won='true']) :is(.rr-torch, .rr-fire),
+[data-mood='campfire'] .rr-fire {
+  transform: scale(1);
+}
+[data-mood='farewell'] .rr-torch-2 {
+  transform: scale(0);
+  transition-duration: 1.4s;
+}
+
+/* Day reactions */
+[data-mood='date'] .rr-tint {
+  background: rgb(255 110 170 / 0.18);
+}
+[data-mood='date'] .rr-hearts span {
+  animation: rr-rise 2.4s ease-out infinite;
+}
+[data-mood='campfire'] .rr-tint {
+  background: rgb(255 140 40 / 0.14);
+}
+[data-mood='gossip'] .rr-tint {
+  background: rgb(40 50 70 / 0.28);
+}
+[data-mood='gossip'] .rr-cloud {
+  opacity: 1;
+  transform: translateX(0);
+}
+[data-mood='result'][data-won='false'] .rr-suitcase {
+  animation: rr-roll 6s linear 0.6s forwards;
+}
+
+@keyframes rr-sway {
+  from {
+    transform: rotate(-2.5deg);
+  }
+  to {
+    transform: rotate(2.5deg);
+  }
+}
+@keyframes rr-ripple {
+  to {
+    stroke-dashoffset: -64;
+  }
+}
+@keyframes rr-twinkle {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes rr-flicker {
+  from {
+    transform: scale(0.92, 0.86) skewX(-3deg);
+  }
+  to {
+    transform: scale(1.04, 1.08) skewX(3deg);
+  }
+}
+@keyframes rr-glow {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes rr-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+  20% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-70vh) scale(1.1);
+  }
+}
+@keyframes rr-roll {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(calc(100vw + 160px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rr-fronds,
+  .rr-ripples path,
+  .rr-sparkle,
+  .rr-stars circle,
+  .rr-flame-outer,
+  .rr-flame-inner,
+  .rr-flame-glow,
+  [data-mood='date'] .rr-hearts span {
+    animation: none !important;
+  }
+  [data-mood='result'][data-won='false'] .rr-suitcase {
+    animation: none;
+    opacity: 1;
+    left: 12%;
+  }
+}
+
+/* Lobby, top bar, prompt */
+.rr-lobby {
+  margin-top: 8vh;
+  padding: 2rem 1.5rem;
+  border-radius: 24px;
+  background: rgb(30 20 50 / 0.35);
+  backdrop-filter: blur(6px);
+  text-shadow: 0 2px 10px rgb(0 0 0 / 0.45);
+}
+.rr-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.25rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgb(230 60 120 / 0.92), rgb(255 140 60 / 0.92));
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.06em;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+}
+.rr-bar-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+.rr-bar-title em {
+  font-style: normal;
+  padding: 0 0.4rem;
+  border-radius: 4px;
+  background: #fff;
+  color: #e63c78;
+  font-size: 1rem;
+}
+.rr-rec {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff2a2a;
+  box-shadow: 0 0 0 3px rgb(255 255 255 / 0.6);
+  animation: rr-rec 1.2s steps(2) infinite;
+}
+.rr-bar-stats {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 1.15rem;
+}
+.rr-bar-stats b {
+  font-weight: 400;
+  font-size: 1.4rem;
+}
+.rr-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.rr-prompt {
+  text-align: center;
+  color: #fff;
+  font-size: 1.7rem;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 0.5);
+}
+
+/* Terrace and contestant tiles */
+.rr-terrace {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.6rem;
+  padding: 0.5rem 0 2.6rem;
+}
+.rr-terrace-spot {
+  transform: translateY(var(--arc));
+}
+.rr-tile {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0.5rem 0.25rem 0.6rem;
+  border: 3px solid transparent;
+  border-radius: 18px;
+  background: rgb(255 255 255 / 0.78);
+  backdrop-filter: blur(4px);
+  color: #2b1d14;
+  box-shadow: 0 8px 18px rgb(0 0 0 / 0.18);
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
+}
+.rr-tile:hover {
+  border-color: rgb(255 92 138 / 0.5);
+}
+.rr-tile[data-selected='true'] {
+  border-color: #ff5c8a;
+  background: radial-gradient(circle at 50% 30%, #fff8d6, rgb(255 255 255 / 0.9) 70%);
+  box-shadow:
+    0 0 0 4px rgb(255 92 138 / 0.35),
+    0 0 30px rgb(255 210 90 / 0.8);
+}
+.rr-figure {
+  display: block;
+  width: 100%;
+  max-width: 110px;
+}
+.rr-figure svg {
+  display: block;
+  width: 100%;
+}
+.rr-bob {
+  animation: rr-bob 2.6s ease-in-out infinite alternate;
+}
+.rr-terrace-spot:nth-child(even) .rr-bob {
+  animation-delay: -1.3s;
+}
+.rr-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+.rr-trait {
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  background: rgb(43 29 20 / 0.08);
+  font-size: 0.7rem;
+}
+.rr-meter {
+  display: flex;
+  gap: 1px;
+  margin-top: 0.15rem;
+}
+.rr-heart-empty svg path {
+  fill: #d6cfd3;
+}
+.rr-bubble {
+  position: absolute;
+  top: -0.6rem;
+  right: -0.4rem;
+  z-index: 2;
+  padding: 0.1rem 0.5rem;
+  border-radius: 12px;
+  background: #fff;
+  color: #2b1d14;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 0.25);
+}
+.rr-tile[data-mood='hurt'] .rr-bubble {
+  background: #2f8a4c;
+  color: #fff;
+}
+.rr-tile[data-mood='jealous'] .rr-bubble {
+  background: #7a4fc9;
+  color: #fff;
+}
+.rr-burst {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  z-index: 2;
+}
+.rr-burst span {
+  position: absolute;
+}
+.rr-oracle {
+  position: absolute;
+  bottom: calc(100% - 0.4rem);
+  left: 50%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  translate: -50% 0;
+  padding: 0.15rem 0.55rem 0.15rem 0.2rem;
+  border-radius: 999px;
+  background: #efe7ff;
+  color: #3a2a7a;
+  font-size: 1.05rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgb(58 42 122 / 0.35);
+}
+.rr-oracle::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  translate: -50% 3px;
+  background: #efe7ff;
+}
+.rr-oracle-face {
+  width: 26px;
+  height: 32px;
+}
+
+/* Dock: power card and action signs */
+.rr-dock {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+.rr-card-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  perspective: 900px;
+}
+.rr-card {
+  position: relative;
+  width: 170px;
+  height: 236px;
+  transform-style: preserve-3d;
+}
+.rr-card-face,
+.rr-card-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 0.3);
+}
+.rr-card-face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.6rem 0.7rem;
+  border: 4px solid #fff6d8;
+  color: #2b1d14;
+  text-align: center;
+  background: linear-gradient(160deg, #fff6d8, #ffd59a);
+}
+.rr-card-face[data-kind='podwojny'] {
+  background: linear-gradient(160deg, #e8f3ff, #9fd0ff);
+}
+.rr-card-face[data-kind='kradziez'] {
+  background: linear-gradient(160deg, #ffe8f0, #ff9fbf);
+}
+.rr-card-face[data-kind='wyrocznia'] {
+  background: linear-gradient(160deg, #f1ebff, #c4b0ff);
+}
+.rr-card-kicker {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  opacity: 0.6;
+}
+.rr-card-icon svg {
+  width: 54px;
+  height: 54px;
+}
+.rr-card-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  line-height: 1;
+}
+.rr-card-text {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.05;
+}
+.rr-card-stamp {
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  translate: -50% 0;
+  rotate: -14deg;
+  padding: 0 0.5rem;
+  border: 3px solid #c2185b;
+  border-radius: 6px;
+  color: #c2185b;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.1em;
+  background: rgb(255 255 255 / 0.7);
+}
+.rr-card-back {
+  display: grid;
+  place-items: center;
+  transform: rotateY(180deg);
+  border: 4px solid #fff;
+  background:
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.15) 0 10px, transparent 10px 20px),
+    linear-gradient(160deg, #e63c78, #ff8c3c);
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+}
+.rr-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.rr-sign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.6rem;
+  padding: 0.5rem 0.75rem;
+  border: 3px solid #6d4c2f;
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 14px, rgb(0 0 0 / 0.06) 14px 16px),
+    linear-gradient(#d8a16a, #b98352);
+  color: #3a2614;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  box-shadow:
+    0 5px 0 #6d4c2f,
+    0 10px 18px rgb(0 0 0 / 0.25);
+  cursor: pointer;
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s,
+    filter 0.2s;
+}
+.rr-sign small {
+  margin-top: 0.15rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0;
+  opacity: 0.8;
+}
+.rr-sign:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+.rr-sign:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow:
+    0 1px 0 #6d4c2f,
+    0 4px 10px rgb(0 0 0 / 0.25);
+}
+.rr-sign:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.7) brightness(0.85);
+  opacity: 0.6;
+}
+.rr-sign-date {
+  border-left: 10px solid #ff5c8a;
+}
+.rr-sign-fire {
+  border-left: 10px solid #ff8a1f;
+}
+.rr-sign-gossip {
+  border-left: 10px solid #2f8a4c;
+}
+.rr-sign-go {
+  border-color: #7a1f3d;
+  background: linear-gradient(#ff7aa2, #e63c78);
+  color: #fff;
+  box-shadow:
+    0 5px 0 #7a1f3d,
+    0 10px 18px rgb(0 0 0 / 0.25);
+}
+.rr-sign-card {
+  min-height: 2.6rem;
+  width: 170px;
+  font-size: 1.15rem;
+}
+
+/* Ceremony */
+.rr-ceremony {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.rr-ceremony-title {
+  text-align: center;
+  color: #ffe9b0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 18px rgb(255 160 60 / 0.7);
+}
+.rr-circle {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  padding-bottom: 2.4rem;
+}
+.rr-seat {
+  position: relative;
+  display: flex;
+  width: 112px;
+  flex-direction: column;
+  align-items: center;
+  transform: translateY(var(--arc));
+}
+.rr-torch-mini {
+  width: 26px;
+  height: 58px;
+  margin-bottom: -6px;
+}
+.rr-torch-mini .rr-flame-outer,
+.rr-torch-mini .rr-flame-inner {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.rr-seat-button {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.4rem 0.2rem 0.3rem;
+  border: 3px solid transparent;
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 35%, rgb(255 170 80 / 0.28), rgb(20 20 50 / 0.55) 70%);
+  color: #fff;
+  transition:
+    border-color 0.2s,
+    transform 0.2s;
+}
+.rr-seat-button:not(:disabled) {
+  cursor: pointer;
+}
+.rr-seat-button:not(:disabled):hover {
+  border-color: #ff5c5c;
+  transform: translateY(-4px);
+}
+[data-testid='ceremony-player'] {
+  border-color: rgb(255 233 176 / 0.5);
+}
+.rr-tokens {
+  display: flex;
+  min-height: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1px;
+  margin-top: 0.3rem;
+}
+.rr-shell {
+  width: 24px;
+  height: 22px;
+}
+.rr-count {
+  position: absolute;
+  top: 54px;
+  right: 2px;
+  display: grid;
+  min-width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e63c78;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  box-shadow: 0 0 0 3px #fff;
+}
+.rr-leaving {
+  position: absolute;
+  top: 120px;
+  right: -14px;
+}
+.rr-verdict {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+  border-radius: 16px;
+  background: rgb(10 14 40 / 0.6);
+  color: #fff;
+}
+.rr-verdict ul {
+  columns: 2;
+  column-gap: 2rem;
+  font-size: 0.9rem;
+}
+.rr-verdict .rr-sign {
+  min-width: 14rem;
+}
+
+/* Lower third and result */
+.rr-lower-third {
+  position: relative;
+  padding: 0.5rem 1rem 0.5rem 6.5rem;
+  border-left: 6px solid #ff5c8a;
+  border-radius: 4px 14px 14px 4px;
+  background: linear-gradient(90deg, rgb(20 16 40 / 0.85), rgb(20 16 40 / 0.55));
+  color: #fff;
+  font-size: 0.95rem;
+}
+.rr-lower-tag {
+  position: absolute;
+  top: 0.55rem;
+  left: 0.75rem;
+  padding: 0.05rem 0.5rem;
+  border-radius: 4px;
+  background: #ff5c8a;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+}
+.rr-lower-old {
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+.rr-finale {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem;
+}
+.rr-finale-face {
+  width: 72px;
+  height: 90px;
+}
+
+@keyframes rr-rec {
+  50% {
+    opacity: 0.2;
+  }
+}
+@keyframes rr-bob {
+  from {
+    transform: translateY(0) rotate(-1deg);
+  }
+  to {
+    transform: translateY(-3px) rotate(1deg);
+  }
+}
+
+@media (max-width: 767px) {
+  .rr-bar {
+    flex-wrap: nowrap;
+    padding: 0.35rem 0.75rem;
+    border-radius: 14px;
+  }
+  .rr-bar-title {
+    font-size: 1.15rem;
+    white-space: nowrap;
+  }
+  .rr-bar-title em {
+    display: none;
+  }
+  .rr-bar-stats {
+    gap: 0.6rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+  .rr-bar-stats b {
+    font-size: 1.1rem;
+  }
+  .rr-bar-actions svg {
+    width: 15px;
+  }
+  .rr-prompt {
+    font-size: 1.35rem;
+  }
+  .rr-terrace {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.4rem;
+    padding-bottom: 0.25rem;
+    padding-top: 1.4rem;
+    row-gap: 1.6rem;
+  }
+  .rr-terrace-spot,
+  .rr-seat {
+    transform: none;
+  }
+  .rr-tile {
+    padding: 0.3rem 0.1rem 0.4rem;
+    border-radius: 14px;
+  }
+  .rr-name {
+    font-size: 1rem;
+  }
+  .rr-trait {
+    font-size: 0.58rem;
+  }
+  .rr-meter svg {
+    width: 9px;
+  }
+  .rr-oracle {
+    font-size: 0.85rem;
+    padding-right: 0.35rem;
+  }
+  .rr-oracle-face {
+    width: 18px;
+    height: 22px;
+  }
+  .rr-dock {
+    position: sticky;
+    bottom: 0.5rem;
+    z-index: 5;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 18px;
+    background: rgb(40 26 14 / 0.55);
+    backdrop-filter: blur(6px);
+  }
+  .rr-card-slot {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .rr-card {
+    flex: 1;
+    height: 76px;
+  }
+  .rr-card-face {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: 0.4rem;
+    align-items: center;
+    padding: 0.3rem 0.5rem;
+    border-width: 3px;
+    text-align: left;
+  }
+  .rr-card-kicker {
+    display: none;
+  }
+  .rr-card-icon {
+    grid-row: span 2;
+  }
+  .rr-card-icon svg {
+    width: 42px;
+    height: 42px;
+  }
+  .rr-card-name {
+    font-size: 1.1rem;
+  }
+  .rr-card-text {
+    font-size: 0.92rem;
+  }
+  .rr-card-stamp {
+    right: 0.5rem;
+    bottom: 0.4rem;
+    left: auto;
+    translate: none;
+    font-size: 1.1rem;
+  }
+  .rr-sign-card {
+    width: 7.5rem;
+    min-height: 0;
+    font-size: 1rem;
+  }
+  .rr-actions {
+    gap: 0.5rem;
+  }
+  .rr-sign {
+    min-height: 3rem;
+    font-size: 1.3rem;
+  }
+  .rr-sign small {
+    font-size: 0.6rem;
+  }
+  .rr-ceremony-title {
+    font-size: 1.45rem;
+  }
+  .rr-circle {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.4rem;
+    padding-bottom: 0;
+  }
+  .rr-seat {
+    width: auto;
+  }
+  .rr-torch-mini {
+    width: 18px;
+    height: 40px;
+  }
+  .rr-count {
+    top: 38px;
+    min-width: 24px;
+    height: 24px;
+    font-size: 1.1rem;
+  }
+  .rr-shell {
+    width: 18px;
+    height: 17px;
+  }
+  .rr-leaving {
+    top: 90px;
+    right: -6px;
+  }
+  .rr-verdict ul {
+    font-size: 0.8rem;
+    column-gap: 1rem;
+  }
+  .rr-lower-third {
+    padding-left: 0.75rem;
+    padding-top: 1.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rr-rec,
+  .rr-bob {
+    animation: none;
+  }
+}

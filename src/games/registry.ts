@@ -121,6 +121,7 @@ export const GAMES: GameMeta[] = [
     size: 'M',
     description: 'Willa, siedmioro rywali i karty z mocami. Przetrwaj ceremonie aż do finału.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./rajskie-rozdanie')),
   },
   {
