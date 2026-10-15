@@ -1,0 +1,777 @@
+.gr-hand {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* Backdrop */
+.gr-backdrop {
+  background: #2a1f3d;
+}
+.gr-sky {
+  position: absolute;
+  inset: 0 0 30%;
+  background: linear-gradient(#1b1736, #3b2a5c 40%, #a14d6a 72%, #f08a4b 92%, #ffc27a);
+}
+.gr-stars {
+  position: absolute;
+  inset: 0 0 60%;
+  background:
+    radial-gradient(1.5px 1.5px at 12% 20%, #fff, transparent),
+    radial-gradient(1px 1px at 28% 8%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 47% 26%, #fff, transparent),
+    radial-gradient(1px 1px at 63% 12%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 81% 22%, #fff, transparent),
+    radial-gradient(1px 1px at 92% 6%, #fff, transparent);
+  opacity: 0.8;
+  animation: gr-twinkle 5s ease-in-out infinite;
+}
+.gr-blocks {
+  position: absolute;
+  left: 0;
+  bottom: 42%;
+  width: 100%;
+  height: 26%;
+}
+.gr-fence {
+  position: absolute;
+  inset: 52% 0 30%;
+  background:
+    repeating-linear-gradient(90deg, #3a3f46 0 6px, transparent 6px 180px),
+    repeating-linear-gradient(45deg, rgb(190 200 210 / 0.35) 0 1px, transparent 1px 14px),
+    repeating-linear-gradient(-45deg, rgb(190 200 210 / 0.35) 0 1px, transparent 1px 14px);
+  border-top: 4px solid #4a5058;
+}
+.gr-banner {
+  position: absolute;
+  top: 16%;
+  left: 6%;
+  padding: 4px 14px;
+  border: 3px solid #fff;
+  background: #c92a2a;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(16px, 2.4vw, 30px);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  rotate: -1.5deg;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 0.4);
+}
+.gr-office {
+  position: absolute;
+  right: 5%;
+  bottom: 27%;
+  width: min(30vw, 380px);
+  height: 22vh;
+  min-height: 130px;
+  border-top: 8px solid #2b3a2f;
+  background:
+    linear-gradient(180deg, rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.35)),
+    repeating-linear-gradient(90deg, #4f6b52 0 10px, #3f5a43 10px 14px);
+  box-shadow: 0 10px 20px rgb(0 0 0 / 0.4);
+}
+.gr-neon {
+  position: absolute;
+  top: -58px;
+  left: 50%;
+  translate: -50% 0;
+  padding: 2px 12px;
+  border: 3px solid #ff4fb4;
+  border-radius: 8px;
+  background: rgb(20 10 30 / 0.85);
+  color: #ffe3f3;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(20px, 2.6vw, 34px);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  text-shadow:
+    0 0 6px #ff4fb4,
+    0 0 16px #ff4fb4;
+  box-shadow:
+    0 0 14px #ff4fb4,
+    inset 0 0 10px rgb(255 79 180 / 0.5);
+  animation: gr-flicker 6s linear infinite;
+}
+.gr-neon span {
+  color: #d9f7ff;
+  text-shadow:
+    0 0 6px #33d1ff,
+    0 0 16px #33d1ff;
+}
+.gr-window {
+  position: absolute;
+  top: 22%;
+  left: 10%;
+  width: 40%;
+  height: 40%;
+  border: 5px solid #ddd;
+  background: linear-gradient(#ffe7a3, #f5b85c);
+  box-shadow: 0 0 30px rgb(255 200 110 / 0.45);
+}
+.gr-window::after {
+  content: 'OTWARTE';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  translate: -50% 0;
+  padding: 0 6px;
+  background: #c92a2a;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+}
+.gr-office-door {
+  position: absolute;
+  right: 12%;
+  bottom: 0;
+  width: 22%;
+  height: 78%;
+  border: 4px solid #2b3a2f;
+  border-bottom: 0;
+  background: #364a39;
+}
+.gr-ac {
+  position: absolute;
+  top: 10%;
+  right: 40%;
+  width: 14%;
+  height: 22%;
+  border-radius: 3px;
+  background: repeating-linear-gradient(0deg, #c9cdd1 0 3px, #9ea4aa 3px 5px);
+}
+.gr-lamp {
+  position: absolute;
+  left: 12%;
+  bottom: 22%;
+  width: 6px;
+  height: 52vh;
+  background: linear-gradient(90deg, #2a2d33, #4d525a);
+}
+.gr-lamp-head {
+  position: absolute;
+  top: 0;
+  left: -4px;
+  width: 54px;
+  height: 12px;
+  border-radius: 6px 6px 2px 2px;
+  background: #3a3f46;
+}
+.gr-lamp-head::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  right: 4px;
+  width: 30px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff4c2;
+  box-shadow: 0 0 16px 6px rgb(255 230 150 / 0.8);
+}
+.gr-lamp-cone {
+  position: absolute;
+  top: 12px;
+  left: -90px;
+  width: 260px;
+  height: 52vh;
+  background: linear-gradient(rgb(255 235 160 / 0.4), rgb(255 235 160 / 0.04));
+  clip-path: polygon(48% 0, 64% 0, 100% 100%, 0 100%);
+  transition: opacity 0.6s;
+}
+.gr-gravel {
+  position: absolute;
+  inset: 70% 0 0;
+  background:
+    radial-gradient(circle at 30% 40%, rgb(255 255 255 / 0.06) 1px, transparent 2px) 0 0 / 7px 7px,
+    radial-gradient(circle at 70% 60%, rgb(0 0 0 / 0.25) 1px, transparent 2px) 0 0 / 11px 11px,
+    linear-gradient(#5a5048, #2e2824);
+}
+.gr-car {
+  position: absolute;
+  bottom: 4%;
+  width: min(26vw, 300px);
+  filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.5));
+}
+.gr-car-left {
+  left: -3%;
+}
+.gr-car-right {
+  right: -3%;
+  scale: -1 1;
+}
+.gr-strings {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+}
+.gr-bunting {
+  transform-box: view-box;
+  transform-origin: 50% 0;
+  animation: gr-sway 5s ease-in-out infinite;
+}
+.gr-bulb-string {
+  transform-box: view-box;
+  transform-origin: 50% 0;
+  animation: gr-sway 3.8s ease-in-out infinite reverse;
+}
+.gr-bulb {
+  fill: #ffe9a8;
+  filter: drop-shadow(0 0 6px rgb(255 214 120 / 0.9));
+  animation: gr-glim 2.4s ease-in-out infinite;
+  transition: fill 0.4s;
+}
+[data-mood='good'] .gr-bulb,
+[data-mood='result'] .gr-bulb {
+  fill: #fff;
+  filter: drop-shadow(0 0 14px rgb(255 214 120 / 1));
+}
+[data-mood='bad'] .gr-neon {
+  animation: gr-neon-off 1.2s steps(1) forwards;
+}
+.gr-headlights {
+  position: absolute;
+  inset: 40% -30% 0;
+  background: radial-gradient(ellipse 30% 45% at 50% 70%, rgb(255 250 220 / 0.55), transparent 70%);
+  opacity: 0;
+}
+[data-mood='arrive'] .gr-headlights {
+  animation: gr-sweep 1.4s ease-out;
+}
+.gr-glow,
+.gr-shade,
+.gr-vignette {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.8s;
+}
+.gr-glow {
+  background: radial-gradient(circle at 50% 55%, rgb(255 190 90 / 0.3), transparent 65%);
+  opacity: 0;
+}
+[data-mood='good'] .gr-glow,
+[data-mood='result'] .gr-glow {
+  opacity: 1;
+}
+.gr-shade {
+  background: rgb(10 10 30 / 0.45);
+  opacity: 0;
+}
+[data-mood='bad'] .gr-shade {
+  opacity: 1;
+}
+[data-mood='bad'] .gr-lamp-cone {
+  opacity: 0.4;
+}
+.gr-vignette {
+  background: radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.5));
+}
+@media (max-width: 639px) {
+  .gr-banner,
+  .gr-lamp {
+    display: none;
+  }
+  .gr-office {
+    width: 44vw;
+    height: 16vh;
+    min-height: 90px;
+  }
+  .gr-car {
+    width: 36vw;
+    opacity: 0.8;
+  }
+}
+
+@keyframes gr-twinkle {
+  50% {
+    opacity: 0.45;
+  }
+}
+@keyframes gr-flicker {
+  0%,
+  41%,
+  43%,
+  45%,
+  100% {
+    opacity: 1;
+  }
+  42%,
+  44% {
+    opacity: 0.35;
+  }
+}
+@keyframes gr-neon-off {
+  0%,
+  20%,
+  40% {
+    opacity: 1;
+  }
+  10%,
+  30%,
+  60%,
+  100% {
+    opacity: 0.18;
+  }
+}
+@keyframes gr-sway {
+  50% {
+    transform: rotate(0.6deg);
+  }
+}
+@keyframes gr-glim {
+  50% {
+    opacity: 0.75;
+  }
+}
+@keyframes gr-sweep {
+  0% {
+    opacity: 0;
+    transform: translateX(-40%);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(30%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gr-stars,
+  .gr-neon,
+  .gr-bunting,
+  .gr-bulb-string,
+  .gr-bulb,
+  .gr-headlights {
+    animation: none !important;
+  }
+  [data-mood='bad'] .gr-neon {
+    opacity: 0.18;
+  }
+}
+
+/* Lobby and plate */
+.gr-lobby {
+  margin-top: 6vh;
+  padding: 2rem 1.5rem;
+  border-radius: 18px;
+  background: rgb(18 14 28 / 0.8);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 20px 40px rgb(0 0 0 / 0.4);
+}
+.gr-plate {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2px 16px 2px 0;
+  overflow: hidden;
+  border: 3px solid #1c1c1c;
+  border-radius: 8px;
+  background: #fbfbf8;
+  color: #1c1c1c;
+  box-shadow: 0 6px 14px rgb(0 0 0 / 0.4);
+}
+.gr-plate strong {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.4rem, 5vw, 2.1rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.gr-plate-eu {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 7px 3px;
+  background: #1c4fb5;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+.gr-plate-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1c1c1c;
+}
+
+/* Dealer */
+.gr-dealer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.gr-bubble-slot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 4.6rem;
+  width: 100%;
+}
+.gr-bubble {
+  position: relative;
+  max-width: 100%;
+  padding: 4px 12px;
+  border-radius: 14px;
+  background: #fffdf5;
+  color: #2b1d14;
+  font-size: 1.25rem;
+  text-align: center;
+  box-shadow: 0 3px 8px rgb(0 0 0 / 0.3);
+}
+.gr-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  translate: -50% 0;
+  border: 7px solid transparent;
+  border-bottom: 0;
+  border-top-color: #fffdf5;
+}
+.gr-dealer-figure {
+  width: 100%;
+  max-width: 170px;
+  margin-top: 8px;
+}
+.gr-dealer-name {
+  margin-top: -4px;
+  padding: 1px 10px;
+  border-radius: 999px;
+  background: rgb(18 14 28 / 0.8);
+  color: #fff;
+  font-size: 11px;
+}
+.gr-breathe {
+  transform-box: view-box;
+  transform-origin: 80px 200px;
+  animation: gr-breathe 3.6s ease-in-out infinite;
+}
+
+/* Listing */
+.gr-listing {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 0;
+}
+.gr-photo-frame {
+  position: relative;
+  margin: 0;
+  padding: 8px 8px 26px;
+  border-radius: 4px;
+  background: #f4efe4;
+  box-shadow: 0 12px 24px rgb(0 0 0 / 0.45);
+  rotate: -1.2deg;
+}
+.gr-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #333;
+}
+.gr-stickers {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.gr-stickers span {
+  padding: 1px 8px;
+  border-radius: 3px;
+  background: #f2b705;
+  color: #1c1c1c;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.35);
+}
+.gr-stickers span:nth-child(2) {
+  background: #fff;
+  rotate: 2deg;
+}
+.gr-stickers span:nth-child(3) {
+  background: #63e6be;
+  rotate: -2deg;
+}
+.gr-credit {
+  position: absolute;
+  inset: auto 10px 5px;
+  overflow: hidden;
+  color: #6b6b6b;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gr-credit a:hover {
+  text-decoration: underline;
+}
+.gr-card {
+  position: relative;
+  z-index: 1;
+  margin: 28px 0 0 -18px;
+  padding: 12px 14px 14px;
+  background:
+    repeating-linear-gradient(transparent 0 23px, rgb(80 120 200 / 0.18) 23px 24px),
+    #fdfbf3;
+  color: #222;
+  rotate: 2.5deg;
+  box-shadow: 0 10px 20px rgb(0 0 0 / 0.4);
+  perspective: 600px;
+}
+.gr-card::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 70px;
+  height: 18px;
+  translate: -50% 0;
+  background: rgb(240 225 180 / 0.8);
+}
+.gr-card-head {
+  color: #c92a2a;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.gr-card-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.gr-card-desc {
+  margin-top: 4px;
+  font-size: 1.3rem;
+  overflow-wrap: anywhere;
+}
+.gr-card-price {
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
+}
+.gr-card-price span {
+  color: #6b6b6b;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.gr-marker {
+  color: #1c3fa0;
+  font-family: 'Caveat', cursive;
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.gr-price-sticker {
+  position: absolute;
+  right: -10px;
+  bottom: -18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 14px 4px;
+  border-radius: 6px;
+  background: #ffe066;
+  color: #1c1c1c;
+  box-shadow: 0 6px 12px rgb(0 0 0 / 0.4);
+  rotate: -6deg;
+}
+.gr-price-sticker span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.gr-price-sticker strong {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Controls */
+.gr-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgb(18 14 28 / 0.8);
+  backdrop-filter: blur(4px);
+}
+.gr-tape {
+  padding: 18px 10px 6px;
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(90deg, #1c1c1c 0 1px, transparent 1px 10px) 0 0 / 100% 8px no-repeat,
+    repeating-linear-gradient(90deg, #1c1c1c 0 2px, transparent 2px 50px) 0 0 / 100% 14px no-repeat,
+    #f2c94c;
+  box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.15);
+}
+.gr-tape [data-slot='slider-track'] {
+  height: 8px;
+  background: rgb(0 0 0 / 0.2);
+}
+.gr-tape [data-slot='slider-range'] {
+  background: #c92a2a;
+}
+.gr-tape [data-slot='slider-thumb'] {
+  width: 26px;
+  height: 26px;
+  border: 3px solid #1c1c1c;
+  background: #fff;
+}
+.gr-price-input {
+  background: #fff;
+  color: #1c1c1c;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.gr-appraise {
+  flex: none;
+  padding: 0 18px;
+  background: #ff4fb4;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.35rem;
+  letter-spacing: 0.06em;
+}
+.gr-appraise:hover {
+  background: #ff70c3;
+}
+.gr-points {
+  padding: 2px 18px 0;
+  border-radius: 999px;
+  background: rgb(18 14 28 / 0.8);
+  color: #ffe066;
+  font-size: 2.6rem;
+  line-height: 1;
+  text-shadow: 0 0 18px rgb(255 224 102 / 0.5);
+}
+
+/* Gauge */
+.gr-gauge {
+  width: 100%;
+  max-width: 230px;
+  margin: 0 auto;
+}
+.gr-gauge svg {
+  display: block;
+  width: 100%;
+  filter: drop-shadow(0 10px 16px rgb(0 0 0 / 0.45));
+}
+.gr-gauge-label {
+  fill: #dee2e6;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+}
+.gr-gauge-readout {
+  fill: #ffe066;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+}
+.gr-gauge-caption {
+  margin-top: 4px;
+  color: rgb(255 255 255 / 0.6);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1023px) {
+  .gr-dealer {
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    gap: 8px;
+  }
+  .gr-dealer-figure {
+    width: 90px;
+    flex: none;
+  }
+  .gr-dealer-name {
+    display: none;
+  }
+  .gr-bubble-slot {
+    flex: 1;
+    min-height: 0;
+    padding-bottom: 20px;
+  }
+  .gr-bubble::after {
+    left: -7px;
+    bottom: 10px;
+    translate: 0;
+    border: 7px solid transparent;
+    border-left: 0;
+    border-right-color: #fffdf5;
+  }
+}
+@media (min-width: 1024px) {
+  .gr-neon {
+    position: fixed;
+    top: 12vh;
+    right: 3vw;
+    left: auto;
+    translate: none;
+  }
+  .gr-neon::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 15%;
+    right: 15%;
+    height: 34px;
+    border-inline: 4px solid #3a3f46;
+  }
+}
+@media (max-width: 639px) {
+  .gr-listing {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .gr-card {
+    margin: -14px 8px 0;
+    rotate: 1deg;
+  }
+  .gr-card-head {
+    font-size: 1.9rem;
+  }
+  .gr-marker {
+    font-size: 2.2rem;
+  }
+  .gr-stickers span {
+    font-size: 0.9rem;
+  }
+  .gr-gauge {
+    max-width: 190px;
+  }
+}
+
+@keyframes gr-breathe {
+  50% {
+    transform: translateY(1.5px) scaleY(0.99);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gr-breathe {
+    animation: none;
+  }
+}

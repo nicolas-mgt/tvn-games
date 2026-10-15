@@ -97,6 +97,7 @@ export const GAMES: GameMeta[] = [
     size: 'S',
     description: 'Fikcyjne ogłoszenia aut. Zgadnij cenę, za którą poszły.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./ile-za-grata')),
   },
   {

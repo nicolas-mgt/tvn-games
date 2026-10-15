@@ -1,16 +1,222 @@
-[
-  { "emoji": "🚗", "title": "Opel Astra 1.6", "year": 2009, "mileage": 238000, "fuel": "benzyna + LPG", "description": "Niemiec płakał jak sprzedawał. Drobne rysy, gaz wbity w dowód. Klima do nabicia.", "price": 11500 },
-  { "emoji": "🚙", "title": "Toyota RAV4 2.0 Hybrid", "year": 2021, "mileage": 64000, "fuel": "hybryda", "description": "Salon Polska, pierwszy właściciel, serwis ASO. Bez wpadek, bez kombinacji.", "price": 129000 },
-  { "emoji": "🚐", "title": "Volkswagen Transporter T5", "year": 2007, "mileage": 410000, "fuel": "diesel", "description": "Silnik dopiero się dociera. Idealny na kampera. Wewnątrz zapach przygody i kebaba.", "price": 24000 },
-  { "emoji": "🏎️", "title": "BMW E46 330i Coupe", "year": 2002, "mileage": 285000, "fuel": "benzyna", "description": "Bokiem tylko w weekendy. Tylny zderzak z innego modelu, ale pasuje.", "price": 28000 },
-  { "emoji": "🚗", "title": "Fiat 126p", "year": 1989, "mileage": 41000, "fuel": "benzyna", "description": "Maluch po renowacji, oryginalny kolor bahama yellow. Pamiątka po dziadku.", "price": 22000 },
-  { "emoji": "🚗", "title": "Škoda Octavia 1.9 TDI", "year": 2006, "mileage": 390000, "fuel": "diesel", "description": "Nie do zajechania. Przebieg ma tylko symboliczne znaczenie.", "price": 9900 },
-  { "emoji": "🚕", "title": "Toyota Prius 1.8", "year": 2014, "mileage": 420000, "fuel": "hybryda", "description": "Ex-taxi, ale bardzo kulturalnie użytkowana. Baterie hybrydy po wymianie.", "price": 26500 },
-  { "emoji": "🚙", "title": "Dacia Duster 1.0 TCe", "year": 2022, "mileage": 29000, "fuel": "benzyna + LPG", "description": "Jak nowa, bo właściciel bał się nią jeździć w deszczu.", "price": 61000 },
-  { "emoji": "🚗", "title": "Ford Focus 1.6", "year": 2011, "mileage": 176000, "fuel": "benzyna", "description": "Kombi, pojemny bagażnik, hak. Ślad po naklejce „Dziecko w aucie”.", "price": 17900 },
-  { "emoji": "⚡", "title": "Tesla Model 3 Long Range", "year": 2020, "mileage": 98000, "fuel": "elektryk", "description": "Autopilot, szklany dach, tylne szyby lekko zapachowe (wanilia).", "price": 105000 },
-  { "emoji": "🚙", "title": "Mercedes W124 250D", "year": 1993, "mileage": 612000, "fuel": "diesel", "description": "Beczka. Przeżyje nas wszystkich. Rdza tylko w miejscach, gdzie nikt nie patrzy.", "price": 16000 },
-  { "emoji": "🚗", "title": "Renault Clio 1.2", "year": 2005, "mileage": 205000, "fuel": "benzyna", "description": "Ekonomiczne, do miasta. Szyba pasażera opuszcza się tylko w piątki.", "price": 4500 },
-  { "emoji": "🚙", "title": "Audi Q7 3.0 TDI", "year": 2016, "mileage": 199000, "fuel": "diesel", "description": "Siedem miejsc, skóra, pneumatyka. Kontrolki świecą tylko świątecznie.", "price": 89000 },
-  { "emoji": "🚗", "title": "Kia Ceed 1.4", "year": 2018, "mileage": 87000, "fuel": "benzyna", "description": "Gwarancja do niedawna, auto zadbane, opony całoroczne.", "price": 46000 }
-]
+{
+  "comments": {
+    "impressed": [
+      "No proszę, fachowiec! Ty u kogoś terminowałeś?",
+      "Co do złotówki prawie. Zatrudniłbym cię od jutra.",
+      "Szanuję. Oko jak u rzeczoznawcy z PZU."
+    ],
+    "greedy": [
+      "Panie, za tyle to ja ci go z kokardą zapakuję!",
+      "Bierz pan, zanim się rozmyślisz. Gotówka czy przelew?",
+      "Ty mi się podobasz. Masz może jeszcze kuzyna z pieniędzmi?"
+    ],
+    "offended": [
+      "Za tyle to ja panu mogę dać wycieraczki.",
+      "Co pan, z giełdy w Słomczynie? Obrażasz pan auto!",
+      "Niemiec by się w grobie przewrócił, a on jeszcze żyje."
+    ],
+    "neutral": [
+      "No, blisko, ale handlarzem to jeszcze nie jesteś.",
+      "Może być. Podyskutujemy przy kawie z automatu.",
+      "Ani to zysk, ani strata. Taki komis życia."
+    ]
+  },
+  "listings": [
+    {
+      "id": "astra",
+      "title": "Opel Astra 1.6",
+      "year": 2009,
+      "mileage": 238000,
+      "fuel": "benzyna + LPG",
+      "description": "Niemiec płakał jak sprzedawał. Drobne rysy, gaz wbity w dowód. Klima do nabicia.",
+      "price": 11500,
+      "photo": {
+        "author": "Dinkun Chen",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:OPEL_ASTRA_H_GTC_China_(4).jpg"
+      }
+    },
+    {
+      "id": "rav4",
+      "title": "Toyota RAV4 2.0 Hybrid",
+      "year": 2021,
+      "mileage": 64000,
+      "fuel": "hybryda",
+      "description": "Salon Polska, pierwszy właściciel, serwis ASO. Bez wpadek, bez kombinacji.",
+      "price": 129000,
+      "photo": {
+        "author": "Alexander Migl",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Toyota_RAV4_Hybrid_(XA50)_DSC_2709.jpg"
+      }
+    },
+    {
+      "id": "t5",
+      "title": "Volkswagen Transporter T5",
+      "year": 2007,
+      "mileage": 410000,
+      "fuel": "diesel",
+      "description": "Silnik dopiero się dociera. Idealny na kampera. Wewnątrz zapach przygody i kebaba.",
+      "price": 24000,
+      "photo": {
+        "author": "Rudolf Stricker",
+        "license": "Attribution",
+        "source": "https://commons.wikimedia.org/wiki/File:VW_T5_Transporter_front_20080811.jpg"
+      }
+    },
+    {
+      "id": "e46",
+      "title": "BMW E46 330i Coupe",
+      "year": 2002,
+      "mileage": 285000,
+      "fuel": "benzyna",
+      "description": "Bokiem tylko w weekendy. Tylny zderzak z innego modelu, ale pasuje.",
+      "price": 28000,
+      "photo": {
+        "author": "Trop86",
+        "license": "CC0",
+        "source": "https://commons.wikimedia.org/wiki/File:BMW_3_Series_(E46)_Coupe_091135.jpg"
+      }
+    },
+    {
+      "id": "126p",
+      "title": "Fiat 126p",
+      "year": 1989,
+      "mileage": 41000,
+      "fuel": "benzyna",
+      "description": "Maluch po renowacji, oryginalny lakier. Pamiątka po dziadku.",
+      "price": 22000,
+      "photo": {
+        "author": "P-szat",
+        "license": "Public domain",
+        "source": "https://commons.wikimedia.org/wiki/File:Polski_Fiat_126p_rocznik_1973.jpg"
+      }
+    },
+    {
+      "id": "octavia",
+      "title": "Škoda Octavia 1.9 TDI",
+      "year": 2006,
+      "mileage": 390000,
+      "fuel": "diesel",
+      "description": "Nie do zajechania. Przebieg ma tylko symboliczne znaczenie.",
+      "price": 9900,
+      "photo": {
+        "author": "Charles01",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Skoda_Octavia_II_(Type_1Z)_Combi_Holme_Moss.jpg"
+      }
+    },
+    {
+      "id": "prius",
+      "title": "Toyota Prius 1.8",
+      "year": 2014,
+      "mileage": 420000,
+      "fuel": "hybryda",
+      "description": "Ex-taxi, ale bardzo kulturalnie użytkowana. Baterie hybrydy po wymianie.",
+      "price": 26500,
+      "photo": {
+        "author": "Bull-Doser",
+        "license": "Public domain",
+        "source": "https://commons.wikimedia.org/wiki/File:Toyota_Prius_XW30_Kissimmee_Taxi.jpg"
+      }
+    },
+    {
+      "id": "duster",
+      "title": "Dacia Duster 1.0 TCe",
+      "year": 2022,
+      "mileage": 29000,
+      "fuel": "benzyna + LPG",
+      "description": "Jak nowa, bo właściciel bał się nią jeździć w deszczu.",
+      "price": 61000,
+      "photo": {
+        "author": "Harvey Bold",
+        "license": "CC BY 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:2022_Dacia_Duster_Prestige_TCe_-_1333cc_1.3_(130PS)_Petrol_-_Arizona_Orange_-_05-2024,_Front.jpg"
+      }
+    },
+    {
+      "id": "focus",
+      "title": "Ford Focus 1.6",
+      "year": 2011,
+      "mileage": 176000,
+      "fuel": "benzyna",
+      "description": "Kombi, pojemny bagażnik, hak. Ślad po naklejce „Dziecko w aucie”.",
+      "price": 17900,
+      "photo": {
+        "author": "M 93",
+        "license": "CC BY-SA 3.0 de",
+        "source": "https://commons.wikimedia.org/wiki/File:Ford_Focus_Turnier_Titanium_(III)_%E2%80%93_Frontansicht,_17._September_2011,_D%C3%BCsseldorf.jpg"
+      }
+    },
+    {
+      "id": "tesla",
+      "title": "Tesla Model 3 Long Range",
+      "year": 2020,
+      "mileage": 98000,
+      "fuel": "elektryk",
+      "description": "Autopilot, szklany dach, tylne szyby lekko zapachowe (wanilia).",
+      "price": 105000,
+      "photo": {
+        "author": "Nikolai Bulykin",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:%D0%90%D0%BB%D0%BC%D0%B0%D1%82%D1%8B,_Tesla_Model_3_%D0%BD%D0%B0_%D0%9A%D0%B0%D1%80%D0%B8%D0%BC%D0%BE%D0%B2%D0%B0.jpg"
+      }
+    },
+    {
+      "id": "w124",
+      "title": "Mercedes W124 250D",
+      "year": 1993,
+      "mileage": 612000,
+      "fuel": "diesel",
+      "description": "Beczka. Przeżyje nas wszystkich. Rdza tylko w miejscach, gdzie nikt nie patrzy.",
+      "price": 16000,
+      "photo": {
+        "author": "Kieran White from Manchester, England",
+        "license": "CC BY 2.0",
+        "source": "https://commons.wikimedia.org/wiki/File:1992_Mercedes_250_D_(16384441306).jpg"
+      }
+    },
+    {
+      "id": "clio",
+      "title": "Renault Clio 1.2",
+      "year": 2005,
+      "mileage": 205000,
+      "fuel": "benzyna",
+      "description": "Ekonomiczne, do miasta. Szyba pasażera opuszcza się tylko w piątki.",
+      "price": 4500,
+      "photo": {
+        "author": "DieselFordMondeo",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:2002_Renault_Clio_Authentique_1.2_(Front).jpg"
+      }
+    },
+    {
+      "id": "q7",
+      "title": "Audi Q7 3.0 TDI",
+      "year": 2016,
+      "mileage": 199000,
+      "fuel": "diesel",
+      "description": "Siedem miejsc, skóra, pneumatyka. Kontrolki świecą tylko świątecznie.",
+      "price": 89000,
+      "photo": {
+        "author": "Alexander Migl",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:2025_Audi_Q7_(4M)_DSC_8676.jpg"
+      }
+    },
+    {
+      "id": "ceed",
+      "title": "Kia Ceed 1.4",
+      "year": 2018,
+      "mileage": 87000,
+      "fuel": "benzyna",
+      "description": "Gwarancja do niedawna, auto zadbane, opony całoroczne.",
+      "price": 46000,
+      "photo": {
+        "author": "Vauxford",
+        "license": "CC BY-SA 4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:2018_Kia_Ceed_First_Edition_1.4_Front.jpg"
+      }
+    }
+  ]
+}

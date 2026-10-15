@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { distanceKm, MAX_ROUND_SCORE, roundScore } from './gdzie-jest-martyna/logic'
-import { priceScore } from './ile-za-grata/logic'
+import cars from './ile-za-grata/data.json'
+import { dealerMood, priceScore } from './ile-za-grata/logic'
 import pallets from './paleta-w-ciemno/data.json'
 import { dealersOnlyResult, nextDealerBid } from './paleta-w-ciemno/logic'
 import { distance, emojiImage } from './podloga/logic'
@@ -30,6 +31,18 @@ describe('Ile za tego grata', () => {
     expect(priceScore(20000, 20000)).toBe(100)
     expect(priceScore(15000, 20000)).toBe(75)
     expect(priceScore(60000, 20000)).toBe(0)
+  })
+
+  it('picks the dealer mood from the guess', () => {
+    expect(dealerMood(20000, 20000)).toBe('impressed')
+    expect(dealerMood(40000, 20000)).toBe('greedy')
+    expect(dealerMood(10000, 20000)).toBe('offended')
+  })
+
+  it('has a credited photo for every car', () => {
+    const photos = import.meta.glob('/public/ile-za-grata/cars/*.jpg')
+    expect(cars.listings.filter((c) => !photos[`/public/ile-za-grata/cars/${c.id}.jpg`]).map((c) => c.id)).toEqual([])
+    expect(cars.listings.filter((c) => !c.photo.author || !c.photo.license || !c.photo.source).map((c) => c.id)).toEqual([])
   })
 })
 
