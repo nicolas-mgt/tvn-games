@@ -2,6 +2,12 @@ import { pickOne, type Rng } from '@/shared/daily'
 
 export const BID_STEP = 100
 
+/** Seconds before the first item slides out of the cut foil, and between consecutive items. */
+export const REVEAL_DELAY = 0.7
+export const REVEAL_STEP = 0.35
+
+export const formatZl = (amount: number) => `${amount.toLocaleString('pl-PL')} zł`
+
 export type Leader = 'player' | number | null
 
 /** Each dealer silently values a pallet at 0.5–1.2× its real worth, rounded down to the bid step. */

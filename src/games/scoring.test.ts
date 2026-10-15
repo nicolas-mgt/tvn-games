@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { distanceKm, MAX_ROUND_SCORE, roundScore } from './gdzie-jest-martyna/logic'
 import { priceScore } from './ile-za-grata/logic'
+import pallets from './paleta-w-ciemno/data.json'
 import { dealersOnlyResult, nextDealerBid } from './paleta-w-ciemno/logic'
 import { distance, emojiImage } from './podloga/logic'
 import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type Temperatures } from './pogodynka/logic'
@@ -108,6 +109,13 @@ describe('Zonk', () => {
 })
 
 describe('Paleta w ciemno', () => {
+  it('has a credited photo for every pallet item', () => {
+    const photos = import.meta.glob('/public/paleta-w-ciemno/items/*.jpg')
+    const items = pallets.flatMap((p) => p.contents)
+    expect(items.filter((i) => !photos[`/public/paleta-w-ciemno/items/${i.id}.jpg`]).map((i) => i.id)).toEqual([])
+    expect(items.filter((i) => !i.photo.author || !i.photo.license || !i.photo.source).map((i) => i.id)).toEqual([])
+  })
+
   it('only lets dealers outbid within their limit', () => {
     expect(nextDealerBid([500, 300], 400, 'player', () => 0)).toBe(0)
     expect(nextDealerBid([500, 300], 500, 'player', () => 0)).toBeNull()

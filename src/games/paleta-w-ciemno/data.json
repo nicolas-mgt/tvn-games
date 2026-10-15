@@ -3,81 +3,378 @@
     "emoji": "📦",
     "description": "Zwroty z dużego sklepu z elektroniką. Część działa.",
     "contents": [
-      { "emoji": "🎧", "name": "Słuchawki bezprzewodowe", "value": 350 },
-      { "emoji": "📱", "name": "Telefon z pękniętym ekranem", "value": 400 },
-      { "emoji": "🔌", "name": "40 kabli do niczego", "value": 120 },
-      { "emoji": "⌚", "name": "Smartwatch", "value": 600 }
+      {
+        "id": "headphones",
+        "name": "Słuchawki bezprzewodowe",
+        "value": 350,
+        "photo": {
+          "author": "Carsonjp21",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Bose_QuietComfort_35_II_Wireless_Headphones.jpg"
+        }
+      },
+      {
+        "id": "cracked-phone",
+        "name": "Telefon z pękniętym ekranem",
+        "value": 400,
+        "photo": {
+          "author": "Semtrio",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/163837264@N07/43433648605"
+        }
+      },
+      {
+        "id": "cables",
+        "name": "40 kabli do niczego",
+        "value": 120,
+        "photo": {
+          "author": "gruntzooki",
+          "license": "CC BY-SA 2.0",
+          "source": "https://www.flickr.com/photos/37996580417@N01/14452760238"
+        }
+      },
+      {
+        "id": "smartwatch",
+        "name": "Smartwatch",
+        "value": 600,
+        "photo": {
+          "author": "Glory Cycles",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/29558127@N06/16478222674"
+        }
+      }
     ]
   },
   {
     "emoji": "🧸",
     "description": "Likwidacja sklepu z zabawkami.",
     "contents": [
-      { "emoji": "🧸", "name": "Worek pluszaków", "value": 300 },
-      { "emoji": "🚂", "name": "Kolejka elektryczna", "value": 900 },
-      { "emoji": "🧩", "name": "Puzzle bez kilku elementów", "value": 150 },
-      { "emoji": "🎲", "name": "Gry planszowe w folii", "value": 400 }
+      {
+        "id": "plush-toys",
+        "name": "Worek pluszaków",
+        "value": 300,
+        "photo": {
+          "author": "PattayaPatrol",
+          "license": "CC BY-SA 2.0",
+          "source": "https://www.flickr.com/photos/194424926@N05/54129036413"
+        }
+      },
+      {
+        "id": "toy-train",
+        "name": "Kolejka elektryczna",
+        "value": 900,
+        "photo": {
+          "author": "granada_turnier",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/54891040@N04/5805624933"
+        }
+      },
+      {
+        "id": "jigsaw-puzzle",
+        "name": "Puzzle bez kilku elementów",
+        "value": 150,
+        "photo": {
+          "author": "Electric-Eye",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/35111587@N00/4054093512"
+        }
+      },
+      {
+        "id": "board-games",
+        "name": "Gry planszowe w folii",
+        "value": 400,
+        "photo": {
+          "author": "CustomPackaging",
+          "license": "CC BY-SA 2.0",
+          "source": "https://www.flickr.com/photos/151611460@N04/48043031346"
+        }
+      }
     ]
   },
   {
     "emoji": "📦",
     "description": "Nieodebrane paczki z magazynu kurierskiego.",
     "contents": [
-      { "emoji": "🥾", "name": "Kalosze rozmiar 47", "value": 80 },
-      { "emoji": "🧴", "name": "50 balsamów do stóp", "value": 250 },
-      { "emoji": "💄", "name": "Kosmetyki premium", "value": 600 },
-      { "emoji": "🎮", "name": "Konsola w oryginalnym pudełku", "value": 1500 }
+      {
+        "id": "rubber-boots",
+        "name": "Kalosze rozmiar 47",
+        "value": 80,
+        "photo": {
+          "author": "zeesenboot",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/51142674@N00/22697326329"
+        }
+      },
+      {
+        "id": "foot-cream",
+        "name": "50 balsamów do stóp",
+        "value": 250,
+        "photo": {
+          "author": "Dr.Michael Wach",
+          "license": "CC BY-SA 4.0",
+          "source": "https://commons.wikimedia.org/wiki/File:DR._WACH%E2%80%99S_REJUVENATING_FOOT_CREAM.jpg"
+        }
+      },
+      {
+        "id": "cosmetics",
+        "name": "Kosmetyki premium",
+        "value": 600,
+        "photo": {
+          "author": "franchiseopportunitiesphotos",
+          "license": "CC BY-SA 2.0",
+          "source": "https://www.flickr.com/photos/150276478@N03/33638438273"
+        }
+      },
+      {
+        "id": "game-console",
+        "name": "Konsola w oryginalnym pudełku",
+        "value": 1500,
+        "photo": {
+          "author": "France1978",
+          "license": "CC BY-SA 2.0",
+          "source": "https://www.flickr.com/photos/51764518@N02/37425209492"
+        }
+      }
     ]
   },
   {
     "emoji": "🧺",
     "description": "AGD z wystawki. Sprzedawca mówi, że sprawne.",
     "contents": [
-      { "emoji": "🍳", "name": "Komplet patelni", "value": 200 },
-      { "emoji": "🔥", "name": "Spalony toster", "value": 0 },
-      { "emoji": "🌀", "name": "Mikser", "value": 150 },
-      { "emoji": "🧹", "name": "Odkurzacz bez rury", "value": 50 }
+      {
+        "id": "frying-pans",
+        "name": "Komplet patelni",
+        "value": 200,
+        "photo": {
+          "author": "waferboard",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/60944931@N00/4153245628"
+        }
+      },
+      {
+        "id": "toaster",
+        "name": "Spalony toster",
+        "value": 0,
+        "photo": {
+          "author": "healthserviceglasses",
+          "license": "CC BY-SA 2.0",
+          "source": "https://www.flickr.com/photos/55408947@N00/3256234213"
+        }
+      },
+      {
+        "id": "mixer",
+        "name": "Mikser",
+        "value": 150,
+        "photo": {
+          "author": "Clean Wal-Mart",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/33677599@N00/381448204"
+        }
+      },
+      {
+        "id": "vacuum",
+        "name": "Odkurzacz bez rury",
+        "value": 50,
+        "photo": {
+          "author": "Rubber Dragon",
+          "license": "CC BY-SA 2.0",
+          "source": "https://www.flickr.com/photos/65219016@N04/6762703283"
+        }
+      }
     ]
   },
   {
     "emoji": "🛠️",
     "description": "Ogród i majsterkowanie z hurtowni budowlanej.",
     "contents": [
-      { "emoji": "🪚", "name": "Piła spalinowa", "value": 300 },
-      { "emoji": "🔨", "name": "Skrzynka młotków", "value": 120 },
-      { "emoji": "🌱", "name": "Przeterminowane nasiona", "value": 10 },
-      { "emoji": "🪓", "name": "Siekiera", "value": 150 },
-      { "emoji": "🚿", "name": "Wąż ogrodowy 50 m", "value": 80 }
+      {
+        "id": "chainsaw",
+        "name": "Piła spalinowa",
+        "value": 300,
+        "photo": {
+          "author": "aghrivaine",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/67406704@N00/1711988416"
+        }
+      },
+      {
+        "id": "hammers",
+        "name": "Skrzynka młotków",
+        "value": 120,
+        "photo": {
+          "author": "chimpwithcan",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/188454520@N02/49905944233"
+        }
+      },
+      {
+        "id": "seeds",
+        "name": "Przeterminowane nasiona",
+        "value": 10,
+        "photo": {
+          "author": "pw1968",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/49036995@N02/6942684023"
+        }
+      },
+      {
+        "id": "axe",
+        "name": "Siekiera",
+        "value": 150,
+        "photo": {
+          "author": "Dan Edwards",
+          "license": "CC0",
+          "source": "https://stocksnap.io/photo/axe-wood-SEVPWIOFCM"
+        }
+      },
+      {
+        "id": "garden-hose",
+        "name": "Wąż ogrodowy 50 m",
+        "value": 80,
+        "photo": {
+          "author": "Nandhp",
+          "license": "CC BY-SA 3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Garden_hose.jpg"
+        }
+      }
     ]
   },
   {
     "emoji": "👕",
     "description": "Odzież markowa. Podobno.",
     "contents": [
-      { "emoji": "👕", "name": "Koszulki „Adidos”", "value": 150 },
-      { "emoji": "👟", "name": "Buty sportowe", "value": 700 },
-      { "emoji": "🧥", "name": "Kurtka zimowa", "value": 450 },
-      { "emoji": "🧦", "name": "1000 par skarpet", "value": 300 }
+      {
+        "id": "t-shirts",
+        "name": "Koszulki „Adidos”",
+        "value": 150,
+        "photo": {
+          "author": "rawpixel",
+          "license": "CC0",
+          "source": "https://www.rawpixel.com/image/11515801/pile-t-shirts-dirty-laundry"
+        }
+      },
+      {
+        "id": "sneakers",
+        "name": "Buty sportowe",
+        "value": 700,
+        "photo": {
+          "author": "nuevajam",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/45775741@N04/10617264756"
+        }
+      },
+      {
+        "id": "winter-jacket",
+        "name": "Kurtka zimowa",
+        "value": 450,
+        "photo": {
+          "author": "vanes_hud",
+          "license": "CC BY-SA 2.0",
+          "source": "https://www.flickr.com/photos/24844796@N02/34024590791"
+        }
+      },
+      {
+        "id": "socks",
+        "name": "1000 par skarpet",
+        "value": 300,
+        "photo": {
+          "author": "Ahmed Rabea",
+          "license": "CC BY-SA 2.0",
+          "source": "https://www.flickr.com/photos/62204521@N00/353094086"
+        }
+      }
     ]
   },
   {
     "emoji": "❓",
     "description": "Tajemnicza paleta z przechowalni dworcowej. Brak opisu.",
     "contents": [
-      { "emoji": "🗿", "name": "Figurka z Wysp Wielkanocnych (gips)", "value": 50 },
-      { "emoji": "📻", "name": "Radio retro", "value": 250 },
-      { "emoji": "🎻", "name": "Stare skrzypce z certyfikatem", "value": 2200 },
-      { "emoji": "🧦", "name": "Jedna skarpeta", "value": 0 }
+      {
+        "id": "moai",
+        "name": "Figurka z Wysp Wielkanocnych (gips)",
+        "value": 50,
+        "photo": {
+          "author": "Arian Zwegers",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/67769030@N07/6686177203"
+        }
+      },
+      {
+        "id": "retro-radio",
+        "name": "Radio retro",
+        "value": 250,
+        "photo": {
+          "author": "PoloGoomba",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/22293491@N07/3395483300"
+        }
+      },
+      {
+        "id": "violin",
+        "name": "Stare skrzypce z certyfikatem",
+        "value": 2200,
+        "photo": {
+          "author": "Frinck51",
+          "license": "CC BY-SA 3.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Old_violin.jpg"
+        }
+      },
+      {
+        "id": "single-sock",
+        "name": "Jedna skarpeta",
+        "value": 0,
+        "photo": {
+          "author": "sapheron",
+          "license": "CC BY-SA 2.0",
+          "source": "https://www.flickr.com/photos/39728445@N00/5537779505"
+        }
+      }
     ]
   },
   {
     "emoji": "🏋️",
     "description": "Sprzęt fitness po noworocznych postanowieniach.",
     "contents": [
-      { "emoji": "🏋️", "name": "Hantle", "value": 400 },
-      { "emoji": "🚴", "name": "Rower stacjonarny", "value": 900 },
-      { "emoji": "🧘", "name": "Maty do jogi", "value": 120 },
-      { "emoji": "🥤", "name": "30 shakerów", "value": 60 }
+      {
+        "id": "dumbbells",
+        "name": "Hantle",
+        "value": 400,
+        "photo": {
+          "author": "qubodup",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/21051491@N02/3210745877"
+        }
+      },
+      {
+        "id": "exercise-bike",
+        "name": "Rower stacjonarny",
+        "value": 900,
+        "photo": {
+          "author": "jurvetson",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/44124348109@N01/32462950700"
+        }
+      },
+      {
+        "id": "yoga-mats",
+        "name": "Maty do jogi",
+        "value": 120,
+        "photo": {
+          "author": "debtony",
+          "license": "CC BY 2.0",
+          "source": "https://www.flickr.com/photos/72966361@N00/8373088886"
+        }
+      },
+      {
+        "id": "shakers",
+        "name": "30 shakerów",
+        "value": 60,
+        "photo": {
+          "author": "Karnaz",
+          "license": "CC0",
+          "source": "https://commons.wikimedia.org/wiki/File:Osaka_protein_shaker.jpg"
+        }
+      }
     ]
   }
 ]

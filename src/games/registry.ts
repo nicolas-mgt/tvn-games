@@ -85,6 +85,7 @@ export const GAMES: GameMeta[] = [
     size: 'M',
     description: 'Licytujesz palety z lakonicznym opisem przeciwko trzem handlarzom. Liczy się zysk.',
     scoreLabel: 'zł zysku',
+    immersive: true,
     Component: lazy(() => import('./paleta-w-ciemno')),
   },
   {
