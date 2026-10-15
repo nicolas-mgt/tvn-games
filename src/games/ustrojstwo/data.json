@@ -3,105 +3,240 @@
     "id": "banana-slicer",
     "look": "Plastikowy łuk z kilkunastoma poprzecznymi ostrzami, wygięty jak uśmiech.",
     "answer": "Kroi banana w plasterki jednym naciśnięciem",
-    "decoys": ["Grzebień do wąsów dla dwóch osób", "Podpórka pod nadgarstek do myszki", "Uchwyt do noszenia jajek na rowerze"],
-    "fact": "Krajalnica do bananów ma tysiące ironicznych recenzji w sieci – podobno nie radzi sobie z bananami wygiętymi w drugą stronę."
+    "decoys": [
+      "Grzebień do wąsów dla dwóch osób",
+      "Podpórka pod nadgarstek do myszki",
+      "Uchwyt do noszenia jajek na rowerze"
+    ],
+    "fact": "Krajalnica do bananów ma tysiące ironicznych recenzji w sieci – podobno nie radzi sobie z bananami wygiętymi w drugą stronę.",
+    "photo": {
+      "author": "Joelk75",
+      "license": "CC BY 2.0",
+      "source": "https://www.flickr.com/photos/75001512@N00/8372054684"
+    }
   },
   {
     "id": "egg-separator",
-    "look": "Mała miseczka z dwiema szczelinami po bokach i zaczepem do zawieszenia na kubku.",
+    "look": "Czarna miseczka z wąskimi szczelinami wokół dna i płaską rączką z dziurką.",
     "answer": "Oddziela żółtko od białka",
-    "decoys": ["Podstawka do suszenia kolczyków", "Sitko do herbaty dla chomika", "Foremka do lodu w kształcie kosmity"],
-    "fact": "Separator żółtek to klasyk kuchennych gadżetów – choć wielu kucharzy i tak robi to przelewając jajko między skorupkami."
+    "decoys": [
+      "Podstawka do suszenia kolczyków",
+      "Sitko do herbaty dla chomika",
+      "Foremka do lodu w kształcie kosmity"
+    ],
+    "fact": "Separator żółtek to klasyk kuchennych gadżetów – choć wielu kucharzy i tak robi to przelewając jajko między skorupkami.",
+    "photo": {
+      "author": "Kimon Berlin",
+      "license": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/w/index.php?curid=12648206"
+    }
   },
   {
     "id": "mustache-spoon",
-    "look": "Łyżka z ażurową półką przykrywającą część czerpaka.",
+    "look": "Srebrna łyżka z półką przykrywającą część czerpaka.",
     "answer": "Chroni wąsy przed zamoczeniem w zupie",
-    "decoys": ["Odmierza dokładnie pół łyżeczki cukru", "Służy do łowienia klusek z rosołu", "Jest łyżką dla leworęcznych"],
-    "fact": "Łyżki i filiżanki z osłoną na wąsy były modne w XIX wieku, gdy panowie woskowali zarost."
+    "decoys": [
+      "Odmierza dokładnie pół łyżeczki cukru",
+      "Służy do łowienia klusek z rosołu",
+      "Jest łyżką dla leworęcznych"
+    ],
+    "fact": "Łyżki i filiżanki z osłoną na wąsy były modne w XIX wieku, gdy panowie woskowali zarost.",
+    "photo": {
+      "author": "Andreas Praefcke",
+      "license": "Public domain",
+      "source": "https://commons.wikimedia.org/wiki/File:Moustache_spoon_1904_VA_M18-2000.jpg"
+    }
   },
   {
     "id": "mop-slippers",
     "look": "Para kapci z grubą, puchatą podeszwą z mikrofibry.",
     "answer": "Mopują podłogę, gdy chodzisz po domu",
-    "decoys": ["Uciszają kroki sąsiada z góry", "Ładują telefon energią z chodzenia", "Służą do jazdy po lodowisku w domu"],
-    "fact": "Kapcie-mopy sprzedawane są jako sposób na sprzątanie bez sprzątania. Skuteczność – dyskusyjna."
+    "decoys": [
+      "Uciszają kroki sąsiada z góry",
+      "Ładują telefon energią z chodzenia",
+      "Służą do jazdy po lodowisku w domu"
+    ],
+    "fact": "Kapcie-mopy sprzedawane są jako sposób na sprzątanie bez sprzątania. Skuteczność – dyskusyjna.",
+    "photo": {
+      "author": "Tatsuo Yamashita",
+      "license": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:%E3%83%A2%E3%83%83%E3%83%97%E3%82%B9%E3%83%AA%E3%83%83%E3%83%91_%E4%BA%8C%E4%BA%BA%E5%88%86_(4022011638).jpg"
+    }
   },
   {
     "id": "beer-helmet",
-    "look": "Kask z dwoma uchwytami na puszki po bokach i długimi rurkami do ust.",
+    "look": "Kask z dwoma uchwytami na butelki po bokach i długimi rurkami do ust.",
     "answer": "Pozwala pić z dwóch puszek bez użycia rąk",
-    "decoys": ["Chłodzi głowę kierowcy w upał", "Wzmacnia sygnał radia samochodowego", "Jest kaskiem dla trębaczy"],
-    "fact": "Kask na puszki to gadżet znany z meczów i piknikowych imprez – czysty, bezużyteczny kicz."
+    "decoys": [
+      "Chłodzi głowę kierowcy w upał",
+      "Wzmacnia sygnał radia samochodowego",
+      "Jest kaskiem dla trębaczy"
+    ],
+    "fact": "Kask na puszki to gadżet znany z meczów i piknikowych imprez – czysty, bezużyteczny kicz.",
+    "photo": {
+      "author": "amarette.",
+      "license": "CC BY 2.0",
+      "source": "https://www.flickr.com/photos/8521898@N04/529265374"
+    }
   },
   {
     "id": "ostrich-pillow",
     "look": "Miękka poduszka zakładana na całą głowę, z otworem na nos i usta oraz dziurami na ręce.",
     "answer": "Do drzemki przy biurku albo w samolocie",
-    "decoys": ["Maska do ćwiczenia wstrzymywania oddechu", "Kominiarka dla nieśmiałych narciarzy", "Ochraniacz dla dzieci uczących się chodzić"],
-    "fact": "Poduszka-struś powstała z kampanii crowdfundingowej i stała się viralem jako symbol drzemki w open space."
+    "decoys": [
+      "Maska do ćwiczenia wstrzymywania oddechu",
+      "Kominiarka dla nieśmiałych narciarzy",
+      "Ochraniacz dla dzieci uczących się chodzić"
+    ],
+    "fact": "Poduszka-struś powstała z kampanii crowdfundingowej i stała się viralem jako symbol drzemki w open space.",
+    "photo": {
+      "author": "rich115",
+      "license": "CC BY-SA 2.0",
+      "source": "https://www.flickr.com/photos/35034356424@N01/11542757276"
+    }
   },
   {
     "id": "banana-case",
-    "look": "Żółte, plastikowe etui wygięte w łuk, otwierane na zawias.",
+    "look": "Żółte, plastikowe etui wygięte w łuk, z dziurkami, otwierane na zawias.",
     "answer": "Chroni banana przed zgnieceniem w plecaku",
-    "decoys": ["Futerał na okulary dla papugi", "Ochraniacz na kciuk do gry na konsoli", "Pojemnik na resztki rogalika"],
-    "fact": "Pokrowce na banany istnieją naprawdę i są sprzedawane w kilku kolorach – choć żółty pozostaje bestsellerem."
+    "decoys": [
+      "Futerał na okulary dla papugi",
+      "Ochraniacz na kciuk do gry na konsoli",
+      "Pojemnik na resztki rogalika"
+    ],
+    "fact": "Pokrowce na banany istnieją naprawdę i są sprzedawane w kilku kolorach – choć żółty pozostaje bestsellerem.",
+    "photo": {
+      "author": "mararie",
+      "license": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/w/index.php?curid=16219799"
+    }
   },
   {
     "id": "herb-scissors",
     "look": "Nożyczki z pięcioma równoległymi ostrzami zamiast jednego.",
     "answer": "Szybko siekają zioła",
-    "decoys": ["Strzygą psy rasy pudel", "Tną papier na konfetti weselne", "Przycinają frędzle dywanów"],
-    "fact": "Nożyczki do ziół z wieloma ostrzami siekają natkę pietruszki w kilka sekund."
+    "decoys": [
+      "Strzygą psy rasy pudel",
+      "Tną papier na konfetti weselne",
+      "Przycinają frędzle dywanów"
+    ],
+    "fact": "Nożyczki do ziół z wieloma ostrzami siekają natkę pietruszki w kilka sekund.",
+    "photo": {
+      "author": "Raimond Spekking",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Kr%C3%A4uterschere-0836.jpg"
+    }
   },
   {
     "id": "pasta-measure",
-    "look": "Płaska drewniana deseczka z kilkoma okrągłymi otworami różnej wielkości.",
+    "look": "Płaska plastikowa listwa z kilkoma okrągłymi otworami różnej wielkości.",
     "answer": "Odmierza porcję spaghetti na 1–4 osoby",
-    "decoys": ["Służy do gry w pchełki", "Sortuje guziki według rozmiaru", "Jest miarką do grubości palców przy zakupie pierścionka"],
-    "fact": "Miarka do makaronu to ratunek dla każdego, kto gotuje „trochę” spaghetti, a wychodzi garnek na dziesięć osób."
+    "decoys": [
+      "Służy do gry w pchełki",
+      "Sortuje guziki według rozmiaru",
+      "Jest miarką do grubości palców przy zakupie pierścionka"
+    ],
+    "fact": "Miarka do makaronu to ratunek dla każdego, kto gotuje „trochę” spaghetti, a wychodzi garnek na dziesięć osób.",
+    "photo": {
+      "author": "jericl cat",
+      "license": "CC BY 2.0",
+      "source": "https://www.flickr.com/photos/79761301@N00/354466084"
+    }
   },
   {
     "id": "submarine-infuser",
     "look": "Silikonowa, żółta łódź podwodna z peryskopem i dziurkami w kadłubie.",
     "answer": "Zaparzacz do herbaty liściastej",
-    "decoys": ["Zabawka do wanny z pompką", "Pojemnik na tabletki do zmywarki", "Spławik dla wędkarzy-hobbystów"],
-    "fact": "Zaparzacze w kształcie łodzi podwodnych, rybek i astronautów to popularny prezent dla miłośników herbaty."
+    "decoys": [
+      "Zabawka do wanny z pompką",
+      "Pojemnik na tabletki do zmywarki",
+      "Spławik dla wędkarzy-hobbystów"
+    ],
+    "fact": "Zaparzacze w kształcie łodzi podwodnych, rybek i astronautów to popularny prezent dla miłośników herbaty.",
+    "photo": {
+      "author": "codepo8",
+      "license": "CC BY 2.0",
+      "source": "https://www.flickr.com/photos/11414938@N00/5006791579"
+    }
   },
   {
     "id": "dog-boots",
-    "look": "Cztery małe gumowe buty z rzepami.",
+    "look": "Cztery małe, czerwone gumowe buciki.",
     "answer": "Kalosze dla psa na deszcz i sól na chodnikach",
-    "decoys": ["Ochraniacze na nogi krzesła", "Kapturki na palce do pisania na tablecie", "Kubeczki na jajka dla dzieci"],
-    "fact": "Psie buty chronią łapy przed solą drogową zimą – choć wiele psów chodzi w nich jak na szczudłach."
+    "decoys": [
+      "Ochraniacze na nogi krzesła",
+      "Kapturki na palce do pisania na tablecie",
+      "Kubeczki na jajka dla dzieci"
+    ],
+    "fact": "Psie buty chronią łapy przed solą drogową zimą – choć wiele psów chodzi w nich jak na szczudłach.",
+    "photo": {
+      "author": "Musespeak",
+      "license": "CC BY 2.0",
+      "source": "https://www.flickr.com/photos/83897814@N07/11976896513"
+    }
   },
   {
-    "id": "corn-stripper",
-    "look": "Metalowy pierścień z ząbkami i dwoma uchwytami.",
-    "answer": "Zdziera ziarna z kolby kukurydzy",
-    "decoys": ["Otwiera słoiki z ogórkami", "Wyciska sok z cytryny", "Ostrzy ołówki stolarskie"],
-    "fact": "Obierak do kukurydzy przydaje się, gdy robisz sałatkę i nie chcesz gryźć kolby."
+    "id": "egg-slicer",
+    "look": "Plastikowa podstawka z owalnym wgłębieniem i uchylną ramką, na której naciągnięto rząd cienkich drutów.",
+    "answer": "Kroi jajko na równe plasterki",
+    "decoys": [
+      "Stroi ukulele dla dzieci",
+      "Formuje kostki masła na święta",
+      "Czesze frędzle szalika"
+    ],
+    "fact": "Krajalnica do jajek ma drugie życie: kucharze kroją nią też pieczarki, truskawki i mozzarellę.",
+    "photo": {
+      "author": "Donovan Govan",
+      "license": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/w/index.php?curid=120044"
+    }
   },
   {
     "id": "apple-peeler",
     "look": "Urządzenie z korbą, przyssawką do blatu i nożykiem na sprężynie.",
     "answer": "Obiera i kroi jabłko spiralnie, kręcąc korbą",
-    "decoys": ["Ostrzy noże metodą kręcenia", "Nawija wełnę na kłębek", "Ugniata ciasto na pierogi"],
-    "fact": "Obieraczki do jabłek na korbę znane są od XIX wieku i wciąż zachwycają dzieci w kuchni."
+    "decoys": [
+      "Ostrzy noże metodą kręcenia",
+      "Nawija wełnę na kłębek",
+      "Ugniata ciasto na pierogi"
+    ],
+    "fact": "Obieraczki do jabłek na korbę znane są od XIX wieku i wciąż zachwycają dzieci w kuchni.",
+    "photo": {
+      "author": "Nutrition, Food Safety & Health",
+      "license": "CC0",
+      "source": "https://www.flickr.com/photos/93936679@N05/38748133991"
+    }
   },
   {
     "id": "tube-squeezer",
-    "look": "Plastikowy kluczyk z wąską szczeliną, przez którą przeciąga się coś płaskiego.",
+    "look": "Biały plastikowy klips z wąską szczeliną, przez którą przeciąga się coś płaskiego.",
     "answer": "Wyciska pastę do zębów do ostatniej kropli",
-    "decoys": ["Nakręca stare zegarki", "Otwiera puszki sardynek", "Prasuje krawaty w podróży"],
-    "fact": "Wyciskacz tubek działa też z kremami i koncentratem pomidorowym. Oszczędność level: babcia."
+    "decoys": [
+      "Nakręca stare zegarki",
+      "Otwiera puszki sardynek",
+      "Prasuje krawaty w podróży"
+    ],
+    "fact": "Wyciskacz tubek działa też z kremami i koncentratem pomidorowym. Oszczędność level: babcia.",
+    "photo": {
+      "author": "Creative Tools",
+      "license": "CC BY 2.0",
+      "source": "https://www.flickr.com/photos/33907867@N02/4368359946"
+    }
   },
   {
     "id": "usb-mug-warmer",
     "look": "Mała grzałka w kształcie podkładki z kablem USB.",
     "answer": "Utrzymuje kawę w kubku ciepłą przy komputerze",
-    "decoys": ["Suszy pomalowane paznokcie", "Rozmraża mysz komputerową zimą", "Ogrzewa chomika w klatce"],
-    "fact": "Podgrzewacze kubków na USB to biurowy gadżet dla tych, którzy zapominają o kawie na dwie godziny."
+    "decoys": [
+      "Suszy pomalowane paznokcie",
+      "Rozmraża mysz komputerową zimą",
+      "Ogrzewa chomika w klatce"
+    ],
+    "fact": "Podgrzewacze kubków na USB to biurowy gadżet dla tych, którzy zapominają o kawie na dwie godziny.",
+    "photo": {
+      "author": "adactio",
+      "license": "CC BY 2.0",
+      "source": "https://www.flickr.com/photos/74105777@N00/2184656644"
+    }
   }
 ]

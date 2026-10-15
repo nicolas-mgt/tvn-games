@@ -5,7 +5,6 @@ import { dealersOnlyResult, nextDealerBid } from './paleta-w-ciemno/logic'
 import { distance, emojiImage } from './podloga/logic'
 import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type Temperatures } from './pogodynka/logic'
 import { cellsAt, fits, LEVELS, parseLevel, rotate } from './poukladani/logic'
-import { GADGET_ART } from './ustrojstwo/GadgetArt'
 import gadgets from './ustrojstwo/data.json'
 import { addMontyResult, hostOpens, remainingDoor } from './zonk/logic'
 
@@ -65,8 +64,10 @@ describe('Podłoga', () => {
 })
 
 describe('Co to za ustrojstwo', () => {
-  it('has an illustration for every gadget', () => {
-    expect(gadgets.map((g) => g.id).filter((id) => !(id in GADGET_ART))).toEqual([])
+  it('has a credited photo for every gadget', () => {
+    const photos = import.meta.glob('/public/ustrojstwo/items/*.jpg')
+    expect(gadgets.filter((g) => !photos[`/public/ustrojstwo/items/${g.id}.jpg`]).map((g) => g.id)).toEqual([])
+    expect(gadgets.filter((g) => !g.photo.author || !g.photo.license || !g.photo.source).map((g) => g.id)).toEqual([])
   })
 })
 

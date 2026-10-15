@@ -164,6 +164,15 @@ export default function UstrojstwoGame() {
                 <span className="absolute -top-2 left-1/2 size-4 -translate-x-1/2 rounded-full bg-red-600 shadow" />
                 <p className="text-[10px] font-bold uppercase tracking-widest text-black/50">Opis od nadawcy</p>
                 <p className="marker text-2xl text-[#2a1a0c]">{question.look}</p>
+                <a
+                  href={question.photo.source}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-2 block text-right text-[10px] text-black/45 underline-offset-2 hover:underline"
+                  data-testid="photo-credit"
+                >
+                  Fot. {question.photo.author}, {question.photo.license}
+                </a>
               </motion.div>
               <Labels options={question.options} answer={question.answer} chosen={chosen} onChoose={choose} />
               {phase === 'verdict' && landed && <Fact correct={correct} fact={question.fact} last={last} onNext={next} />}
@@ -182,7 +191,7 @@ export default function UstrojstwoGame() {
         />
       )}
 
-      <p className="mt-auto pt-6 text-center text-[11px] text-white/40">Dźwięki: Kenney (CC0) · Ilustracje: własne</p>
+      <p className="mt-auto pt-6 text-center text-[11px] text-white/40">Dźwięki: Kenney (CC0) · Zdjęcia: Flickr i Wikimedia Commons, autorzy i licencje przy zdjęciach</p>
     </MotionConfig>
   )
 }

@@ -1,7 +1,6 @@
 import confetti from 'canvas-confetti'
 import { motion } from 'motion/react'
 import { useRef, useState, type PointerEvent } from 'react'
-import { GADGET_ART } from './GadgetArt'
 import { play } from './sfx'
 
 export type ParcelStage = 'arrive' | 'cut' | 'open' | 'depart'
@@ -182,7 +181,13 @@ export function Parcel({ gadgetId, number, total, stage, onArrived, onOpened, on
               transition={{ delay: open ? 0.45 : 0, duration: 0.8, ease: [0.2, 1.4, 0.4, 1] }}
             >
               <div className="parcel-gadget-face">
-                {GADGET_ART[gadgetId]}
+                <img
+                  src={`/ustrojstwo/items/${gadgetId}.jpg`}
+                  alt=""
+                  draggable={false}
+                  data-gadget={gadgetId}
+                  className="aspect-[4/3] w-full bg-neutral-900 object-contain"
+                />
               </div>
             </motion.div>
           </div>
