@@ -1,4 +1,5 @@
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
+import { useRef } from 'react'
 import { Button } from '@/components/ui/button'
 
 const TILTS = [-1.5, 1, 1.5, -1]
@@ -21,7 +22,7 @@ export function Labels({ options, answer, chosen, onChoose }: LabelsProps) {
         return (
           <motion.button
             key={option}
-            className={`ship-label rounded-sm p-3 text-left transition-opacity ${state}`}
+            className={`ship-label cursor-pointer rounded-sm p-3 text-left transition-opacity disabled:cursor-default ${state}`}
             initial={{ opacity: 0, y: 24, rotate: TILTS[i] }}
             animate={{ opacity: 1, y: 0, rotate: TILTS[i] }}
             whileHover={chosen === null ? { y: -5, rotate: 0 } : undefined}
@@ -61,12 +62,17 @@ export function Stamp({ correct, onLanded }: { correct: boolean; onLanded: () =>
 }
 
 export function Fact({ correct, fact, last, onNext }: { correct: boolean; fact: string; last: boolean; onNext: () => void }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const reducedMotion = useReducedMotion()
+
   return (
     <motion.div
+      ref={ref}
       className="flex flex-col items-center gap-3 text-center"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4 }}
+      onAnimationComplete={() => ref.current?.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'nearest' })}
     >
       <p className="max-w-lg text-sm text-amber-50/80">{fact}</p>
       <Button size="lg" className="font-display text-xl tracking-widest" onClick={onNext} data-testid="next">
