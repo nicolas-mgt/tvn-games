@@ -36,8 +36,9 @@ Dokument opisuje, jak zamieniamy POC gry w wersję z pełną oprawą („tryb im
 | Prawda czy ściema? | studio wieczornych wiadomości: ściana ekranów, dalekopis z depeszami, pieczątki PRAWDA/ŚCIEMA, pasek PILNE, prezenterka i satyryk przy biurku | `ps-` | prowadzący i studio SVG, prawdziwe newsy sprawdzone w Wikipedii (link przy każdym) |
 | Kto to powiedział? | salon jak w Gogglebox: telewizor przełączający kanały z cytatem w napisach, lampka ON AIR, trzy klikalne źródła na kanapach | `kt-` | gwiazda, rodzina i robot jako własne SVG, salon SVG, 30 fikcyjnych cytatów |
 | To Pan tego nie wie | poranne studio śniadaniowe: okno na miasto o świcie, kanapa z poduszkami, dziecko na za dużym fotelu z dymkiem, kafelki liter, rysunek kredkami za trafienie | `tp-` | dzieci z `LOOKS` i prowadząca jako własne SVG, studio SVG, 30 dziecięcych definicji |
+| Pogodynka | studio prognozy pogody: mapa Polski na ekranie z animowanymi ikonami, termometry-suwaki, zegar do rozliczenia, słupki typ kontra rzeczywistość, rozgrzewka „Jak było wczoraj?” | `pg-` | prezenterka i studio SVG, obrys Polski z Natural Earth, dane Open-Meteo |
 
-Zostały 2 gry (sekcja 10).
+Została 1 gra (sekcja 10).
 
 ## 3. Proces pracy nad jedną grą
 
@@ -166,7 +167,7 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
   - Sax: SAX00, SAX01, SAX02, SAX05, SAX10, SAX11, SAX12, SAX14, SAX15, SAX16;
   - Steel: STEEL00, STEEL01, STEEL02, STEEL10, STEEL12, STEEL14, STEEL15;
   - Pizzicato: PIZZI01, PIZZI02, PIZZI05, PIZZI10, PIZZI11, PIZZI12, PIZZI14, PIZZI15, PIZZI16;
-  - 8-Bit: NES11, NES12, NES14;
+  - 8-Bit: NES04, NES08, NES11, NES12, NES14;
   - Hit: HIT02, HIT11, HIT16.
 
   Po każdej grze dopisz tu nowe.
@@ -536,6 +537,8 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 
 ### 10.11 Pogodynka (`pogodynka`, inspiracja: prognoza pogody TVN24)
 
+Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
+
 - **Mechanika:**
   - typ jutrzejszego maksimum w 5 miastach Polski; 10 pkt za miasto, −2 za każdy stopień błędu, maksimum 50 dziennie;
   - prawdziwe dane z Open-Meteo, typy w localStorage, rozliczenie przy kolejnym wejściu.
@@ -550,9 +553,11 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 - **Grafika:** kontur Polski w SVG z domeny publicznej (np. Natural Earth) z miastami według współrzędnych z `CITIES`.
 - **Dźwięki:** jingiel prognozy (synteza), klik pokrętła (Interface), deszcz i wiatr w tle (noise, ciche). Jingle Steel albo 8-Bit, niewykorzystane.
 - **Logika i testy:** istniejące zostają; dodać `presenterMood(points)`. W stopce „Dane: Open-Meteo (CC BY 4.0)”.
-- **Do rozstrzygnięcia / ryzyko:**
-  - gra rozlicza się dopiero następnego dnia, więc lobby i ekran „czekam na jutro” muszą jasno pokazywać stan;
-  - test Playwright wymaga podstawienia odpowiedzi API (`page.route`), żeby rozliczenie dało się sprawdzić bez czekania doby.
+- **Rozstrzygnięte:**
+  - lobby pokazuje stan (`lobby-status`: typ do rozliczenia, typ zapisany albo brak typu), a ekran oczekiwania odlicza czas do rozliczenia;
+  - test Playwright podstawia odpowiedź Open-Meteo przez `page.route` i wstrzykuje do localStorage typ sprzed dwóch dni;
+  - doszła rozgrzewka „Jak było wczoraj?” raz dziennie, rozliczana od razu z danych archiwalnych i niewliczana do statystyk;
+  - w zestawie Steel nie było jingla z wyraźnie rosnącą melodią, więc `good` i `bad` pochodzą z 8-Bit.
 
 ### 10.12 Co się zaraz stanie? (`co-sie-zaraz-stanie`, inspiracja: Co tu się odjechało?)
 

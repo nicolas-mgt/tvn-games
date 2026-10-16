@@ -1,177 +1,380 @@
-import { useEffect, useState, type FormEvent } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
+import '@fontsource/bebas-neue'
+import '@fontsource/caveat/700.css'
+import confetti from 'canvas-confetti'
+import { MotionConfig, motion, useReducedMotion } from 'motion/react'
+import { useEffect, useState } from 'react'
 import { addDays, todayKey } from '@/shared/daily'
-import { Hud, ResultScreen } from '@/shared/GameShell'
+import { MuteButton, ResultScreen } from '@/shared/GameShell'
 import { loadJSON, saveJSON } from '@/shared/storage'
-import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type CityId, type Prediction, type Temperatures } from './logic'
+import {
+  CITIES,
+  cityPoints,
+  countdownTo,
+  formatTemp,
+  isSettleable,
+  MAX_DAY_POINTS,
+  PREDICTIONS_KEY,
+  PRESENTER_LINES,
+  presenterMood,
+  settle,
+  startValues,
+  WARMUP_KEY,
+  weatherKind,
+  type CityId,
+  type Prediction,
+  type PresenterMood,
+  type Temperatures,
+  type Warmup,
+} from './logic'
+import { Presenter } from './Presenter'
+import { play, sfx } from './sfx'
+import { Backdrop, type BackdropMood } from './Studio'
+import { SettleBars, Thermometers } from './Thermometers'
+import { fetchWeather, type Weather } from './weather'
+import { WeatherMap } from './WeatherMap'
 
-const STORAGE_KEY = 'slop-games:pogodynka:predictions'
-
-type Weather = { current: Temperatures; dailyMax: Record<string, Temperatures> }
-
-type OpenMeteoLocation = {
-  current: { temperature_2m: number }
-  daily: { time: string[]; temperature_2m_max: number[] }
+type Phase = 'lobby' | 'forecast' | 'warmup' | 'waiting' | 'settle' | 'result'
+/** A finished round shown with bars: the real settlement or today's warm-up. */
+type Round = {
+  kind: 'settle' | 'warmup'
+  day: string
+  guesses: Temperatures
+  actual: Temperatures
+  points: number
 }
 
-async function fetchWeather(): Promise<Weather> {
-  const params = new URLSearchParams({
-    latitude: CITIES.map((c) => c.lat).join(','),
-    longitude: CITIES.map((c) => c.lng).join(','),
-    daily: 'temperature_2m_max',
-    current: 'temperature_2m',
-    past_days: '31',
-    forecast_days: '1',
-    timezone: 'Europe/Warsaw',
-  })
-  const response = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`)
-  if (!response.ok) throw new Error(`Open-Meteo: ${response.status}`)
-  const locations = (await response.json()) as OpenMeteoLocation[]
-  const current = {} as Temperatures
-  const dailyMax: Record<string, Temperatures> = {}
-  CITIES.forEach((city, i) => {
-    current[city.id] = locations[i].current.temperature_2m
-    locations[i].daily.time.forEach((day, d) => {
-      dailyMax[day] ??= {} as Temperatures
-      dailyMax[day][city.id] = locations[i].daily.temperature_2m_max[d]
-    })
-  })
-  return { current, dailyMax }
+const WEATHER_COLORS = ['#ffd34d', '#6ab0ff', '#f4f6fa', '#e8504a', '#3a9a5a']
+
+function shortDay(day: string) {
+  const [, month, date] = day.split('-')
+  return `${date}.${month}`
+}
+
+function formatCountdown(ms: number) {
+  const total = Math.floor(ms / 1000)
+  const parts = [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60]
+  return parts.map((n) => String(n).padStart(2, '0')).join(':')
+}
+
+function shareEmoji(points: number) {
+  if (points === 10) return '🎯'
+  if (points >= 6) return '🌤️'
+  return points > 0 ? '🌧️' : '⛈️'
 }
 
 export default function PogodynkaGame() {
   const today = todayKey()
   const tomorrow = addDays(today, 1)
-  const [predictions, setPredictions] = useState(() => loadJSON<Prediction[]>(STORAGE_KEY, []))
+  const yesterday = addDays(today, -1)
+  const [predictions, setPredictions] = useState(() => loadJSON<Prediction[]>(PREDICTIONS_KEY, []))
+  const [warmup, setWarmup] = useState(() => loadJSON<Warmup | null>(WARMUP_KEY, null))
   const [weather, setWeather] = useState<Weather | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [justSettled, setJustSettled] = useState<Prediction | null>(null)
-  const [draft, setDraft] = useState<Record<CityId, string>>({ warszawa: '', krakow: '', gdansk: '', wroclaw: '', poznan: '' })
-
-  function save(next: Prediction[]) {
-    setPredictions(next)
-    saveJSON(STORAGE_KEY, next)
-  }
+  const [phase, setPhase] = useState<Phase>('lobby')
+  const [draft, setDraft] = useState<Temperatures | null>(null)
+  const [active, setActive] = useState<CityId | null>(null)
+  const [round, setRound] = useState<Round | null>(null)
+  const [revealed, setRevealed] = useState(false)
+  const [now, setNow] = useState(() => new Date())
+  const reducedMotion = useReducedMotion()
+  const pace = reducedMotion ? 0.15 : 1
 
   useEffect(() => {
     fetchWeather()
-      .then((fetched) => {
-        setWeather(fetched)
-        const stored = loadJSON<Prediction[]>(STORAGE_KEY, [])
-        const settledNow: Prediction[] = []
-        const updated = stored.map((p) => {
-          const actual = fetched.dailyMax[p.targetDay]
-          if (!isSettleable(p, today) || !actual) return p
-          const settled = settle(p, actual)
-          settledNow.push(settled)
-          return settled
-        })
-        if (settledNow.length > 0) {
-          setPredictions(updated)
-          saveJSON(STORAGE_KEY, updated)
-          setJustSettled(settledNow[settledNow.length - 1])
-        }
-      })
+      .then(setWeather)
       .catch((e: Error) => setError(e.message))
-  }, [today])
+  }, [])
+
+  useEffect(() => {
+    if (phase !== 'waiting') return
+    const refresh = () => setNow(new Date())
+    const first = setTimeout(refresh, 0)
+    const timer = setInterval(refresh, 1000)
+    return () => {
+      clearTimeout(first)
+      clearInterval(timer)
+    }
+  }, [phase])
 
   const forTomorrow = predictions.find((p) => p.targetDay === tomorrow)
-  const history = predictions.filter((p) => p.points !== undefined).slice(-7).reverse()
+  const toSettle = weather ? predictions.find((p) => isSettleable(p, today) && weather.dailyMax[p.targetDay]) : undefined
+  const warmupDone = warmup?.day === today
+  const lobbyState = toSettle ? 'settle' : forTomorrow ? 'saved' : error ? 'error' : weather ? 'none' : 'loading'
 
-  function submit(event: FormEvent) {
-    event.preventDefault()
-    const guesses = Object.fromEntries(CITIES.map((c) => [c.id, Number(draft[c.id])])) as Temperatures
-    save([...predictions, { targetDay: tomorrow, guesses }])
+  function savePredictions(next: Prediction[]) {
+    setPredictions(next)
+    saveJSON(PREDICTIONS_KEY, next)
   }
 
-  if (justSettled) {
-    return (
-      <ResultScreen
-        slug="pogodynka"
-        score={justSettled.points!}
-        maxScore={MAX_DAY_POINTS}
-        summary={
-          <ul className="text-sm">
-            <li className="mb-1 font-semibold">Rozliczenie typów na {justSettled.targetDay}</li>
-            {CITIES.map((c) => (
-              <li key={c.id}>
-                {c.name}: typ {justSettled.guesses[c.id]}°C, było {justSettled.actual![c.id]}°C →{' '}
-                {cityPoints(justSettled.guesses[c.id], justSettled.actual![c.id])} pkt
-              </li>
-            ))}
-          </ul>
-        }
-        onRestart={() => setJustSettled(null)}
-      />
+  function enterForecast(nextPhase: 'forecast' | 'warmup') {
+    sfx.unlock()
+    setDraft(startValues(weather!.current))
+    setActive(null)
+    setPhase(nextPhase)
+    play('jingle')
+    const codes = Object.values(weather!.dailyCode[nextPhase === 'forecast' ? tomorrow : yesterday] ?? {})
+    setTimeout(() => play(codes.some((c) => weatherKind(c) === 'rain') ? 'rain' : 'wind'), 900 * pace)
+  }
+
+  function showRound(next: Round) {
+    setRound(next)
+    setRevealed(false)
+    setPhase('settle')
+    play('jingle')
+    CITIES.forEach((_, i) => setTimeout(() => play('rise'), (0.3 + i * 0.6) * pace * 1000))
+    setTimeout(
+      () => {
+        setRevealed(true)
+        play(next.points >= 25 ? 'good' : 'bad')
+        if (next.points >= 40)
+          confetti({
+            particleCount: 120,
+            spread: 80,
+            origin: { y: 0.5 },
+            colors: WEATHER_COLORS,
+            disableForReducedMotion: true,
+          })
+      },
+      (0.3 + CITIES.length * 0.6 + 0.4) * pace * 1000,
     )
   }
 
-  const allFilled = CITIES.every((c) => draft[c.id].trim() !== '' && !Number.isNaN(Number(draft[c.id])))
+  function start() {
+    sfx.unlock()
+    if (toSettle) {
+      const settled = settle(toSettle, weather!.dailyMax[toSettle.targetDay])
+      savePredictions(predictions.map((p) => (p === toSettle ? settled : p)))
+      showRound({
+        kind: 'settle',
+        day: settled.targetDay,
+        guesses: settled.guesses,
+        actual: settled.actual!,
+        points: settled.points!,
+      })
+      return
+    }
+    if (forTomorrow) {
+      setPhase('waiting')
+      play('tick')
+      return
+    }
+    enterForecast('forecast')
+  }
+
+  function submit() {
+    play('click')
+    if (phase === 'forecast') {
+      savePredictions([...predictions, { targetDay: tomorrow, guesses: draft! }])
+      setPhase('waiting')
+      ;[0, 1, 2].forEach((i) => setTimeout(() => play('tick'), i * 300 * pace))
+      return
+    }
+    const actual = weather!.dailyMax[yesterday]
+    const points = settle({ targetDay: yesterday, guesses: draft! }, actual).points!
+    const done = { day: today, points }
+    setWarmup(done)
+    saveJSON(WARMUP_KEY, done)
+    showRound({
+      kind: 'warmup',
+      day: yesterday,
+      guesses: draft!,
+      actual,
+      points,
+    })
+  }
+
+  function backToLobby() {
+    play('click')
+    setPhase('lobby')
+    setRound(null)
+  }
+
+  function backdropMood(): BackdropMood {
+    if (phase === 'lobby') return 'idle'
+    if (phase === 'warmup') return 'forecast'
+    return phase
+  }
+
+  function currentMood(): PresenterMood {
+    if (phase === 'forecast' || phase === 'warmup') return 'pointing'
+    if (phase === 'waiting') return 'waiting'
+    if (phase === 'settle') return revealed ? presenterMood(round!.points) : 'pointing'
+    if (phase === 'result') return presenterMood(round!.points)
+    return 'neutral'
+  }
+
+  function modeLabel() {
+    if (phase === 'warmup' || round?.kind === 'warmup') return `Rozgrzewka: ${shortDay(yesterday)}`
+    if (phase === 'settle') return `Rozliczenie ${shortDay(round!.day)}`
+    return `Prognoza na ${shortDay(tomorrow)}`
+  }
+
+  function mapState(): {
+    codes: Record<CityId, number> | null
+    bubbles: Record<CityId, string> | null
+  } {
+    const codesFor = (day: string) => weather?.dailyCode[day] ?? null
+    const bubblesOf = (values: Temperatures, format: (id: CityId) => string = (id) => formatTemp(values[id])) => Object.fromEntries(CITIES.map((c) => [c.id, format(c.id)])) as Record<CityId, string>
+    if (phase === 'forecast') return { codes: codesFor(tomorrow), bubbles: bubblesOf(draft!) }
+    if (phase === 'warmup') return { codes: codesFor(yesterday), bubbles: bubblesOf(draft!) }
+    if (phase === 'waiting')
+      return {
+        codes: codesFor(tomorrow),
+        bubbles: bubblesOf(forTomorrow!.guesses),
+      }
+    if (phase === 'settle')
+      return {
+        codes: codesFor(round!.day),
+        bubbles: revealed ? bubblesOf(round!.actual, (id) => `+${cityPoints(round!.guesses[id], round!.actual[id])}`) : bubblesOf(round!.guesses),
+      }
+    return { codes: codesFor(tomorrow), bubbles: null }
+  }
+
+  const mood = currentMood()
+
   return (
-    <>
-      <Hud items={[['Dziś', today], ['Typujesz na', tomorrow], ['Rozliczone dni', history.length]]} />
-      {error && <p className="text-sm text-red-600">Nie udało się pobrać pogody: {error}</p>}
-      <Card>
-        <CardContent className="flex flex-col gap-4">
-          <p className="text-muted-foreground">
-            Wytypuj jutrzejszą <strong>temperaturę maksymalną</strong>. Rozliczenie nastąpi pojutrze na podstawie danych
-            Open-Meteo – wróć i sprawdź wynik. Za każde miasto do {MAX_DAY_POINTS / CITIES.length} pkt (−2 pkt za każdy stopień
-            różnicy).
-          </p>
-          {forTomorrow ? (
-            <div className="flex flex-col gap-1" data-testid="pending-prediction">
-              <p className="font-semibold">Twój typ na {tomorrow} jest zapisany ✅</p>
-              {CITIES.map((c) => (
-                <p key={c.id}>
-                  {c.name}: {forTomorrow.guesses[c.id]}°C
+    <MotionConfig reducedMotion="user">
+      <Backdrop mood={backdropMood()} />
+      <MuteButton sfx={sfx} />
+
+      <div className="pg-game">
+        {phase === 'lobby' && (
+          <motion.div className="pg-lobby" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="pg-lobby-head">
+              <Presenter mood={mood} line={PRESENTER_LINES.neutral} />
+              <div className="pg-lobby-text">
+                <p className="pg-hand text-3xl text-[#ffd34d]">Studio pogody · na żywo</p>
+                <h2 className="font-display text-6xl tracking-wider text-white sm:text-7xl">Pogodynka</h2>
+                <p>
+                  Wytypuj termometrami jutrzejszą temperaturę maksymalną w pięciu miastach. Rozliczymy cię po zakończeniu jutrzejszego dnia prawdziwymi danymi: za miasto do{' '}
+                  {MAX_DAY_POINTS / CITIES.length} pkt, minus 2 za każdy stopień różnicy. Na rozgrzewkę zgadnij, jak było wczoraj – wynik od razu.
                 </p>
-              ))}
+              </div>
             </div>
-          ) : (
-            <form onSubmit={submit} className="grid gap-2 sm:grid-cols-2">
-              {CITIES.map((c) => (
-                <label key={c.id} className="flex items-center justify-between gap-3 rounded-md border px-3 py-2">
-                  <span>
-                    {c.name}
-                    {weather && (
-                      <span className="block text-xs text-muted-foreground">teraz: {weather.current[c.id]}°C</span>
-                    )}
-                  </span>
-                  <Input
-                    type="number"
-                    step="0.5"
-                    min={-40}
-                    max={45}
-                    className="w-24"
-                    value={draft[c.id]}
-                    onChange={(e) => setDraft({ ...draft, [c.id]: e.target.value })}
-                    aria-label={`Maksimum ${c.name}`}
-                  />
-                </label>
-              ))}
-              <Button type="submit" disabled={!allFilled} className="sm:col-span-2">
-                Zapisz typy na jutro
-              </Button>
-            </form>
-          )}
-        </CardContent>
-      </Card>
-      {history.length > 0 && (
-        <Card>
-          <CardContent>
-            <h2 className="mb-2 font-semibold">Ostatnie rozliczenia</h2>
-            <ul className="text-sm">
-              {history.map((p) => (
-                <li key={p.targetDay}>
-                  {p.targetDay}: {p.points}/{MAX_DAY_POINTS} pkt
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-      )}
-    </>
+            <p className="pg-status" data-testid="lobby-status" data-state={lobbyState}>
+              {
+                {
+                  settle: toSettle && `Twój typ na ${shortDay(toSettle.targetDay)} czeka na rozliczenie!`,
+                  saved: `Typ na ${shortDay(tomorrow)} zapisany. Rozliczenie po jego zakończeniu.`,
+                  none: 'Brak typu na jutro – synoptycy czekają.',
+                  error: `Nie udało się pobrać pogody: ${error}`,
+                  loading: 'Łączymy się z satelitą…',
+                }[lobbyState]
+              }
+            </p>
+            <div className="pg-lobby-actions">
+              <button type="button" className="pg-start pg-sign" onClick={start} disabled={lobbyState === 'loading' || lobbyState === 'error'} data-testid="start">
+                {toSettle ? `Rozlicz typ z ${shortDay(toSettle.targetDay)}` : forTomorrow ? 'Zobacz swój typ' : 'Typuj pogodę na jutro'}
+              </button>
+              {warmupDone ? (
+                <p className="pg-warmup-done" data-testid="warmup-done">
+                  Dzisiejsza rozgrzewka: {warmup.points}/{MAX_DAY_POINTS} pkt
+                </p>
+              ) : (
+                <button type="button" className="pg-secondary pg-sign" onClick={() => enterForecast('warmup')} disabled={!weather?.dailyMax[yesterday]} data-testid="warmup">
+                  Rozgrzewka: jak było wczoraj?
+                </button>
+              )}
+            </div>
+          </motion.div>
+        )}
+
+        {phase !== 'lobby' && phase !== 'result' && (
+          <>
+            <header className="pg-bar">
+              <strong className="pg-bar-title pg-sign" data-testid="mode">
+                {modeLabel()}
+              </strong>
+              {phase === 'settle' && revealed && (
+                <span className="pg-stat" data-testid="score" data-value={round!.points}>
+                  Wynik{' '}
+                  <b>
+                    {round!.points}/{MAX_DAY_POINTS}
+                  </b>
+                </span>
+              )}
+            </header>
+            <div className="pg-stage">
+              <WeatherMap {...mapState()} active={active} />
+              <Presenter mood={mood} line={phase === 'settle' && !revealed ? 'Sprawdzamy, ile było naprawdę…' : PRESENTER_LINES[mood]} />
+            </div>
+
+            {(phase === 'forecast' || phase === 'warmup') && (
+              <div className="pg-panel">
+                <p className="pg-panel-title">{phase === 'forecast' ? 'Ile stopni będzie jutro w najcieplejszym momencie dnia?' : 'Ile stopni było wczoraj w najcieplejszym momencie dnia?'}</p>
+                <Thermometers values={draft!} onChange={(id, value) => setDraft({ ...draft!, [id]: value })} onFocusCity={setActive} />
+                <button type="button" className="pg-start pg-sign" onClick={submit} data-testid="submit">
+                  {phase === 'forecast' ? 'Zapisz prognozę' : 'Sprawdzam'}
+                </button>
+              </div>
+            )}
+
+            {phase === 'waiting' && (
+              <div className="pg-panel" data-testid="pending-prediction">
+                <p className="pg-panel-title">Twój typ na {shortDay(tomorrow)} jest zapisany</p>
+                <ul className="pg-guesses">
+                  {CITIES.map((c) => (
+                    <li key={c.id}>
+                      {c.name} <b className="pg-sign">{formatTemp(forTomorrow!.guesses[c.id])}</b>
+                    </li>
+                  ))}
+                </ul>
+                <p className="pg-countdown">
+                  Rozliczenie możliwe za{' '}
+                  <b className="pg-sign" data-testid="countdown">
+                    {formatCountdown(countdownTo(tomorrow, now))}
+                  </b>
+                </p>
+                <button type="button" className="pg-secondary pg-sign" onClick={backToLobby} data-testid="back">
+                  Wróć do studia
+                </button>
+              </div>
+            )}
+
+            {phase === 'settle' && round && (
+              <div className="pg-panel">
+                <SettleBars guesses={round.guesses} actual={round.actual} pace={pace} />
+                {revealed && (
+                  <motion.button
+                    type="button"
+                    className="pg-start pg-sign"
+                    onClick={round.kind === 'settle' ? () => setPhase('result') : backToLobby}
+                    data-testid="settle-next"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    {round.kind === 'settle' ? 'Podsumowanie' : 'Wróć do studia'}
+                  </motion.button>
+                )}
+              </div>
+            )}
+          </>
+        )}
+
+        {phase === 'result' && round && (
+          <ResultScreen
+            slug="pogodynka"
+            score={round.points}
+            maxScore={MAX_DAY_POINTS}
+            shareLine={CITIES.map((c) => shareEmoji(cityPoints(round.guesses[c.id], round.actual[c.id]))).join('')}
+            summary={
+              <ul className="text-sm">
+                <li className="mb-1 font-semibold">Rozliczenie typów na {shortDay(round.day)}</li>
+                {CITIES.map((c) => (
+                  <li key={c.id}>
+                    {c.name}: typ {formatTemp(round.guesses[c.id])}, było {formatTemp(round.actual[c.id])} → {cityPoints(round.guesses[c.id], round.actual[c.id])} pkt
+                  </li>
+                ))}
+              </ul>
+            }
+            onRestart={backToLobby}
+          >
+            <Presenter mood={mood} line={PRESENTER_LINES[mood]} />
+          </ResultScreen>
+        )}
+
+        <p className="pg-footer text-center text-[11px]">Dane: Open-Meteo (CC BY 4.0) · Mapa: Natural Earth (domena publiczna) · Dźwięki: Kenney (CC0) · Prezenterka jest fikcyjna</p>
+      </div>
+    </MotionConfig>
   )
 }

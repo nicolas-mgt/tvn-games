@@ -9,7 +9,7 @@ import { dealerMood, priceScore } from './ile-za-grata/logic'
 import pallets from './paleta-w-ciemno/data.json'
 import { dealersOnlyResult, nextDealerBid } from './paleta-w-ciemno/logic'
 import { distance, emojiImage } from './podloga/logic'
-import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type Temperatures } from './pogodynka/logic'
+import { CITIES, cityPoints, countdownTo, isSettleable, MAP_H, MAP_W, MAX_DAY_POINTS, presenterMood, project as projectPoland, settle, weatherKind, type Temperatures } from './pogodynka/logic'
 import ktoData from './kto-to-powiedzial/data.json'
 import { buildDeck as buildQuoteDeck, castMood, QUOTES_PER_GAME, SOURCE_IDS } from './kto-to-powiedzial/logic'
 import { cellsAt, fits, FURNITURE, LEVELS, MAX_SCORE, organizerMood, parseLevel, rotate } from './poukladani/logic'
@@ -251,6 +251,31 @@ describe('Pogodynka', () => {
     const settled = settle(prediction, temps(10))
     expect(settled.points).toBe(MAX_DAY_POINTS)
     expect(isSettleable(settled, '2026-10-20')).toBe(false)
+  })
+
+  it('maps WMO weather codes to icons', () => {
+    expect([0, 1, 2, 3, 45, 61, 81, 73, 95].map(weatherKind)).toEqual(['sun', 'sun', 'partly', 'cloud', 'fog', 'rain', 'rain', 'snow', 'storm'])
+  })
+
+  it('picks the presenter mood from the points', () => {
+    expect([null, 50, 40, 39, 25, 24, 10, 9, 0].map(presenterMood)).toEqual(['neutral', 'delighted', 'delighted', 'pleased', 'pleased', 'unsure', 'unsure', 'oops', 'oops'])
+  })
+
+  it('places every city on the map in geographic order', () => {
+    const at = Object.fromEntries(CITIES.map((c) => [c.id, projectPoland(c.lat, c.lng)]))
+    for (const { x, y } of Object.values(at)) {
+      expect(x).toBeGreaterThan(0)
+      expect(x).toBeLessThan(MAP_W)
+      expect(y).toBeGreaterThan(0)
+      expect(y).toBeLessThan(MAP_H)
+    }
+    expect(at.gdansk.y).toBeLessThan(at.krakow.y)
+    expect(at.poznan.x).toBeLessThan(at.warszawa.x)
+  })
+
+  it('counts down to midnight after the target day', () => {
+    expect(countdownTo('2026-10-17', new Date(2026, 9, 17, 23, 0))).toBe(60 * 60 * 1000)
+    expect(countdownTo('2026-10-17', new Date(2026, 9, 18, 0, 0, 1))).toBe(0)
   })
 })
 

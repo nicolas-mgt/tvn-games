@@ -272,8 +272,9 @@ export const GAMES: GameMeta[] = [
     inspirationNote: 'Prognoza pogody w TVN24: synoptycy pokazują na mapie, jaka jutro będzie temperatura w polskich miastach.',
     category: 'Newsy, show-biznes, codzienność',
     size: 'S',
-    description: 'Wytypuj jutrzejsze maksimum w pięciu miastach. Rozliczymy cię prawdziwymi danymi.',
+    description: 'Studio prognozy pogody: termometrami typujesz jutrzejsze maksimum w pięciu miastach, a pojutrze rozliczamy cię prawdziwymi danymi. Na rozgrzewkę zgadnij, jak było wczoraj.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./pogodynka')),
   },
   {
