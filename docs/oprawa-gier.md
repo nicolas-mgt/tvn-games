@@ -30,8 +30,9 @@ Dokument opisuje, jak zamieniamy POC gry w wersję z pełną oprawą („tryb im
 | Express za dolara | wyprawa przez Azję, scena na każdy przystanek | `ex-` | 3 pary SVG, prowadząca, pocztówki SVG |
 | Uratuj knajpę | gospoda w Pcimiu Dolnym, sala zmienia się ze statystykami | `kn-` | Szefowa Bożena i 4 właścicieli SVG |
 | Danie po składnikach | studio kulinarne, składniki spod kloszy, trzech jurorów | `dp-` | OpenMoji, zdjęcia CC dań, 3 jurorów SVG |
+| Stylizacja w 60 sekund | kulisy pokazu mody, wybieg z fleszami, czworo jurorów | `st-` | modelka Ola i 29 rzeczy jako własne SVG |
 
-Zostało 8 gier (sekcja 10).
+Zostało 7 gier (sekcja 10).
 
 ## 3. Proces pracy nad jedną grą
 
@@ -157,7 +158,7 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
 - Typowy zestaw na grę to 5–7 próbek (wejście rekwizytu, akcja, błąd, mocny akcent, jingle `good` i `bad`) plus 2–4 syntezy (tykanie, szum, werbel, stukot).
 - **Jingle `good` i `bad` dobieramy analizą przebiegu wysokości dźwięku** (autokorelacja na ramkach po 2048 próbek). `good` musi wyraźnie rosnąć (stosunek końca do początku > 1,15), a `bad` wyraźnie opadać (< 0,8). Zestaw dobieramy do klimatu: Sax do noir i studia, Steel do tropików, Pizzicato do komedii, 8-Bit do retro.
 - **Nie powtarzamy plików jingli między grami.** Na pewno są już zajęte:
-  - Sax: SAX00, SAX01, SAX02, SAX05, SAX10, SAX14, SAX15, SAX16;
+  - Sax: SAX00, SAX01, SAX02, SAX05, SAX10, SAX11, SAX12, SAX14, SAX15, SAX16;
   - Steel: STEEL01, STEEL02, STEEL10, STEEL14, STEEL15;
   - Pizzicato: PIZZI01, PIZZI02, PIZZI05, PIZZI10, PIZZI14, PIZZI15;
   - 8-Bit: NES11, NES12.
@@ -419,6 +420,8 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 - **Do rozstrzygnięcia:** OpenMoji czy własne ikony; czy dodać zdjęcie dania na koniec.
 
 ### 10.5 Stylizacja w 60 sekund (`stylizacja`, inspiracja: Top Model, Love the Look)
+
+Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 
 - **Mechanika:**
   - 3 rundy po 60 s, motyw z puli (pożądane i zakazane tagi);

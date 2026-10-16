@@ -1,166 +1,287 @@
-import { DndContext, PointerSensor, useDraggable, useDroppable, useSensor, useSensors, type DragEndEvent } from '@dnd-kit/core'
-import { useState } from 'react'
+import '@fontsource/bebas-neue'
+import '@fontsource/caveat/700.css'
+import { DndContext, DragOverlay, PointerSensor, TouchSensor, useDroppable, useSensor, useSensors, type DragEndEvent, type DragStartEvent } from '@dnd-kit/core'
+import confetti from 'canvas-confetti'
+import { MotionConfig, motion, useReducedMotion } from 'motion/react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { pickN } from '@/shared/daily'
-import { Hud, ResultScreen } from '@/shared/GameShell'
+import { MuteButton, ResultScreen } from '@/shared/GameShell'
 import { useCountdown } from '@/shared/useCountdown'
+import { Backdrop, type BackdropMood } from './Backstage'
 import data from './data.json'
-import { JURY, jurorComment, jurorScore, MAX_JUROR_SCORE, SLOTS, type Item, type Outfit, type Slot, type Theme } from './logic'
+import { Jury } from './Jury'
+import { JURY, jurorScore, MAX_SCORE, modelMood, ROUND_SECONDS, ROUNDS, SLOTS, URGENT_SECONDS, type Item, type Outfit, type Phase, type Slot, type Theme } from './logic'
+import { Model } from './Model'
+import { OutfitChips, Rack } from './Rack'
+import { play, sfx } from './sfx'
+import { ItemThumb } from './Wardrobe'
 
-const ROUNDS = 3
-const ROUND_SECONDS = 60
-const SLOT_LABELS: Record<Slot, string> = { glowa: 'Głowa', gora: 'Góra', dol: 'Dół', buty: 'Buty', dodatek: 'Dodatek' }
 const ITEMS = data.items as Item[]
-
-function DraggableItem({ item, onPick }: { item: Item; onPick: () => void }) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ id: item.id })
-  return (
-    <button
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      onClick={onPick}
-      data-testid={`item-${item.id}`}
-      title={`${item.name} (${item.tags.join(', ')})`}
-      style={transform ? { transform: `translate(${transform.x}px, ${transform.y}px)` } : undefined}
-      className={`flex flex-col items-center rounded-lg border bg-background p-1 text-[10px] leading-tight ${isDragging ? 'z-10 shadow-lg' : ''}`}
-    >
-      <span className="text-3xl">{item.emoji}</span>
-      {item.name}
-    </button>
-  )
-}
-
-function SlotDrop({ slot, item, onClear }: { slot: Slot; item?: Item; onClear: () => void }) {
-  const { setNodeRef, isOver } = useDroppable({ id: slot })
-  return (
-    <button
-      ref={setNodeRef}
-      onClick={onClear}
-      data-testid={`slot-${slot}`}
-      className={`flex h-16 w-full items-center justify-between rounded-lg border-2 border-dashed px-3 ${isOver ? 'border-primary bg-primary/10' : ''}`}
-    >
-      <span className="text-xs text-muted-foreground">{SLOT_LABELS[slot]}</span>
-      <span className="text-4xl">{item?.emoji ?? '·'}</span>
-    </button>
-  )
-}
+const GOOD_ROUND_TOTAL = 24
 
 type RoundResult = { theme: Theme; outfit: Outfit; scores: number[] }
 
+const roundSum = (r: RoundResult) => r.scores.reduce((a, b) => a + b, 0)
+
+function DropZone({ children }: { children: ReactNode }) {
+  const { setNodeRef, isOver } = useDroppable({ id: 'model' })
+  return (
+    <div ref={setNodeRef} className="st-dropzone" data-over={isOver} data-testid="dropzone">
+      {children}
+    </div>
+  )
+}
+
 export default function StylizacjaGame() {
+  const [phase, setPhase] = useState<Phase>('lobby')
   const [themes, setThemes] = useState(() => pickN(data.themes, ROUNDS))
   const [round, setRound] = useState(0)
   const [outfit, setOutfit] = useState<Outfit>({})
   const [results, setResults] = useState<RoundResult[]>([])
-  const theme = themes[round]
-  const judged = results.length > round
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }))
-  const { remaining, setRemaining } = useCountdown(ROUND_SECONDS, round < ROUNDS && !judged, judge)
-  const total = results.reduce((sum, r) => sum + r.scores.reduce((a, b) => a + b, 0), 0)
+  const [raised, setRaised] = useState(0)
+  const [dragging, setDragging] = useState<Item | null>(null)
+  const reducedMotion = useReducedMotion()
+  const pace = reducedMotion ? 0.15 : 1
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }), useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 6 } }))
+  const { remaining, setRemaining } = useCountdown(ROUND_SECONDS, phase === 'dressing', toRunway)
 
-  function judge() {
-    if (judged) return
-    setResults([...results, { theme, outfit, scores: JURY.map((j) => jurorScore(outfit, theme, j.bias(outfit))) }])
+  const theme = themes[round]
+  const current = results[round]
+  const juryDone = phase === 'jury' && raised === JURY.length
+  const total = results.reduce((sum, r, i) => sum + (i < round || (i === round && (juryDone || phase === 'result')) ? roundSum(r) : 0), 0)
+  const seconds = Math.ceil(remaining)
+  const urgent = phase === 'dressing' && remaining <= URGENT_SECONDS
+
+  useEffect(() => {
+    if (phase === 'dressing' && seconds <= URGENT_SECONDS && seconds > 0) play('tick')
+  }, [phase, seconds])
+
+  function startRound() {
+    setOutfit({})
+    setRemaining(ROUND_SECONDS)
+    setRaised(0)
+    setPhase('dressing')
+    play('hanger')
+  }
+
+  function enter() {
+    sfx.unlock()
+    startRound()
   }
 
   function equip(item: Item) {
-    setOutfit({ ...outfit, [item.slot]: item })
+    setOutfit((o) => ({ ...o, [item.slot]: item }))
+    play('rustle')
+    setTimeout(() => play('hanger'), 120 * pace)
   }
 
-  function onDragEnd({ active, over }: DragEndEvent) {
-    const item = ITEMS.find((i) => i.id === active.id)
-    if (item && over?.id === item.slot) equip(item)
+  function remove(slot: Slot) {
+    setOutfit((o) => ({ ...o, [slot]: undefined }))
+    play('rustle')
+  }
+
+  function toRunway() {
+    if (phase !== 'dressing') return
+    const scores = JURY.map((j) => jurorScore(outfit, theme, j.bias(outfit)))
+    const result = { theme, outfit, scores }
+    setResults((r) => [...r.slice(0, round), result])
+    setPhase('runway')
+    for (let i = 0; i < 5; i++) setTimeout(() => play('shutter'), (300 + i * 380) * pace)
+    setTimeout(() => play('applause'), 900 * pace)
+    setTimeout(() => {
+      setPhase('jury')
+      play('drumroll')
+    }, 2900 * pace)
+    JURY.forEach((_, i) => {
+      setTimeout(
+        () => {
+          setRaised(i + 1)
+          play('paddle')
+        },
+        (3900 + i * 700) * pace,
+      )
+    })
+    setTimeout(
+      () => {
+        const good = roundSum(result) >= GOOD_ROUND_TOTAL
+        play(good ? 'good' : 'bad')
+        if (good) {
+          play('applause')
+          confetti({ particleCount: 90, spread: 80, origin: { y: 0.35 }, colors: ['#f2c230', '#f29ab4', '#fff', '#2fd0a0'], disableForReducedMotion: true })
+        }
+      },
+      (3900 + JURY.length * 700) * pace,
+    )
   }
 
   function nextRound() {
-    setRound(round + 1)
-    setOutfit({})
-    setRemaining(ROUND_SECONDS)
+    if (round + 1 < ROUNDS) {
+      setRound(round + 1)
+      startRound()
+    } else setPhase('result')
   }
 
   function restart() {
     setThemes(pickN(data.themes, ROUNDS))
     setRound(0)
-    setOutfit({})
     setResults([])
-    setRemaining(ROUND_SECONDS)
+    startRound()
   }
 
-  if (round >= ROUNDS) {
-    return (
-      <ResultScreen
-        slug="stylizacja"
-        score={total}
-        maxScore={ROUNDS * JURY.length * MAX_JUROR_SCORE}
-        summary={
-          <ul className="text-sm">
-            {results.map((r) => (
-              <li key={r.theme.name}>
-                {r.theme.name}: {SLOTS.map((s) => r.outfit[s]?.emoji ?? '▫️').join('')} → {r.scores.reduce((a, b) => a + b, 0)} pkt
-              </li>
-            ))}
-          </ul>
-        }
-        shareLine={results.map((r) => SLOTS.map((s) => r.outfit[s]?.emoji ?? '▫️').join('')).join('\n')}
-        onRestart={restart}
-      />
-    )
+  function onDragStart({ active }: DragStartEvent) {
+    setDragging(ITEMS.find((i) => i.id === active.id) ?? null)
   }
 
-  const result = results[round]
+  function onDragEnd({ active, over }: DragEndEvent) {
+    setDragging(null)
+    const item = ITEMS.find((i) => i.id === active.id)
+    if (item && over?.id === 'model') equip(item)
+  }
+
+  function backdropMood(): BackdropMood {
+    if (phase === 'lobby') return 'idle'
+    if (phase === 'dressing') return urgent ? 'urgent' : 'dressing'
+    return phase
+  }
+
+  const mood = modelMood({
+    phase,
+    remaining,
+    roundTotal: phase === 'result' ? Math.round(total / ROUNDS) : juryDone && current ? roundSum(current) : null,
+  })
+  const finalTotal = results.reduce((sum, r) => sum + roundSum(r), 0)
+
   return (
-    <>
-      <Hud items={[['Runda', `${round + 1}/${ROUNDS}`], ['Czas', `${Math.ceil(remaining)} s`], ['Punkty', total]]} />
-      <Card>
-        <CardContent className="flex flex-col gap-1 text-center">
-          <p className="text-sm uppercase tracking-wide text-muted-foreground">Temat stylizacji</p>
-          <p className="text-2xl font-bold">{theme.name}</p>
-        </CardContent>
-      </Card>
-      {result ? (
-        <Card data-testid="jury">
-          <CardContent className="flex flex-col gap-3">
-            <p className="text-center text-4xl">{SLOTS.map((s) => result.outfit[s]?.emoji ?? '▫️').join(' ')}</p>
-            <div className="grid gap-2 sm:grid-cols-2">
-              {JURY.map((juror, i) => (
-                <div key={juror.name} className="rounded-lg border p-3">
-                  <p className="font-semibold">
-                    {juror.emoji} {juror.name}: {result.scores[i]}/{MAX_JUROR_SCORE}
-                  </p>
-                  <p className="text-sm italic">„{jurorComment(juror.comments, result.scores[i])}”</p>
-                </div>
-              ))}
-            </div>
-            <Button onClick={nextRound}>{round === ROUNDS - 1 ? 'Podsumowanie' : 'Następny temat'}</Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <DndContext sensors={sensors} onDragEnd={onDragEnd}>
-          <div className="grid gap-4 sm:grid-cols-[180px_1fr]">
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-5xl">🧍</span>
-              {SLOTS.map((slot) => (
-                <SlotDrop key={slot} slot={slot} item={outfit[slot]} onClear={() => setOutfit({ ...outfit, [slot]: undefined })} />
-              ))}
-              <Button className="w-full" onClick={judge}>
-                Gotowe – do jury!
-              </Button>
-            </div>
-            <div className="flex flex-col gap-2">
-              <p className="text-sm text-muted-foreground">Przeciągnij ubranie na manekina albo kliknij, żeby założyć. Kliknij slot, żeby zdjąć.</p>
-              {SLOTS.map((slot) => (
-                <div key={slot} className="grid grid-cols-4 gap-1 sm:grid-cols-6">
-                  {ITEMS.filter((i) => i.slot === slot).map((item) => (
-                    <DraggableItem key={item.id} item={item} onPick={() => equip(item)} />
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-        </DndContext>
+    <MotionConfig reducedMotion="user">
+      <Backdrop mood={backdropMood()} />
+      <MuteButton sfx={sfx} />
+
+      {phase === 'lobby' && (
+        <motion.div className="st-lobby mx-auto flex max-w-xl flex-col items-center gap-4 text-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <p className="st-hand text-3xl text-pink-200">Kulisy pokazu · minuta do wyjścia</p>
+          <h2 className="font-display text-6xl tracking-wider text-white sm:text-8xl">Stylizacja w 60 sekund</h2>
+          <p className="text-white/90">
+            Trzy tematy, po minucie na każdy. Ubierz Olę: przeciągnij rzeczy z wieszaka na modelkę albo je kliknij. Potem wybieg, flesze i czworo jurorów z tabliczkami 1–10.
+          </p>
+          <Button size="lg" className="h-14 px-10 font-display text-2xl tracking-widest" onClick={enter} data-testid="start">
+            Zaczynamy przymiarki
+          </Button>
+        </motion.div>
       )}
-    </>
+
+      {phase !== 'lobby' && phase !== 'result' && (
+        <div className="flex flex-col gap-3">
+          <header className="st-bar">
+            <strong className="st-bar-title">
+              <span>
+                Runda {round + 1}/{ROUNDS}
+              </span>
+              <em data-testid="theme">{theme.name}</em>
+            </strong>
+            <span className="st-timer" data-testid="timer" data-value={phase === 'dressing' ? seconds : 0} data-urgent={urgent}>
+              <svg viewBox="0 0 40 40" aria-hidden>
+                <circle cx="20" cy="20" r="16" fill="#1a1020" stroke="#4a3a50" strokeWidth="5" />
+                <circle
+                  cx="20"
+                  cy="20"
+                  r="16"
+                  fill="none"
+                  stroke={urgent ? '#ff4d5a' : '#f29ab4'}
+                  strokeWidth="5"
+                  strokeDasharray={`${(phase === 'dressing' ? remaining / ROUND_SECONDS : 0) * 100.5} 100.5`}
+                  transform="rotate(-90 20 20)"
+                />
+              </svg>
+              <b>{phase === 'dressing' ? `${seconds} s` : phase === 'runway' ? 'Wybieg' : 'Ocena'}</b>
+            </span>
+            <span className="st-total" data-testid="total" data-value={total}>
+              {total} pkt
+            </span>
+          </header>
+
+          {phase === 'dressing' && (
+            <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragCancel={() => setDragging(null)}>
+              <div className="st-stage">
+                <div className="st-model-col">
+                  <DropZone>
+                    <Model outfit={outfit} mood={mood} className="st-model" />
+                  </DropZone>
+                  <OutfitChips outfit={outfit} onRemove={remove} />
+                </div>
+                <div className="st-side">
+                  <Rack items={ITEMS} outfit={outfit} onPick={equip} />
+                  <button type="button" className="st-go" onClick={toRunway} data-testid="judge">
+                    Gotowe – na wybieg!
+                  </button>
+                </div>
+              </div>
+              <DragOverlay dropAnimation={null}>{dragging ? <div className="st-drag"><ItemThumb id={dragging.id} slot={dragging.slot as Slot} /></div> : null}</DragOverlay>
+            </DndContext>
+          )}
+
+          {phase === 'runway' && current && (
+            <div className="st-runway-stage">
+              <motion.div
+                className="st-walk"
+                initial={{ y: -40, scale: 0.7, opacity: 0 }}
+                animate={{ y: 0, scale: 1, opacity: 1, rotate: [0, -2, 2, -2, 0] }}
+                transition={{ duration: 2.2 * pace, ease: 'easeOut' }}
+              >
+                <Model outfit={current.outfit} mood={mood} className="st-model st-model-big" />
+              </motion.div>
+              <p className="st-hand st-runway-caption">Ola na wybiegu: „{theme.name}”</p>
+            </div>
+          )}
+
+          {phase === 'jury' && current && (
+            <div className="st-jury-stage">
+              <Model outfit={current.outfit} mood={mood} className="st-model st-model-small" />
+              <div className="flex flex-col items-center gap-3">
+                <Jury scores={current.scores} raised={raised} />
+                {juryDone && (
+                  <motion.button type="button" className="st-go" onClick={nextRound} data-testid="next" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                    {round === ROUNDS - 1 ? 'Podsumowanie' : 'Następny temat'}
+                  </motion.button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {phase === 'result' && (
+        <ResultScreen
+          slug="stylizacja"
+          score={finalTotal}
+          maxScore={MAX_SCORE}
+          summary={
+            <ul className="text-sm">
+              {results.map((r) => (
+                <li key={r.theme.name}>
+                  {r.theme.name}: {roundSum(r)} pkt
+                </li>
+              ))}
+            </ul>
+          }
+          shareLine={results.map((r) => SLOTS.map((s) => r.outfit[s]?.emoji ?? '▫️').join('')).join('\n')}
+          onRestart={restart}
+        >
+          <div className="st-result-models">
+            {results.map((r) => (
+              <figure key={r.theme.name} data-testid="result-model">
+                <Model outfit={r.outfit} mood={roundSum(r) >= GOOD_ROUND_TOTAL ? 'happy' : 'sad'} className="st-model-mini" />
+                <figcaption>
+                  <span>{r.theme.name}</span>
+                  <b>{roundSum(r)} pkt</b>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </ResultScreen>
+      )}
+
+      <p className="mt-auto pt-6 text-center text-[11px] text-white/70">Dźwięki: Kenney (CC0) · Grafika: własne SVG · Postacie są fikcyjne</p>
+    </MotionConfig>
   )
 }

@@ -15,6 +15,8 @@ import sciema from './sciema-z-ogloszenia/data.json'
 import { reporterMood } from './sciema-z-ogloszenia/logic'
 import { judgeMood } from './ukryte-kryterium/logic'
 import { applyEffects, chefMood, endingFor, ownerMood, START_STATS, statLevel } from './uratuj-knajpe/logic'
+import stylizacja from './stylizacja/data.json'
+import { jurorMood, jurorScore, SLOTS, themeFit, type Item, type Outfit } from './stylizacja/logic'
 import gadgets from './ustrojstwo/data.json'
 import zonk from './zonk/data.json'
 import { banish, gameStatus, PLAYER, residentMood, statementText, type Resident } from './zdrajca/logic'
@@ -362,5 +364,35 @@ describe('Danie po składnikach', () => {
     const photos = import.meta.glob('/public/danie-po-skladnikach/dishes/*.jpg')
     expect(DISHES.filter((d) => !photos[`/public/danie-po-skladnikach/dishes/${d.id}.jpg`]).map((d) => d.id)).toEqual([])
     expect(DISHES.filter((d) => !d.photo?.author || !d.photo.license || !d.photo.source).map((d) => d.id)).toEqual([])
+  })
+})
+
+describe('Stylizacja w 60 sekund', () => {
+  const items = stylizacja.items as Item[]
+  const item = (id: string) => items.find((i) => i.id === id)!
+  const theme = (name: string) => stylizacja.themes.find((t) => t.name === name)!
+
+  it('scores theme fit with wanted, forbidden and empty slots', () => {
+    expect(themeFit({}, theme('Gala w operze'))).toBe(-10)
+    expect(themeFit({ gora: item('koszula') }, theme('Rozmowa o pracę w korpo'))).toBe(-4)
+    expect(themeFit({ glowa: item('czapka') }, theme('Gala w operze'))).toBe(-11)
+  })
+
+  it('keeps juror scores between 1 and 10 and applies bias', () => {
+    const gala = theme('Gala w operze')
+    const best: Outfit = { glowa: item('korona'), gora: item('plaszcz'), dol: item('sukienka'), buty: item('szpilki'), dodatek: item('torebka') }
+    expect(jurorScore({}, gala, 0)).toBe(1)
+    expect(jurorScore(best, gala, 0)).toBe(10)
+    const half: Outfit = { gora: item('koszula'), dol: item('sukienka') }
+    expect(jurorScore(half, gala, 2) - jurorScore(half, gala, 0)).toBe(2)
+  })
+
+  it('maps juror scores to moods', () => {
+    expect([1, 4, 5, 7, 8, 10].map(jurorMood)).toEqual(['unimpressed', 'unimpressed', 'ok', 'ok', 'thrilled', 'thrilled'])
+  })
+
+  it('has consistent themes and items', () => {
+    expect(stylizacja.themes.filter((t) => !t.wanted.length || !t.forbidden.length).map((t) => t.name)).toEqual([])
+    expect(items.filter((i) => !(SLOTS as readonly string[]).includes(i.slot)).map((i) => i.id)).toEqual([])
   })
 })

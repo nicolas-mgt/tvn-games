@@ -179,8 +179,9 @@ export const GAMES: GameMeta[] = [
     inspiration: 'Top Model, Love the Look',
     category: 'Lifestyle i kuchnia',
     size: 'M',
-    description: 'Ubierz manekina pod temat. Czworo jurorów o różnych gustach nie zostawi suchej nitki.',
+    description: 'Ubierz modelkę pod temat. Czworo jurorów o różnych gustach nie zostawi suchej nitki.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./stylizacja')),
   },
   {
