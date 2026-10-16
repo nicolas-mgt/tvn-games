@@ -26,7 +26,7 @@ function HubPage() {
             {GAMES.filter((game) => game.category === category).map((game) => {
               const stats = loadStats(game.slug)
               return (
-                <Link key={game.slug} to={`/gra/${game.slug}`} data-testid={`game-tile-${game.slug}`}>
+                <Link key={game.slug} to={`/gra/${game.slug}`} reloadDocument data-testid={`game-tile-${game.slug}`}>
                   <Card className="h-full gap-3 py-4 transition hover:border-primary hover:shadow-md">
                     <CardHeader className="px-4">
                       <CardTitle className="text-base">
