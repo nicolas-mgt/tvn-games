@@ -399,7 +399,11 @@
 .dp-input {
   height: 2.75rem;
   background: #fff;
+  color: #1c1c1c;
   font-size: 1.1rem;
+}
+.dp-input::placeholder {
+  color: #666;
 }
 .dp-submit {
   height: 2.75rem;
