@@ -2,7 +2,7 @@ import '@fontsource/bebas-neue'
 import '@fontsource/caveat/700.css'
 import confetti from 'canvas-confetti'
 import { AnimatePresence, MotionConfig, motion, useAnimate, useReducedMotion } from 'motion/react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { pickN } from '@/shared/daily'
 import { MuteButton, ResultScreen } from '@/shared/GameShell'
@@ -18,8 +18,9 @@ const PALLETS_PER_GAME = 5
 const DEALERS = ['Mirek „Złota Rączka”', 'Pani Basia', 'Seba z internetu']
 const DEALER_SHORT = ['Mirek', 'Pani Basia', 'Seba']
 const HOT_SHARE = 0.7
+const COUNTER_BID_DELAY = 1400
 
-type Phase = 'lobby' | 'arrive' | 'bidding' | 'going' | 'reveal'
+type Phase = 'lobby' | 'arrive' | 'bidding' | 'waiting' | 'going' | 'reveal'
 type Lot = (typeof pallets)[number] & { value: number; limits: number[] }
 type Sale = { winner: Leader; price: number }
 
@@ -46,6 +47,11 @@ export default function PaletaWCiemnoGame() {
   const [log, setLog] = useState<string[]>([])
   const [sales, setSales] = useState<Sale[]>([])
   const [call, setCall] = useState<string | null>(null)
+  const counterBidTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => () => {
+    if (counterBidTimer.current !== null) clearTimeout(counterBidTimer.current)
+  }, [])
   const [scope, animate] = useAnimate<HTMLDivElement>()
   const reducedMotion = useReducedMotion()
   const pace = reducedMotion ? 0.15 : 1
@@ -130,18 +136,27 @@ export default function PaletaWCiemnoGame() {
   }
 
   function bid(step: number) {
+    if (phase !== 'bidding') return
     const offer = price + step
     play('bid')
-    const dealer = nextDealerBid(lot.limits, offer, 'player', Math.random)
-    if (dealer === null) {
-      sell({ winner: 'player', price: offer }, [`Ty: ${formatZl(offer)}`, 'Cisza na placu…'])
-      return
-    }
-    const counter = offer + BID_STEP
-    setLog([...log, `Ty: ${formatZl(offer)}`, `${DEALERS[dealer]}: ${formatZl(counter)}`])
-    setPrice(counter)
-    setLeader(dealer)
-    setTimeout(() => play('paddle'), 220 * pace)
+    setPrice(offer)
+    setLeader('player')
+    setLog([...log, `Ty: ${formatZl(offer)}`])
+    setPhase('waiting')
+    counterBidTimer.current = setTimeout(() => {
+      counterBidTimer.current = null
+      const dealer = nextDealerBid(lot.limits, offer, 'player', Math.random)
+      if (dealer === null) {
+        sell({ winner: 'player', price: offer }, [`Ty: ${formatZl(offer)}`, 'Cisza na placu…'])
+        return
+      }
+      const counter = offer + BID_STEP
+      setLog((lines) => [...lines, `${DEALERS[dealer]}: ${formatZl(counter)}`])
+      setPrice(counter)
+      setLeader(dealer)
+      setPhase('bidding')
+      play('paddle')
+    }, COUNTER_BID_DELAY)
   }
 
   function pass() {
@@ -270,6 +285,13 @@ export default function PaletaWCiemnoGame() {
                         </motion.span>
                       </AnimatePresence>
                     </div>
+                    <p role="status" className="mt-2 min-h-10 max-w-xs text-center text-sm font-semibold text-amber-200" data-testid="bid-status">
+                      {phase === 'waiting'
+                        ? 'Twoja oferta prowadzi. Rywale zastanawiają się…'
+                        : phase === 'bidding' && typeof leader === 'number'
+                          ? `${DEALER_SHORT[leader]} przebija Twoją ofertę o ${formatZl(BID_STEP)}!`
+                          : ''}
+                    </p>
                   </div>
                   <div className="pw-paddle-panel">
                     <span className="pw-paddle-panel-number">1</span>

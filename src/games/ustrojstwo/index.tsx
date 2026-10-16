@@ -9,12 +9,12 @@ import { Hud, MuteButton, ResultScreen } from '@/shared/GameShell'
 import gadgets from './data.json'
 import { Parcel, type ParcelStage } from './Parcel'
 import { play, sfx } from './sfx'
-import { Fact, Labels, Stamp } from './Verdict'
+import { Labels, Stamp, VerdictDialog } from './Verdict'
 import { WarehouseBackdrop, type Mood } from './WarehouseBackdrop'
 
 type Gadget = (typeof gadgets)[number]
 type Question = Gadget & { options: string[] }
-type Phase = 'lobby' | 'arrive' | 'cut' | 'open' | 'verdict' | 'depart' | 'result'
+type Phase = 'lobby' | 'arrive' | 'cut' | 'open' | 'verdict' | 'depart'
 
 function moodFor(phase: Phase, correct: boolean): Mood {
   switch (phase) {
@@ -25,8 +25,6 @@ function moodFor(phase: Phase, correct: boolean): Mood {
       return 'arrive'
     case 'verdict':
       return correct ? 'correct' : 'wrong'
-    case 'result':
-      return 'result'
     default:
       return 'open'
   }
@@ -80,10 +78,6 @@ export default function UstrojstwoGame() {
   }
 
   function next() {
-    if (!correct || last) {
-      setPhase('result')
-      return
-    }
     play('rumble')
     setPhase('depart')
   }
@@ -128,7 +122,7 @@ export default function UstrojstwoGame() {
         </motion.div>
       )}
 
-      {phase !== 'lobby' && phase !== 'result' && (
+      {phase !== 'lobby' && (
         <>
           <Hud items={[['Seria', streak], ['Paczka', `${index + 1}/${questions.length}`]]} />
           <div ref={scope} className="relative h-[290px] sm:h-[350px]">
@@ -175,20 +169,35 @@ export default function UstrojstwoGame() {
                 </a>
               </motion.div>
               <Labels options={question.options} answer={question.answer} chosen={chosen} onChoose={choose} />
-              {phase === 'verdict' && landed && <Fact correct={correct} fact={question.fact} last={last} onNext={next} />}
             </div>
           )}
         </>
       )}
 
-      {phase === 'result' && (
-        <ResultScreen
-          slug="ustrojstwo"
-          score={streak}
-          maxScore={questions.length}
-          summary={streak === questions.length ? 'Wszystkie paczki rozpoznane! Kurier wręcza ci order.' : `Paczka nr ${index + 1} wróciła do nadawcy: ${question.look}`}
-          onRestart={restart}
-        />
+      {phase === 'verdict' && landed && (
+        <VerdictDialog correct={correct} finished={!correct || last}>
+          {!correct || last ? (
+            <ResultScreen
+              slug="ustrojstwo"
+              score={streak}
+              maxScore={questions.length}
+              summary={
+                <div className="space-y-3">
+                  <p className="font-semibold">Poprawna odpowiedź: {question.answer}</p>
+                  <p className="text-sm text-amber-50/80">{question.fact}</p>
+                </div>
+              }
+              onRestart={restart}
+            />
+          ) : (
+            <div className="flex flex-col items-center gap-5 text-center">
+              <p className="text-sm text-amber-50/80">{question.fact}</p>
+              <Button autoFocus size="lg" className="font-display text-xl tracking-widest" onClick={next} data-testid="next">
+                Następna paczka
+              </Button>
+            </div>
+          )}
+        </VerdictDialog>
       )}
 
       <p className="mt-auto pt-6 text-center text-[11px] text-white/40">Dźwięki: Kenney (CC0) · Zdjęcia: Flickr i Wikimedia Commons, autorzy i licencje przy zdjęciach</p>

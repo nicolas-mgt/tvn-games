@@ -1,6 +1,5 @@
-import { motion, useReducedMotion } from 'motion/react'
-import { useRef } from 'react'
-import { Button } from '@/components/ui/button'
+import { motion } from 'motion/react'
+import { useEffect, useRef, type ReactNode } from 'react'
 
 const TILTS = [-1.5, 1, 1.5, -1]
 const LETTERS = ['A', 'B', 'C', 'D']
@@ -61,23 +60,33 @@ export function Stamp({ correct, onLanded }: { correct: boolean; onLanded: () =>
   )
 }
 
-export function Fact({ correct, fact, last, onNext }: { correct: boolean; fact: string; last: boolean; onNext: () => void }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const reducedMotion = useReducedMotion()
+export function VerdictDialog({ correct, finished, children }: { correct: boolean; finished: boolean; children: ReactNode }) {
+  const ref = useRef<HTMLDialogElement>(null)
+
+  useEffect(() => {
+    const dialog = ref.current
+    dialog?.showModal()
+    return () => dialog?.close()
+  }, [])
 
   return (
-    <motion.div
+    <dialog
       ref={ref}
-      className="flex flex-col items-center gap-3 text-center"
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.4 }}
-      onAnimationComplete={() => ref.current?.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'nearest' })}
+      aria-labelledby="verdict-title"
+      className="m-auto max-h-[calc(100svh-2rem)] w-[min(32rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border-2 border-amber-200/40 bg-[#201810] p-5 text-amber-50 shadow-2xl backdrop:bg-black/70 backdrop:backdrop-blur-sm [&_button]:cursor-pointer"
+      onCancel={(event) => event.preventDefault()}
+      data-testid="verdict-dialog"
     >
-      <p className="max-w-lg text-sm text-amber-50/80">{fact}</p>
-      <Button size="lg" className="font-display text-xl tracking-widest" onClick={onNext} data-testid="next">
-        {correct && !last ? 'Następna paczka' : 'Zobacz wynik'}
-      </Button>
-    </motion.div>
+      <div className="mb-5 text-center">
+        <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-amber-200/60">Sortownia nr 7 · raport doręczenia</p>
+        <h2 id="verdict-title" className={`font-display text-5xl tracking-wider ${correct ? 'text-green-400' : 'text-red-400'}`}>
+          {finished ? 'Koniec gry' : 'Paczka dostarczona!'}
+        </h2>
+        <p className="mt-2 text-sm text-amber-50/80">
+          {!correct ? 'Błędna odpowiedź. Ta paczka kończy Twoją serię.' : finished ? 'Wszystkie paczki rozpoznane. Zmiana zakończona!' : 'Dobra robota! Taśma czeka na Twój sygnał.'}
+        </p>
+      </div>
+      {children}
+    </dialog>
   )
 }
