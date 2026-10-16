@@ -45,22 +45,24 @@ function GameIntro({ game }: { game: GameMeta }) {
   )
 }
 
+const DEFAULT_AUTHOR = 'Mikołaj Migut'
+
 export function GameShell({ game, children }: { game: GameMeta; children: ReactNode }) {
+  const author = game.author ?? DEFAULT_AUTHOR
   if (game.immersive) {
     return (
       <div className="dark relative min-h-svh overflow-x-hidden text-foreground">
         <GameIntro key={game.slug} game={game} />
         <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-white/10 bg-black/40 py-2 pl-4 pr-32 backdrop-blur-md">
-          <Link to="/" className="shrink-0 text-sm text-white/70 hover:text-white">
-            ← Wszystkie gry
+          <Link to="/" className="shrink-0 text-sm text-white/70 hover:text-white" aria-label="Wszystkie gry">
+            ← <span className="hidden sm:inline">Wszystkie gry</span>
           </Link>
-          <div className="flex min-w-0 flex-col sm:flex-row sm:items-baseline sm:gap-3">
-            <h1 className="truncate font-display text-2xl tracking-wider text-white">{game.title}</h1>
-            {game.author && (
-              <span className="truncate text-xs text-white/60 sm:text-sm" data-testid="game-author">
-                by {game.author}
-              </span>
-            )}
+          <div className="flex h-8 min-w-0 flex-wrap items-baseline gap-x-2 overflow-hidden sm:gap-x-3">
+            <h1 className="max-w-full truncate font-display text-2xl tracking-wider text-white">{game.title}</h1>
+            {/* Wraps onto the clipped second line when not even "by …" fits next to the title. */}
+            <span className="min-w-0 grow basis-10 truncate text-xs text-white/60 sm:text-sm" data-testid="game-author">
+              by {author}
+            </span>
           </div>
         </header>
         <main className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-6">{children}</main>
@@ -76,7 +78,7 @@ export function GameShell({ game, children }: { game: GameMeta; children: ReactN
         </Link>
         <h1 className="flex-1 text-2xl font-bold">
           {game.emoji} {game.title}
-          {game.author && <span className="ml-2 text-sm font-normal text-muted-foreground">by {game.author}</span>}
+          <span className="ml-2 text-sm font-normal text-muted-foreground">by {author}</span>
         </h1>
         <Badge variant="secondary">inspiracja: {game.inspiration}</Badge>
       </header>

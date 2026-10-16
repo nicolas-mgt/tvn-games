@@ -13,7 +13,7 @@ export type GameMeta = {
   size: 'S' | 'M'
   description: string
   scoreLabel: string
-  /** Shown next to the title for games contributed by someone else. */
+  /** Shown next to the title; games without it are by Mikołaj Migut. */
   author?: string
   /** Full-viewport dark layout; the game draws its own backdrop. */
   immersive?: boolean
