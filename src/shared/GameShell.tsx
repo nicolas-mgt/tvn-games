@@ -8,10 +8,48 @@ import { getGame, type GameMeta } from '@/games/registry'
 import type { Sfx } from './sfx'
 import { recordResult, type GameStats } from './storage'
 
+/** Shown on every game entry: which TV show inspired the game and how it plays. */
+function GameIntro({ game }: { game: GameMeta }) {
+  const dialogRef = useRef<HTMLDialogElement>(null)
+
+  useEffect(() => {
+    const dialog = dialogRef.current
+    if (dialog && !dialog.open) dialog.showModal()
+  }, [])
+
+  return (
+    <dialog
+      ref={dialogRef}
+      className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-xl border bg-card p-6 text-card-foreground shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+      onClick={(event) => event.target === event.currentTarget && event.currentTarget.close()}
+      data-testid="game-intro"
+    >
+      <h2 className="text-2xl font-bold">
+        {game.emoji} {game.title}
+      </h2>
+      <section className="mt-4">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Inspiracja</h3>
+        <p className="mt-1 font-semibold">{game.inspiration}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{game.inspirationNote}</p>
+      </section>
+      <section className="mt-4">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">O co chodzi</h3>
+        <p className="mt-1">{game.description}</p>
+      </section>
+      <form method="dialog" className="mt-6 flex justify-end">
+        <Button autoFocus data-testid="game-intro-close">
+          Zaczynamy
+        </Button>
+      </form>
+    </dialog>
+  )
+}
+
 export function GameShell({ game, children }: { game: GameMeta; children: ReactNode }) {
   if (game.immersive) {
     return (
       <div className="dark relative min-h-svh overflow-x-hidden text-foreground">
+        <GameIntro key={game.slug} game={game} />
         <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-white/10 bg-black/40 py-2 pl-4 pr-32 backdrop-blur-md">
           <Link to="/" className="shrink-0 text-sm text-white/70 hover:text-white">
             ← Wszystkie gry
@@ -24,6 +62,7 @@ export function GameShell({ game, children }: { game: GameMeta; children: ReactN
   }
   return (
     <div className="mx-auto flex min-h-svh max-w-3xl flex-col gap-4 px-4 py-6">
+      <GameIntro key={game.slug} game={game} />
       <header className="flex flex-wrap items-center gap-3">
         <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">
           ← Wszystkie gry
