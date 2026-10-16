@@ -191,8 +191,9 @@ export const GAMES: GameMeta[] = [
     inspiration: 'Poukładani, Nowa Szelągowska',
     category: 'Lifestyle i kuchnia',
     size: 'M',
-    description: 'Łamigłówka pakowania. Zmieść wszystkie graty w szafie, obracając klocki.',
+    description: 'Łamigłówka pakowania. Szafa, regał, bagażnik: zmieść wszystkie graty, obracając je i przekładając.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./poukladani')),
   },
   {

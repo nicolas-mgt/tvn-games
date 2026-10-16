@@ -9,7 +9,7 @@ import pallets from './paleta-w-ciemno/data.json'
 import { dealersOnlyResult, nextDealerBid } from './paleta-w-ciemno/logic'
 import { distance, emojiImage } from './podloga/logic'
 import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type Temperatures } from './pogodynka/logic'
-import { cellsAt, fits, LEVELS, parseLevel, rotate } from './poukladani/logic'
+import { cellsAt, fits, FURNITURE, LEVELS, MAX_SCORE, organizerMood, parseLevel, rotate } from './poukladani/logic'
 import { contestantMood } from './rajskie-rozdanie/logic'
 import sciema from './sciema-z-ogloszenia/data.json'
 import { reporterMood } from './sciema-z-ogloszenia/logic'
@@ -231,6 +231,24 @@ describe('Poukładani', () => {
     const shape = parseLevel(LEVELS[2]).pieces.find((p) => p.id === 'G')!.cells
     expect(rotate(rotate(rotate(rotate(shape))))).toEqual(shape)
     expect(rotate(shape)).not.toEqual(shape)
+  })
+
+  it('gives every piece of every level a named item and art', () => {
+    expect(FURNITURE).toHaveLength(LEVELS.length)
+    LEVELS.forEach((layout, i) => {
+      const ids = parseLevel(layout).pieces.map((p) => p.id).sort()
+      expect(Object.keys(FURNITURE[i].items).sort()).toEqual(ids)
+    })
+    const arts = FURNITURE.flatMap((f) => Object.values(f.items).map((item) => item.art))
+    expect(new Set(arts).size).toBe(arts.length)
+    expect(MAX_SCORE).toBe(300)
+  })
+
+  it('maps extra moves to the organizer mood', () => {
+    expect(organizerMood(0)).toBe('proud')
+    expect(organizerMood(1)).toBe('pleased')
+    expect(organizerMood(3)).toBe('pleased')
+    expect(organizerMood(4)).toBe('doubtful')
   })
 })
 
