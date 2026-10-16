@@ -1,104 +1,307 @@
-import { useState, type FormEvent } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { matchesAnswer } from '@/shared/answer'
-import { dailyRng, pickN, todayKey } from '@/shared/daily'
-import { Hud, ResultScreen } from '@/shared/GameShell'
-import words from './data.json'
+import "@fontsource/bebas-neue";
+import "@fontsource/caveat/700.css";
+import confetti from "canvas-confetti";
+import { MotionConfig, motion, useReducedMotion } from "motion/react";
+import { useRef, useState, type FormEvent } from "react";
+import { matchesAnswer } from "@/shared/answer";
+import { todayKey } from "@/shared/daily";
+import { MuteButton, ResultScreen } from "@/shared/GameShell";
+import { loadJSON, saveJSON } from "@/shared/storage";
+import { Drawing, GuessForm, Outcome, Tiles } from "./Board";
+import { Host } from "./Host";
+import { DefinitionBubble, Kid } from "./Kid";
+import {
+  ATTEMPTS,
+  DAILY_KEY,
+  entriesFor,
+  hintFor,
+  hostLine,
+  hostMood,
+  kidMood,
+  MAX_SCORE,
+  pointsFor,
+  SLUG,
+  WORDS_PER_GAME,
+  type Mode,
+  type Phase,
+} from "./logic";
+import { play, sfx } from "./sfx";
+import { Backdrop, type BackdropMood } from "./Studio";
 
-const SLUG = 'to-pan-tego-nie-wie'
-const WORDS_PER_GAME = 5
-const ATTEMPTS = 3
+type Result = { attemptsUsed: number; solved: boolean };
 
-type Entry = (typeof words)[number]
-type Outcome = { attemptsUsed: number; solved: boolean }
+const CRAYONS = [
+  "#e8504a",
+  "#f2b830",
+  "#3a8ad0",
+  "#5ab060",
+  "#9a5ad0",
+  "#f07ab0",
+];
 
-const pointsFor = (outcome: Outcome) => (outcome.solved ? ATTEMPTS + 1 - outcome.attemptsUsed : 0)
+function dailyLabel() {
+  const [, month, day] = todayKey().split("-");
+  return `Hasła dnia ${day}.${month}`;
+}
 
 export default function ToPanTegoNieWieGame() {
-  const [isDaily, setIsDaily] = useState(true)
-  const [entries, setEntries] = useState<Entry[]>(() => pickN(words, WORDS_PER_GAME, dailyRng(SLUG)))
-  const [index, setIndex] = useState(0)
-  const [attempts, setAttempts] = useState(0)
-  const [guess, setGuess] = useState('')
-  const [outcomes, setOutcomes] = useState<Outcome[]>([])
+  const dailyDone = loadJSON<string | null>(DAILY_KEY, null) === todayKey();
+  const [phase, setPhase] = useState<Phase>("lobby");
+  const [mode, setMode] = useState<Mode>(dailyDone ? "practice" : "daily");
+  const [entries, setEntries] = useState(() =>
+    entriesFor(dailyDone ? "practice" : "daily"),
+  );
+  const [index, setIndex] = useState(0);
+  const [wrongs, setWrongs] = useState(0);
+  const [guess, setGuess] = useState("");
+  const [results, setResults] = useState<Result[]>([]);
+  const [wrongFlash, setWrongFlash] = useState(false);
+  const flashTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const reducedMotion = useReducedMotion();
+  const pace = reducedMotion ? 0.15 : 1;
 
-  const entry = entries[index]
-  const done = outcomes.length > index
-  const score = outcomes.reduce((sum, o) => sum + pointsFor(o), 0)
+  const entry = entries[index];
+  const last = index === WORDS_PER_GAME - 1;
+  const score = results.reduce(
+    (sum, r) => sum + pointsFor(r.attemptsUsed, r.solved),
+    0,
+  );
+  const done = phase === "correct" || phase === "reveal";
+  const letters = done ? [...entry.word] : hintFor(entry.word, wrongs);
+
+  function popTiles(count: number) {
+    for (let i = 0; i < count; i++)
+      setTimeout(() => play("pop"), i * 70 * pace);
+  }
+
+  function enter() {
+    sfx.unlock();
+    setPhase("definition");
+    play("xylo");
+  }
+
+  function finishWord(attemptsUsed: number, solved: boolean) {
+    setResults([...results, { attemptsUsed, solved }]);
+    setPhase(solved ? "correct" : "reveal");
+    setWrongFlash(false);
+    clearTimeout(flashTimer.current);
+    if (last && mode === "daily") saveJSON(DAILY_KEY, todayKey());
+    popTiles(Math.min(entry.word.length, 10));
+    if (solved) {
+      play("good");
+      confetti({
+        particleCount: 110,
+        spread: 80,
+        origin: { y: 0.55 },
+        colors: CRAYONS,
+        disableForReducedMotion: true,
+      });
+    } else {
+      play("bad");
+    }
+  }
 
   function submit(event: FormEvent) {
-    event.preventDefault()
-    if (done || !guess.trim()) return
-    const used = attempts + 1
-    const solved = matchesAnswer(guess, [entry.word, ...entry.aliases])
-    setAttempts(used)
-    setGuess('')
-    if (solved || used === ATTEMPTS) setOutcomes([...outcomes, { attemptsUsed: used, solved }])
+    event.preventDefault();
+    if (phase !== "definition" || !guess.trim()) return;
+    const attemptsUsed = wrongs + 1;
+    setGuess("");
+    if (matchesAnswer(guess, [entry.word, ...entry.aliases])) {
+      finishWord(attemptsUsed, true);
+      return;
+    }
+    setWrongs(attemptsUsed);
+    if (attemptsUsed === ATTEMPTS) {
+      finishWord(attemptsUsed, false);
+      return;
+    }
+    play("giggle");
+    popTiles(attemptsUsed === 1 ? Math.min(entry.word.length, 10) : 1);
+    setWrongFlash(true);
+    clearTimeout(flashTimer.current);
+    flashTimer.current = setTimeout(() => setWrongFlash(false), 1200 * pace);
   }
 
   function next() {
-    setIndex(index + 1)
-    setAttempts(0)
+    if (last) {
+      setPhase("result");
+      play("click");
+      return;
+    }
+    setIndex(index + 1);
+    setWrongs(0);
+    setPhase("definition");
+    play("xylo");
   }
 
   function restart() {
-    setIsDaily(false)
-    setEntries(pickN(words, WORDS_PER_GAME))
-    setIndex(0)
-    setAttempts(0)
-    setOutcomes([])
+    setMode("practice");
+    setEntries(entriesFor("practice"));
+    setIndex(0);
+    setWrongs(0);
+    setGuess("");
+    setResults([]);
+    setPhase("definition");
+    play("xylo");
   }
 
-  if (index >= entries.length) {
-    return (
-      <ResultScreen
-        slug={SLUG}
-        score={score}
-        maxScore={WORDS_PER_GAME * ATTEMPTS}
-        shareLine={outcomes.map((o) => (o.solved ? ['', '🥇', '🥈', '🥉'][o.attemptsUsed] : '❌')).join('')}
-        summary={<p>Hasła: {entries.map((e) => e.word).join(', ')}</p>}
-        onRestart={restart}
-      />
-    )
+  function backdropMood(): BackdropMood {
+    if (phase === "lobby") return "idle";
+    if (phase === "definition") return wrongFlash ? "wrong" : "definition";
+    return phase;
   }
 
-  const hint = attempts >= 2 ? `Podpowiedź: zaczyna się na „${entry.word[0].toUpperCase()}”, ${entry.word.length} znaków` : null
+  function currentHostLine() {
+    if (phase === "definition")
+      return wrongs
+        ? hostLine("wrong", index + wrongs)
+        : hostLine("definition", index);
+    return hostLine(phase === "correct" ? "correct" : "reveal", index);
+  }
+
   return (
-    <>
-      <Hud
-        items={[
-          ['Tryb', isDaily ? `hasła dnia ${todayKey()}` : 'trening'],
-          ['Hasło', `${index + 1}/${entries.length}`],
-          ['Punkty', score],
-        ]}
-      />
-      <Card className="bg-gradient-to-b from-yellow-50 to-orange-50">
-        <CardContent className="flex flex-col gap-4">
-          <p className="text-center text-sm uppercase tracking-wide text-muted-foreground">🎙️ {entry.kid} tłumaczy:</p>
-          <p className="text-center text-2xl font-semibold">„{entry.definition}”</p>
-          {done ? (
-            <div className="flex flex-col items-center gap-2 text-center">
-              <p className="text-lg">
-                {outcomes[index].solved ? `✅ Brawo! +${pointsFor(outcomes[index])} pkt` : '❌ Nie udało się.'} Hasło: <strong>{entry.word}</strong>
-              </p>
-              <Button onClick={next}>{index === entries.length - 1 ? 'Podsumowanie' : 'Następne hasło'}</Button>
+    <MotionConfig reducedMotion="user">
+      <Backdrop mood={backdropMood()} />
+      <MuteButton sfx={sfx} />
+
+      <div className="tp-game">
+        {phase === "lobby" && (
+          <motion.div
+            className="tp-lobby"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="tp-lobby-cast">
+              <Kid name={entry.kid} mood="talking" />
+              <Host
+                mood="smile"
+                line="Dzień dobry! Dziś mali eksperci tłumaczą dorosłe sprawy."
+              />
             </div>
-          ) : (
-            <form onSubmit={submit} className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <Input value={guess} onChange={(e) => setGuess(e.target.value)} placeholder="O czym mowa?" autoFocus />
-                <Button type="submit">Zgaduję</Button>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Próba {attempts + 1}/{ATTEMPTS}
-                {attempts > 0 && ' – jeszcze raz!'} {hint}
+            <p className="tp-hand text-3xl text-[#e8504a]">
+              Poranna kanapa · na żywo
+            </p>
+            <h2 className="font-display text-6xl tracking-wider text-[#2a3a5a] sm:text-7xl">
+              To Pan tego nie wie
+            </h2>
+            <p>
+              Do studia przychodzą dzieci i po swojemu tłumaczą dorosłe sprawy.
+              Zgadnij, o jakie słowo chodzi. Masz {ATTEMPTS} próby na hasło: za
+              trafienie od razu 3 punkty, potem 2 i 1. Po pierwszym pudle pokażą
+              się kratki liter, po drugim pierwsza litera. {WORDS_PER_GAME}{" "}
+              haseł, najwyżej {MAX_SCORE} punktów.
+            </p>
+            {dailyDone && (
+              <p
+                className="tp-hand text-2xl text-[#3a8ad0]"
+                data-testid="practice-note"
+              >
+                Dzisiejsze hasła już za tobą – teraz trening na losowych
+                hasłach.
               </p>
-            </form>
-          )}
-        </CardContent>
-      </Card>
-    </>
-  )
+            )}
+            <button
+              type="button"
+              className="tp-start tp-sign"
+              onClick={enter}
+              data-testid="start"
+            >
+              Wchodzimy na antenę
+            </button>
+          </motion.div>
+        )}
+
+        {phase !== "lobby" && phase !== "result" && (
+          <>
+            <header className="tp-bar">
+              <strong className="tp-bar-title tp-sign" data-testid="mode">
+                {mode === "daily" ? dailyLabel() : "Trening"}
+              </strong>
+              <span className="tp-stat" data-testid="progress">
+                Hasło{" "}
+                <b>
+                  {index + 1}/{WORDS_PER_GAME}
+                </b>
+              </span>
+              <span className="tp-stat" data-testid="score" data-value={score}>
+                Punkty <b>{score}</b>
+              </span>
+            </header>
+            <div className="tp-stage">
+              <Kid name={entry.kid} mood={kidMood(phase, wrongFlash)} />
+              <DefinitionBubble
+                key={`${index}-${entry.word}`}
+                text={entry.definition}
+                pace={pace}
+              />
+              <Host
+                mood={hostMood(phase, wrongFlash)}
+                line={currentHostLine()}
+              />
+            </div>
+            {letters && (
+              <Tiles word={entry.word} letters={letters} pace={pace} />
+            )}
+            {phase === "definition" && (
+              <GuessForm
+                attempt={wrongs + 1}
+                guess={guess}
+                onChange={setGuess}
+                onSubmit={submit}
+              />
+            )}
+            {done && (
+              <Outcome
+                entry={entry}
+                solved={results[index].solved}
+                points={pointsFor(
+                  results[index].attemptsUsed,
+                  results[index].solved,
+                )}
+                last={last}
+                pace={pace}
+                onNext={next}
+              />
+            )}
+          </>
+        )}
+
+        {phase === "result" && (
+          <ResultScreen
+            slug={SLUG}
+            score={score}
+            maxScore={MAX_SCORE}
+            shareLine={results
+              .map((r) =>
+                r.solved ? ["", "🥇", "🥈", "🥉"][r.attemptsUsed] : "❌",
+              )
+              .join("")}
+            summary={<p>Hasła: {entries.map((e) => e.word).join(", ")}</p>}
+            onRestart={restart}
+          >
+            <div className="tp-gallery">
+              {entries.map((e, i) => (
+                <motion.div
+                  key={e.word}
+                  initial={{ opacity: 0, y: 20, rotate: 0 }}
+                  animate={{ opacity: 1, y: 0, rotate: i % 2 ? 2 : -2 }}
+                  transition={{ delay: (0.2 + i * 0.1) * pace }}
+                >
+                  <Drawing
+                    entry={e}
+                    solved={results[i].solved}
+                    testId="result-drawing"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </ResultScreen>
+        )}
+
+        <p className="tp-footer text-center text-[11px]">
+          Dzieci, prowadząca i studio są fikcyjni · Dźwięki: Kenney (CC0)
+        </p>
+      </div>
+    </MotionConfig>
+  );
 }

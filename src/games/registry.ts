@@ -259,8 +259,9 @@ export const GAMES: GameMeta[] = [
     inspirationNote: 'Poranny program TVN. W cyklu „To Pan tego nie wie” dzieci tłumaczą po swojemu sprawy dorosłych.',
     category: 'Newsy, show-biznes, codzienność',
     size: 'S',
-    description: 'Dziecięce definicje dorosłych spraw. Zgadnij, o jakie słowo chodzi.',
+    description: 'Poranne studio śniadaniowe: dziecko na za dużym fotelu tłumaczy po swojemu dorosłe sprawy. Zgadnij hasło w trzech próbach, z każdą kolejną odsłaniają się litery. Raz dziennie hasła dnia, potem trening.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./to-pan-tego-nie-wie')),
   },
   {

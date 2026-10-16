@@ -35,8 +35,9 @@ Dokument opisuje, jak zamieniamy POC gry w wersję z pełną oprawą („tryb im
 | Gdzie jest Martyna? | dziennik podróżniczki: biurko z notesem, polaroid, lot samolotu, paszport ze stemplami | `gm-` | zdjęcia CC miejsc, Martyna SVG, mapa świata SVG z Natural Earth |
 | Prawda czy ściema? | studio wieczornych wiadomości: ściana ekranów, dalekopis z depeszami, pieczątki PRAWDA/ŚCIEMA, pasek PILNE, prezenterka i satyryk przy biurku | `ps-` | prowadzący i studio SVG, prawdziwe newsy sprawdzone w Wikipedii (link przy każdym) |
 | Kto to powiedział? | salon jak w Gogglebox: telewizor przełączający kanały z cytatem w napisach, lampka ON AIR, trzy klikalne źródła na kanapach | `kt-` | gwiazda, rodzina i robot jako własne SVG, salon SVG, 30 fikcyjnych cytatów |
+| To Pan tego nie wie | poranne studio śniadaniowe: okno na miasto o świcie, kanapa z poduszkami, dziecko na za dużym fotelu z dymkiem, kafelki liter, rysunek kredkami za trafienie | `tp-` | dzieci z `LOOKS` i prowadząca jako własne SVG, studio SVG, 30 dziecięcych definicji |
 
-Zostały 3 gry (sekcja 10).
+Zostały 2 gry (sekcja 10).
 
 ## 3. Proces pracy nad jedną grą
 
@@ -164,7 +165,7 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
 - **Nie powtarzamy plików jingli między grami.** Na pewno są już zajęte:
   - Sax: SAX00, SAX01, SAX02, SAX05, SAX10, SAX11, SAX12, SAX14, SAX15, SAX16;
   - Steel: STEEL00, STEEL01, STEEL02, STEEL10, STEEL12, STEEL14, STEEL15;
-  - Pizzicato: PIZZI01, PIZZI02, PIZZI05, PIZZI10, PIZZI12, PIZZI14, PIZZI15;
+  - Pizzicato: PIZZI01, PIZZI02, PIZZI05, PIZZI10, PIZZI11, PIZZI12, PIZZI14, PIZZI15, PIZZI16;
   - 8-Bit: NES11, NES12, NES14;
   - Hit: HIT02, HIT11, HIT16.
 
@@ -519,6 +520,8 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 
 ### 10.10 To Pan tego nie wie (`to-pan-tego-nie-wie`, inspiracja: Dzień Dobry TVN)
 
+Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
+
 - **Mechanika:**
   - 5 haseł, 3 próby na każde, dziecięca definicja jako podpowiedź;
   - punkty 3, 2 albo 1 zależnie od próby, maksimum 15;
@@ -529,7 +532,7 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 - **Kluczowe animacje:** dziecko „mówi” (dymek wypisuje się po słowie); hasło jako kafelki liter odsłaniane przy kolejnych próbach (pierwsza litera po drugim błędzie); trafienie podnosi kartkę z rysunkiem dziecka.
 - **Dźwięki:** ksylofon (Pizzicato, niewykorzystane), klik długopisu, „pop” przy literze (tone). Jingle Pizzicato.
 - **Logika i testy:** `logic.ts` z `pointsFor(attempt)` i `hintFor(word, attempt)`, z testami.
-- **Do rozstrzygnięcia:** czy hasła dnia mają blokadę jak w „Danie po składnikach”, czy etykieta „dnia” znika.
+- **Rozstrzygnięte:** hasła dnia mają blokadę jak w „Danie po składnikach”: pierwsza gra dnia to hasła dnia, kolejne to trening na losowych hasłach.
 
 ### 10.11 Pogodynka (`pogodynka`, inspiracja: prognoza pogody TVN24)
 

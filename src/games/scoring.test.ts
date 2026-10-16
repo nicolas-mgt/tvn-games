@@ -14,6 +14,8 @@ import ktoData from './kto-to-powiedzial/data.json'
 import { buildDeck as buildQuoteDeck, castMood, QUOTES_PER_GAME, SOURCE_IDS } from './kto-to-powiedzial/logic'
 import { cellsAt, fits, FURNITURE, LEVELS, MAX_SCORE, organizerMood, parseLevel, rotate } from './poukladani/logic'
 import headlines from './prawda-czy-sciema/data.json'
+import toPanWords from './to-pan-tego-nie-wie/data.json'
+import { entriesFor, hintFor, LOOKS, lookFor, pointsFor } from './to-pan-tego-nie-wie/logic'
 import { buildDeck, DECK_SIZE, hostMoods, PER_KIND } from './prawda-czy-sciema/logic'
 import { contestantMood } from './rajskie-rozdanie/logic'
 import sciema from './sciema-z-ogloszenia/data.json'
@@ -99,6 +101,37 @@ describe('Ściema z ogłoszenia', () => {
     const photos = import.meta.glob('/public/sciema-z-ogloszenia/cars/*.jpg')
     expect(sciema.listings.filter((a) => !photos[`/public/sciema-z-ogloszenia/cars/${a.id}.jpg`]).map((a) => a.id)).toEqual([])
     expect(sciema.listings.filter((a) => !a.photo.author || !a.photo.license || !a.photo.source).map((a) => a.id)).toEqual([])
+  })
+})
+
+describe('To Pan tego nie wie', () => {
+  it('scores 3, 2 or 1 point by attempt and nothing when unsolved', () => {
+    expect([1, 2, 3].map((n) => pointsFor(n, true))).toEqual([3, 2, 1])
+    expect(pointsFor(3, false)).toBe(0)
+  })
+
+  it('reveals the length, then the first letter, keeping gaps between words', () => {
+    expect(hintFor('kawa', 0)).toBeNull()
+    expect(hintFor('kawa', 1)).toEqual(['', '', '', ''])
+    expect(hintFor('kawa', 2)).toEqual(['k', '', '', ''])
+    expect(hintFor('rachunek za prąd', 2)?.map((t) => t || '_').join('')).toBe('r_______ __ ____')
+  })
+
+  it('gives every kid a stable, valid look', () => {
+    for (const { kid } of toPanWords) {
+      const look = lookFor(kid)
+      expect(lookFor(kid)).toEqual(look)
+      expect(LOOKS.hair).toContain(look.hair)
+      expect(LOOKS.hairColor).toContain(look.hairColor)
+      expect(LOOKS.shirt).toContain(look.shirt)
+      expect(LOOKS.skin).toContain(look.skin)
+    }
+  })
+
+  it('deals the same daily words twice and has 30 complete entries', () => {
+    expect(entriesFor('daily').map((e) => e.word)).toEqual(entriesFor('daily').map((e) => e.word))
+    expect(new Set(toPanWords.map((e) => e.word)).size).toBe(30)
+    expect(toPanWords.filter((e) => !e.kid || !e.definition || !Array.isArray(e.aliases))).toEqual([])
   })
 })
 

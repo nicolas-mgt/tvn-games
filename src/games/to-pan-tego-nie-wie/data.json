@@ -1,22 +1,182 @@
 [
-  { "word": "inflacja", "aliases": [], "kid": "Antoś, 7 lat", "definition": "To jest jak pieniądze, które chudną. Mama ma tyle samo, ale kupuje mniej lodów." },
-  { "word": "podatki", "aliases": ["podatek"], "kid": "Zosia, 6 lat", "definition": "Tata zarabia pieniążki, a potem pan z państwa zabiera kawałek na drogi i na panie w urzędzie." },
-  { "word": "kredyt", "aliases": ["kredyt hipoteczny"], "kid": "Kuba, 8 lat", "definition": "Bank daje ci dom, ale tak naprawdę dom jest banku, dopóki nie będziesz dziadkiem." },
-  { "word": "emerytura", "aliases": [], "kid": "Ola, 7 lat", "definition": "To jak wakacje, tylko na zawsze, ale trzeba być bardzo starym i mieć siwe włosy." },
-  { "word": "urlop", "aliases": ["wakacje"], "kid": "Staś, 5 lat", "definition": "Wtedy tata nie jest w pracy, tylko się denerwuje w samochodzie w korku nad morze." },
-  { "word": "teściowa", "aliases": ["tesciowa"], "kid": "Julka, 8 lat", "definition": "To jest babcia, ale od strony, z której tata nie lubi przy obiedzie mówić." },
-  { "word": "poniedziałek", "aliases": ["poniedzialek"], "kid": "Franek, 7 lat", "definition": "Najgorszy dzień. Nawet kot wtedy dłużej śpi, bo wie." },
-  { "word": "korek", "aliases": ["korek uliczny", "korki"], "kid": "Hania, 6 lat", "definition": "Jak wszystkie auta chcą jechać naraz i nikt nie jedzie, a tata mówi brzydkie słowa." },
-  { "word": "dieta", "aliases": [], "kid": "Igor, 8 lat", "definition": "Mama je sałatę i jest smutna, a w nocy idzie do lodówki po ciasto." },
-  { "word": "szef", "aliases": ["kierownik", "prezes"], "kid": "Lena, 7 lat", "definition": "To pan, przez którego mama mówi do telefonu miłym głosem, a potem przewraca oczami." },
-  { "word": "kawa", "aliases": [], "kid": "Tymek, 6 lat", "definition": "Czarna zupa dla dorosłych, bez której są jak zombie do dziewiątej." },
-  { "word": "influencer", "aliases": ["influencerka", "youtuber"], "kid": "Maja, 8 lat", "definition": "To ktoś, kto pokazuje w telefonie swoje śniadanie i za to dostaje pieniążki." },
-  { "word": "ślub", "aliases": ["slub", "wesele"], "kid": "Wojtek, 6 lat", "definition": "Ciocia ubiera białą sukienkę, wszyscy płaczą, a potem tańczą do rana i jedzą rosół." },
-  { "word": "rachunek za prąd", "aliases": ["rachunek", "prąd", "prad"], "kid": "Nela, 7 lat", "definition": "Taka kartka, przez którą tata chodzi po domu i gasi wszystkie światła." },
-  { "word": "wifi", "aliases": ["wi-fi", "internet"], "kid": "Leon, 8 lat", "definition": "Niewidzialne coś w powietrzu. Jak go nie ma, to cała rodzina nagle ze sobą rozmawia." },
-  { "word": "budzik", "aliases": [], "kid": "Ala, 6 lat", "definition": "Wredne pudełko, które krzyczy rano, a tata go bije, żeby jeszcze pięć minut." },
-  { "word": "remont", "aliases": [], "kid": "Bartek, 7 lat", "definition": "Jak przychodzą panowie, wszystko jest w kurzu i trwa to od moich urodzin do następnych." },
-  { "word": "sąsiad", "aliases": ["sasiad", "sąsiadka"], "kid": "Pola, 8 lat", "definition": "Pan zza ściany, który wierci w niedzielę i zawsze wie, kiedy przyszła paczka." },
-  { "word": "weekend", "aliases": [], "kid": "Kostek, 5 lat", "definition": "Dwa dni, kiedy można jeść płatki przed telewizorem i nikt nie krzyczy, że szkoła." },
-  { "word": "lodówka", "aliases": ["lodowka"], "kid": "Ida, 6 lat", "definition": "Szafa z zimnem. Tata otwiera ją co pięć minut i patrzy, czy coś się zmieniło." }
+  {
+    "word": "inflacja",
+    "aliases": [],
+    "kid": "Antoś, 7 lat",
+    "definition": "To jest jak pieniądze, które chudną. Mama ma tyle samo, ale kupuje mniej lodów."
+  },
+  {
+    "word": "podatki",
+    "aliases": ["podatek"],
+    "kid": "Zosia, 6 lat",
+    "definition": "Tata zarabia pieniążki, a potem pan z państwa zabiera kawałek na drogi i na panie w urzędzie."
+  },
+  {
+    "word": "kredyt",
+    "aliases": ["kredyt hipoteczny"],
+    "kid": "Kuba, 8 lat",
+    "definition": "Bank daje ci dom, ale tak naprawdę dom jest banku, dopóki nie będziesz dziadkiem."
+  },
+  {
+    "word": "emerytura",
+    "aliases": [],
+    "kid": "Ola, 7 lat",
+    "definition": "To jak wakacje, tylko na zawsze, ale trzeba być bardzo starym i mieć siwe włosy."
+  },
+  {
+    "word": "urlop",
+    "aliases": ["wakacje"],
+    "kid": "Staś, 5 lat",
+    "definition": "Wtedy tata nie jest w pracy, tylko się denerwuje w samochodzie w korku nad morze."
+  },
+  {
+    "word": "teściowa",
+    "aliases": ["tesciowa"],
+    "kid": "Julka, 8 lat",
+    "definition": "To jest babcia, ale od strony, z której tata nie lubi przy obiedzie mówić."
+  },
+  {
+    "word": "poniedziałek",
+    "aliases": ["poniedzialek"],
+    "kid": "Franek, 7 lat",
+    "definition": "Najgorszy dzień. Nawet kot wtedy dłużej śpi, bo wie."
+  },
+  {
+    "word": "korek",
+    "aliases": ["korek uliczny", "korki"],
+    "kid": "Hania, 6 lat",
+    "definition": "Jak wszystkie auta chcą jechać naraz i nikt nie jedzie, a tata mówi brzydkie słowa."
+  },
+  {
+    "word": "dieta",
+    "aliases": [],
+    "kid": "Igor, 8 lat",
+    "definition": "Mama je sałatę i jest smutna, a w nocy idzie do lodówki po ciasto."
+  },
+  {
+    "word": "szef",
+    "aliases": ["kierownik", "prezes"],
+    "kid": "Lena, 7 lat",
+    "definition": "To pan, przez którego mama mówi do telefonu miłym głosem, a potem przewraca oczami."
+  },
+  {
+    "word": "kawa",
+    "aliases": [],
+    "kid": "Tymek, 6 lat",
+    "definition": "Czarna zupa dla dorosłych, bez której są jak zombie do dziewiątej."
+  },
+  {
+    "word": "influencer",
+    "aliases": ["influencerka", "youtuber"],
+    "kid": "Maja, 8 lat",
+    "definition": "To ktoś, kto pokazuje w telefonie swoje śniadanie i za to dostaje pieniążki."
+  },
+  {
+    "word": "ślub",
+    "aliases": ["slub", "wesele"],
+    "kid": "Wojtek, 6 lat",
+    "definition": "Ciocia ubiera białą sukienkę, wszyscy płaczą, a potem tańczą do rana i jedzą rosół."
+  },
+  {
+    "word": "rachunek za prąd",
+    "aliases": ["rachunek", "prąd", "prad"],
+    "kid": "Nela, 7 lat",
+    "definition": "Taka kartka, przez którą tata chodzi po domu i gasi wszystkie światła."
+  },
+  {
+    "word": "wifi",
+    "aliases": ["wi-fi", "internet"],
+    "kid": "Leon, 8 lat",
+    "definition": "Niewidzialne coś w powietrzu. Jak go nie ma, to cała rodzina nagle ze sobą rozmawia."
+  },
+  {
+    "word": "budzik",
+    "aliases": [],
+    "kid": "Ala, 6 lat",
+    "definition": "Wredne pudełko, które krzyczy rano, a tata go bije, żeby jeszcze pięć minut."
+  },
+  {
+    "word": "remont",
+    "aliases": [],
+    "kid": "Bartek, 7 lat",
+    "definition": "Jak przychodzą panowie, wszystko jest w kurzu i trwa to od moich urodzin do następnych."
+  },
+  {
+    "word": "sąsiad",
+    "aliases": ["sasiad", "sąsiadka"],
+    "kid": "Pola, 8 lat",
+    "definition": "Pan zza ściany, który wierci w niedzielę i zawsze wie, kiedy przyszła paczka."
+  },
+  {
+    "word": "weekend",
+    "aliases": [],
+    "kid": "Kostek, 5 lat",
+    "definition": "Dwa dni, kiedy można jeść płatki przed telewizorem i nikt nie krzyczy, że szkoła."
+  },
+  {
+    "word": "lodówka",
+    "aliases": ["lodowka"],
+    "kid": "Ida, 6 lat",
+    "definition": "Szafa z zimnem. Tata otwiera ją co pięć minut i patrzy, czy coś się zmieniło."
+  },
+  {
+    "word": "wypłata",
+    "aliases": ["wyplata", "pensja", "pieniądze", "pieniadze"],
+    "kid": "Szymon, 7 lat",
+    "definition": "Taki dzień raz w miesiącu, kiedy mama jest wesoła, a za tydzień znowu mówi, że nas nie stać."
+  },
+  {
+    "word": "zebranie",
+    "aliases": ["spotkanie", "narada", "wywiadówka"],
+    "kid": "Marysia, 8 lat",
+    "definition": "Dużo dorosłych siedzi przy stole, wszyscy gadają, a potem mówią, że to mogło być w mailu."
+  },
+  {
+    "word": "siłownia",
+    "aliases": ["silownia", "fitness"],
+    "kid": "Adaś, 6 lat",
+    "definition": "Tata płaci, żeby podnosić ciężkie rzeczy, a w domu nie chce wynieść śmieci."
+  },
+  {
+    "word": "praca zdalna",
+    "aliases": ["home office", "praca z domu"],
+    "kid": "Gabrysia, 7 lat",
+    "definition": "Mama jest w pracy, ale w piżamie i w kuchni, i nie wolno do niej mówić, bo ma kamerkę."
+  },
+  {
+    "word": "nadgodziny",
+    "aliases": ["nadgodzina"],
+    "kid": "Kacper, 8 lat",
+    "definition": "Jak tata już miał wrócić do domu, ale praca go jeszcze trzyma i nie puszcza."
+  },
+  {
+    "word": "drzemka",
+    "aliases": ["sen", "spanie"],
+    "kid": "Zuzia, 5 lat",
+    "definition": "Dziadek mówi, że tylko zamyka oczy na chwilkę, a potem chrapie jak traktor."
+  },
+  {
+    "word": "paragon",
+    "aliases": ["rachunek ze sklepu"],
+    "kid": "Miłosz, 7 lat",
+    "definition": "Długa kartka ze sklepu. Mama ją czyta i mówi: ile? za to?"
+  },
+  {
+    "word": "parking",
+    "aliases": ["miejsce parkingowe"],
+    "kid": "Basia, 6 lat",
+    "definition": "Miejsce, gdzie tata jeździ w kółko i szuka dziury na nasze auto."
+  },
+  {
+    "word": "pralka",
+    "aliases": [],
+    "kid": "Olek, 5 lat",
+    "definition": "Okrągłe okienko, gdzie ubrania kręcą się w kółko, a jedna skarpetka znika na zawsze."
+  },
+  {
+    "word": "grill",
+    "aliases": ["grillowanie"],
+    "kid": "Natalka, 8 lat",
+    "definition": "Jak tata stoi przy dymie i mówi, że tylko on wie, kiedy kiełbasa jest gotowa."
+  }
 ]
