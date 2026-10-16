@@ -70,7 +70,7 @@ export function Postcard({
       transition={{ type: 'spring', stiffness: 220, damping: 20 }}
     >
       <div className="gm-postcard-photo">
-        <img src={`/gdzie-jest-martyna/places/${place.id}.jpg`} alt="" />
+        <img src={`${import.meta.env.BASE_URL}gdzie-jest-martyna/places/${place.id}.jpg`} alt="" />
         <span className="gm-postcard-greeting">Pozdrowienia z…</span>
       </div>
       <div className="gm-postcard-back">

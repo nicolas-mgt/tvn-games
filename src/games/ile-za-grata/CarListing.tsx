@@ -8,7 +8,7 @@ export function CarListing({ car, guess, revealed, pace }: { car: Car; guess: nu
   return (
     <div className="gr-listing">
       <figure className="gr-photo-frame">
-        <img src={`/ile-za-grata/cars/${car.id}.jpg`} alt={car.title} draggable={false} className="gr-photo" data-testid="car-photo" />
+        <img src={`${import.meta.env.BASE_URL}ile-za-grata/cars/${car.id}.jpg`} alt={car.title} draggable={false} className="gr-photo" data-testid="car-photo" />
         <div className="gr-stickers">
           <span>{car.year}</span>
           <span>{car.mileage.toLocaleString('pl-PL')} km</span>

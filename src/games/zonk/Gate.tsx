@@ -53,7 +53,7 @@ export function Gate({ index, item, picked, open, focus, disabled, onPick }: Gat
       <span className="zk-gate-sign">{index + 1}</span>
       <span className="zk-gate-window">
         <span className="zk-gate-stage" aria-hidden={!open}>
-          <img src={`/zonk/items/${item.id}.jpg`} alt="" draggable={false} className="zk-gate-photo" data-item={item.id} />
+          <img src={`${import.meta.env.BASE_URL}zonk/items/${item.id}.jpg`} alt="" draggable={false} className="zk-gate-photo" data-item={item.id} />
           <span className="zk-plate">{item.name}</span>
           {open && (
             <motion.span

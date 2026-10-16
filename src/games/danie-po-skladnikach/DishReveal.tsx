@@ -5,7 +5,7 @@ import { SLUG, type Dish } from './logic'
 export function Plate({ dish, className = '' }: { dish: Dish; className?: string }) {
   return (
     <div className={`dp-plate ${className}`}>
-      <img src={`/${SLUG}/dishes/${dish.id}.jpg`} alt={dish.name} draggable={false} data-testid="dish-photo" />
+      <img src={`${import.meta.env.BASE_URL}${SLUG}/dishes/${dish.id}.jpg`} alt={dish.name} draggable={false} data-testid="dish-photo" />
     </div>
   )
 }

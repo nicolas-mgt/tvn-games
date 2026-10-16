@@ -129,7 +129,7 @@ export default function GdzieJestMartynaGame() {
             <section className="gm-page gm-page-left">
               <figure className="gm-polaroid" key={place.id}>
                 <div className="gm-polaroid-photo">
-                  <img src={`/gdzie-jest-martyna/places/${place.id}.jpg`} alt="Gdzie zrobiono to zdjęcie?" data-testid="place-photo" />
+                  <img src={`${import.meta.env.BASE_URL}gdzie-jest-martyna/places/${place.id}.jpg`} alt="Gdzie zrobiono to zdjęcie?" data-testid="place-photo" />
                 </div>
                 <figcaption data-testid="photo-credit">
                   Fot.{' '}

@@ -1,0 +1,142 @@
+{
+  "apiVersion": "v1",
+  "kind": "List",
+  "items": [
+    {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "name": "tvn-games",
+        "namespace": "tvn-games"
+      },
+      "spec": {
+        "replicas": 1,
+        "strategy": {
+          "type": "Recreate"
+        },
+        "selector": {
+          "matchLabels": {
+            "app": "tvn-games"
+          }
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "app": "tvn-games"
+            }
+          },
+          "spec": {
+            "automountServiceAccountToken": false,
+            "imagePullSecrets": [
+              {
+                "name": "ghcr-pull"
+              }
+            ],
+            "containers": [
+              {
+                "name": "web",
+                "image": "$IMAGE",
+                "ports": [
+                  {
+                    "name": "http",
+                    "containerPort": 8080
+                  }
+                ],
+                "resources": {
+                  "requests": {
+                    "cpu": "50m",
+                    "memory": "32Mi"
+                  },
+                  "limits": {
+                    "cpu": "500m",
+                    "memory": "128Mi"
+                  }
+                },
+                "readinessProbe": {
+                  "httpGet": {
+                    "path": "/tvn-games/",
+                    "port": "http"
+                  },
+                  "periodSeconds": 5
+                },
+                "livenessProbe": {
+                  "httpGet": {
+                    "path": "/tvn-games/",
+                    "port": "http"
+                  },
+                  "periodSeconds": 20
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "name": "tvn-games",
+        "namespace": "tvn-games"
+      },
+      "spec": {
+        "selector": {
+          "app": "tvn-games"
+        },
+        "ports": [
+          {
+            "port": 80,
+            "targetPort": "http"
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "cert-manager.io/v1",
+      "kind": "Certificate",
+      "metadata": {
+        "name": "tvn-games-tls",
+        "namespace": "tvn-games"
+      },
+      "spec": {
+        "secretName": "tvn-games-tls",
+        "dnsNames": [
+          "home.mmgt.dev"
+        ],
+        "issuerRef": {
+          "kind": "ClusterIssuer",
+          "name": "letsencrypt-prod"
+        }
+      }
+    },
+    {
+      "apiVersion": "traefik.io/v1alpha1",
+      "kind": "IngressRoute",
+      "metadata": {
+        "name": "tvn-games",
+        "namespace": "tvn-games"
+      },
+      "spec": {
+        "entryPoints": [
+          "websecure"
+        ],
+        "tls": {
+          "secretName": "tvn-games-tls"
+        },
+        "routes": [
+          {
+            "kind": "Rule",
+            "match": "Host(`home.mmgt.dev`) && (Path(`/tvn-games`) || PathPrefix(`/tvn-games/`))",
+            "priority": 150,
+            "services": [
+              {
+                "name": "tvn-games",
+                "port": 80
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

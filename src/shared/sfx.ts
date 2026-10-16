@@ -11,7 +11,7 @@ export type Sfx<S extends string> = {
   setMuted: (value: boolean) => void
 }
 
-/** Samples are loaded from `/<slug>/sfx/<name>.mp3`; mute state persists per game. */
+/** Samples use the application base path; mute state persists per game. */
 export function createSfx<Sample extends string, Synthesized extends string = never>({
   slug,
   samples,
@@ -35,7 +35,7 @@ export function createSfx<Sample extends string, Synthesized extends string = ne
       context = new AudioContext()
       const ctx = context
       for (const name of samples) {
-        fetch(`/${slug}/sfx/${name}.mp3`)
+        fetch(`${import.meta.env.BASE_URL}${slug}/sfx/${name}.mp3`)
           .then((res) => res.arrayBuffer())
           .then((data) => ctx.decodeAudioData(data))
           .then((buffer) => buffers.set(name, buffer))

@@ -30,7 +30,7 @@ function Ingredient({ name, delay }: { name: string; delay: number }) {
     >
       {icon ? (
         <>
-          <img src={`/${SLUG}/icons/${icon}.svg`} alt="" draggable={false} className="dp-icon" />
+          <img src={`${import.meta.env.BASE_URL}${SLUG}/icons/${icon}.svg`} alt="" draggable={false} className="dp-icon" />
           <span className="dp-label">{name}</span>
         </>
       ) : (

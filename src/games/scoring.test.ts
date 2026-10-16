@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { DISHES, dishScore, ingredientIcon, juryMood } from './danie-po-skladnikach/logic'
 import dishIcons from './danie-po-skladnikach/icons.json'
 import { playLeg, placeOf, slowestTeam, START_TEAMS, teamMood, travel, type Team } from './express-za-dolara/logic'
@@ -337,9 +337,14 @@ describe('Podłoga', () => {
     expect(distance(4, 20)).toBe(8)
   })
 
-  it('maps emoji to OpenMoji file names without the variation selector', () => {
-    expect(emojiImage('🐘')).toBe('/podloga/items/1F418.svg')
-    expect(emojiImage('🐿️')).toBe('/podloga/items/1F43F.svg')
+  it.each(['/', '/tvn-games/'])('maps emoji to OpenMoji file names under %s', (base) => {
+    vi.stubEnv('BASE_URL', base)
+    try {
+      expect(emojiImage('🐘')).toBe(`${base}podloga/items/1F418.svg`)
+      expect(emojiImage('🐿️')).toBe(`${base}podloga/items/1F43F.svg`)
+    } finally {
+      vi.unstubAllEnvs()
+    }
   })
 })
 

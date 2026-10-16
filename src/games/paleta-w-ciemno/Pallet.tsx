@@ -77,7 +77,7 @@ export function Pallet({ number, description, stamp, revealed, contents, paid, p
                 animate={{ opacity: 1, y: 0, rotate: i % 2 ? 1.5 : -1.5 }}
                 transition={{ delay: (REVEAL_DELAY + i * REVEAL_STEP) * pace, type: 'spring', stiffness: 260, damping: 20 }}
               >
-                <img src={`/paleta-w-ciemno/items/${item.id}.jpg`} alt={item.name} draggable={false} className="pw-item-photo" />
+                <img src={`${import.meta.env.BASE_URL}paleta-w-ciemno/items/${item.id}.jpg`} alt={item.name} draggable={false} className="pw-item-photo" />
                 <p className="pw-item-name">{item.name}</p>
                 <span className="pw-tag">{formatZl(item.value)}</span>
               </motion.li>

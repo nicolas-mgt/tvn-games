@@ -31,7 +31,7 @@ export function Printout({
         <span>Ogłoszenie nr {4400 + number * 37}</span>
       </header>
       <figure className="sc-photo-frame">
-        <img src={`/sciema-z-ogloszenia/cars/${ad.id}.jpg`} alt={ad.title} draggable={false} className="sc-photo" data-testid="car-photo" />
+        <img src={`${import.meta.env.BASE_URL}sciema-z-ogloszenia/cars/${ad.id}.jpg`} alt={ad.title} draggable={false} className="sc-photo" data-testid="car-photo" />
         <figcaption className="sc-credit" data-testid="photo-credit">
           Fot.:{' '}
           <a href={ad.photo.source} target="_blank" rel="noreferrer">

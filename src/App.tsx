@@ -72,7 +72,7 @@ function GamePage() {
 const router = createBrowserRouter([
   { path: '/', element: <HubPage /> },
   { path: '/gra/:slug', element: <GamePage /> },
-])
+], { basename: import.meta.env.BASE_URL })
 
 export default function App() {
   return <RouterProvider router={router} />

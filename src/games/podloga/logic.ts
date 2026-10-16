@@ -63,7 +63,7 @@ export function emojiImage(emoji: string): string {
     .map((ch) => ch.codePointAt(0)!.toString(16).toUpperCase())
     .filter((cp) => cp !== 'FE0F')
     .join('-')
-  return `/podloga/items/${code}.svg`
+  return `${import.meta.env.BASE_URL}podloga/items/${code}.svg`
 }
 
 export function itemImage(item: { flag?: string; emoji?: string }): string {

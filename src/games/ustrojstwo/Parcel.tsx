@@ -182,7 +182,7 @@ export function Parcel({ gadgetId, number, total, stage, onArrived, onOpened, on
             >
               <div className="parcel-gadget-face">
                 <img
-                  src={`/ustrojstwo/items/${gadgetId}.jpg`}
+                  src={`${import.meta.env.BASE_URL}ustrojstwo/items/${gadgetId}.jpg`}
                   alt=""
                   draggable={false}
                   data-gadget={gadgetId}
