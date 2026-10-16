@@ -21,7 +21,7 @@ export function createSfx<Sample extends string, Synthesized extends string = ne
   samples: readonly Sample[]
   synth?: Record<Synthesized, Synth>
 }): Sfx<Sample | Synthesized> {
-  const mutedKey = `slop-games:${slug}:muted`
+  const mutedKey = `tvn-games:${slug}:muted`
   const buffers = new Map<string, AudioBuffer>()
   let context: AudioContext | null = null
   let muted = loadJSON(mutedKey, false)

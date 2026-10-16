@@ -14,7 +14,7 @@ export type JurorId = 'szef' | 'cukierniczka' | 'molekularny'
 export type JuryMood = 'disappointed' | 'doubtful' | 'pleased' | 'delighted'
 
 export const SLUG = 'danie-po-skladnikach'
-export const DAILY_KEY = 'slop-games:danie:last-daily'
+export const DAILY_KEY = 'tvn-games:danie:last-daily'
 export const MAX_POINTS = 6
 export const DISHES: Dish[] = dishes
 export const JURORS: JurorId[] = ['szef', 'cukierniczka', 'molekularny']

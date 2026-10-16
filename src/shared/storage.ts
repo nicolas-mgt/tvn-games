@@ -18,7 +18,7 @@ export function saveJSON(key: string, value: unknown): void {
   localStorage.setItem(key, JSON.stringify(value))
 }
 
-const statsKey = (slug: string) => `slop-games:stats:${slug}`
+const statsKey = (slug: string) => `tvn-games:stats:${slug}`
 
 export function loadStats(slug: string): GameStats {
   return loadJSON(statsKey(slug), EMPTY_STATS)

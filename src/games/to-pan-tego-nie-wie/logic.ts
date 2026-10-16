@@ -5,7 +5,7 @@ export const SLUG = 'to-pan-tego-nie-wie'
 export const WORDS_PER_GAME = 5
 export const ATTEMPTS = 3
 export const MAX_SCORE = WORDS_PER_GAME * ATTEMPTS
-export const DAILY_KEY = 'slop-games:to-pan:last-daily'
+export const DAILY_KEY = 'tvn-games:to-pan:last-daily'
 
 export type Mode = 'daily' | 'practice'
 export type Entry = (typeof words)[number]

@@ -15,7 +15,7 @@ import { play, sfx } from './sfx'
 import { StudioBackdrop, type Mood } from './StudioBackdrop'
 
 const ROUNDS = 5
-const MONTY_KEY = 'slop-games:zonk:monty'
+const MONTY_KEY = 'tvn-games:zonk:monty'
 const EMPTY_MONTY: MontyStats = { switchPlays: 0, switchWins: 0, stayPlays: 0, stayWins: 0 }
 const PRIZES: Item[] = data.prizes
 const ZONKS: Item[] = data.zonks

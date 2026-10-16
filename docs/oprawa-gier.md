@@ -225,11 +225,11 @@ oxlint ma obecnie 3 ostrzeżenia bazowe (shadcn `badge` i `button` oraz `Math.ra
 
   ```sh
   mcporter daemon restart >/dev/null 2>&1
-  mcporter call playwright.browser_run_code_unsafe filename=$PWD/slop-<gra>-full.js --timeout 900000 | head -3
+  mcporter call playwright.browser_run_code_unsafe filename=$PWD/tvn-<gra>-full.js --timeout 900000 | head -3
   ```
 
   Restart demona przed każdym uruchomieniem usuwa błąd „Browser is already in use”. Pierwsze linie wyjścia to `### Result` z JSON-em zwróconym przez skrypt, reszta to echo kodu.
-- **Skrypty** trzymamy w `~/Library/Caches/playwright-mcp/`, po jednym na rozmiar: `slop-<gra>-full.js` (desktop) i `slop-<gra>-fullm.js` (kopia z `const mobile = true`). Skrypt to jedna funkcja `async (page) => { … }`, która tworzy własny kontekst:
+- **Skrypty** trzymamy w `~/Library/Caches/playwright-mcp/`, po jednym na rozmiar: `tvn-<gra>-full.js` (desktop) i `tvn-<gra>-fullm.js` (kopia z `const mobile = true`). Skrypt to jedna funkcja `async (page) => { … }`, która tworzy własny kontekst:
 
   ```js
   const ctx = mobile
@@ -290,7 +290,7 @@ Asercje nie wyłapią, że coś jest brzydkie, ucięte albo niewidoczne, dlatego
 
 ### 8.6 Regresja
 
-- `slop-reg.js` robi zrzuty lobby dwóch ostatnio zrobionych gier i zbiera `pageerror`. Po każdej grze przesuwamy listę slugów (dla Zdrajcy: `rajskie-rozdanie`, `sciema-z-ogloszenia`).
+- `tvn-reg.js` robi zrzuty lobby dwóch ostatnio zrobionych gier i zbiera `pageerror`. Po każdej grze przesuwamy listę slugów (dla Zdrajcy: `rajskie-rozdanie`, `sciema-z-ogloszenia`).
 - Zmiany we wspólnych plikach (`GameShell`, `registry.ts`, `shared/sfx.ts`) wymagają dodatkowo przejścia lobby wszystkich gier immersyjnych.
 
 ### 8.7 Pułapki narzędzi

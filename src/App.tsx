@@ -10,7 +10,7 @@ function HubPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <header className="mb-8">
-        <h1 className="text-3xl font-black">Slop Games</h1>
+        <h1 className="text-3xl font-black">TVN Games</h1>
         <p className="text-muted-foreground">
           20 prostych gier przeglądarkowych inspirowanych jesienną ramówką grupy TVN. Wersja POC.
         </p>

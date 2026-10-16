@@ -45,8 +45,8 @@ export function startValues(current: Temperatures): Temperatures {
   return Object.fromEntries(CITIES.map((c) => [c.id, Math.round(current[c.id] * 2) / 2])) as Temperatures
 }
 
-export const PREDICTIONS_KEY = 'slop-games:pogodynka:predictions'
-export const WARMUP_KEY = 'slop-games:pogodynka:warmup'
+export const PREDICTIONS_KEY = 'tvn-games:pogodynka:predictions'
+export const WARMUP_KEY = 'tvn-games:pogodynka:warmup'
 export type Warmup = { day: string; points: number }
 
 /** Milliseconds until local midnight after `targetDay`, when its maximum can be settled. */
