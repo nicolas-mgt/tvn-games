@@ -193,12 +193,32 @@ export default function SciemaGame() {
           </header>
 
           <div className="sc-stage">
-            <div className="sc-stage-reporter">
-              <Reporter mood={mood} line={line} />
-            </div>
-            <div className="sc-stage-timer">
-              <Stopwatch remaining={timer.remaining} total={SECONDS_PER_AD} />
-            </div>
+            <aside className="sc-stage-sidebar">
+              <div className="sc-stage-reporter">
+                <Reporter mood={mood} line={line} />
+              </div>
+              <div className="sc-actions">
+                {reviewing ? (
+                  <Button size="lg" className="h-12 w-full cursor-pointer px-3 font-display text-xl tracking-widest" onClick={nextAd} disabled={!stamp} data-testid="next-ad">
+                    {index === ads.length - 1 ? 'Podsumowanie' : 'Następne ogłoszenie'}
+                  </Button>
+                ) : (
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="sc-done h-12 w-full cursor-pointer whitespace-normal px-3"
+                    onClick={() => finishAd(clicked, 'done')}
+                    disabled={phase !== 'reading'}
+                    data-testid="done"
+                  >
+                    Gotowe, nic więcej nie widzę
+                  </Button>
+                )}
+              </div>
+              <div className="sc-stage-timer">
+                <Stopwatch remaining={timer.remaining} total={SECONDS_PER_AD} />
+              </div>
+            </aside>
             <div ref={scope} className="sc-stage-printout">
               <motion.div
                 key={index}
@@ -208,24 +228,7 @@ export default function SciemaGame() {
               >
                 <Printout ad={ad} number={index + 1} clicked={clicked} reviewing={reviewing} stamp={stamp} pace={pace} onSegment={clickSegment} />
               </motion.div>
-              <div className="mt-4 flex justify-center">
-                {reviewing ? (
-                  <Button size="lg" className="h-12 px-8 font-display text-xl tracking-widest" onClick={nextAd} data-testid="next-ad">
-                    {index === ads.length - 1 ? 'Podsumowanie' : 'Następne ogłoszenie'}
-                  </Button>
-                ) : (
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="sc-done h-12 px-6"
-                    onClick={() => finishAd(clicked, 'done')}
-                    disabled={phase !== 'reading'}
-                    data-testid="done"
-                  >
-                    Gotowe, nic więcej nie widzę
-                  </Button>
-                )}
-              </div>
+
             </div>
           </div>
         </div>
