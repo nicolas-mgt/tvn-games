@@ -25,7 +25,7 @@ import { applyEffects, chefMood, endingFor, ownerMood, START_STATS, statLevel } 
 import stylizacja from './stylizacja/data.json'
 import { jurorMood, jurorScore, SLOTS, themeFit, type Item, type Outfit } from './stylizacja/logic'
 import gadgets from './ustrojstwo/data.json'
-import { BACKGROUNDS, dealScenes, facingOf, instructorMood, KINDS, SCENES, SCENES_PER_GAME, stampFor, type Actor } from './co-sie-zaraz-stanie/logic'
+import { BACKGROUNDS, dealScenes, depthScale, facingOf, instructorMood, KINDS, poseAt, SCENES, SCENES_PER_GAME, stampFor, type Actor } from './co-sie-zaraz-stanie/logic'
 import zonk from './zonk/data.json'
 import { banish, gameStatus, PLAYER, residentMood, statementText, type Resident } from './zdrajca/logic'
 import { addMontyResult, hostOpens, remainingDoor } from './zonk/logic'
@@ -259,6 +259,16 @@ describe('Co się zaraz stanie', () => {
     expect(facingOf(actor(80, 40))).toBe('left')
     expect(facingOf(actor(50, 50))).toBe('right')
     expect(facingOf(actor(50, 50, 'left'))).toBe('left')
+  })
+
+  it('moves actors only within their time window and drops them after stopping', () => {
+    const box: Actor = { kind: 'roofbox', x: 10, y: 60, toX: 40, toY: 60, startAt: 0.2, stopAt: 0.6, lift: 20, drop: true }
+    expect(poseAt(box, 0.1)).toEqual({ x: 10, y: 60, lift: 20, tilt: 0 })
+    expect(poseAt(box, 0.6).x).toBe(40)
+    expect(poseAt(box, 1)).toEqual({ x: 40, y: 60, lift: 0, tilt: 14 })
+    const car: Actor = { kind: 'car', x: 0, y: 50, toX: 100, toY: 70 }
+    expect(poseAt(car, 0.5)).toEqual({ x: 50, y: 60, lift: 0, tilt: 0 })
+    expect(depthScale(30)).toBeLessThan(depthScale(60))
   })
 
   it('makes the instructor react only to the verdict', () => {

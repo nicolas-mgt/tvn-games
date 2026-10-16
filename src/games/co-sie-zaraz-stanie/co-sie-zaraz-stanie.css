@@ -354,8 +354,28 @@
 .cz-bob {
   transform-box: fill-box;
 }
+.cz-gallop {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.cz-wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.cz-scene[data-phase='playing'] .cz-moving .cz-wheel {
+  animation: cz-spin 0.35s linear infinite;
+}
+.cz-beam {
+  display: none;
+}
+.cz-scene[data-background='forest'] .cz-beam {
+  display: inline;
+}
 .cz-scene[data-phase='playing'] .cz-bob {
   animation: cz-bob 0.3s ease-in-out infinite alternate;
+}
+.cz-scene[data-phase='playing'] .cz-gallop {
+  animation: cz-gallop 0.45s ease-in-out infinite;
 }
 .cz-wave {
   transform-box: fill-box;
@@ -519,6 +539,11 @@
     transform: scale(1.03) translate(-5px, 3px);
   }
 }
+@keyframes cz-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 @keyframes cz-noise {
   to {
     background-position: 0 60px;
@@ -527,6 +552,14 @@
 @keyframes cz-bob {
   to {
     transform: translateY(-4px);
+  }
+}
+@keyframes cz-gallop {
+  40% {
+    transform: translateY(-10px) rotate(-5deg);
+  }
+  75% {
+    transform: rotate(4deg);
   }
 }
 @keyframes cz-wave {
@@ -635,6 +668,8 @@
   .cz-rewind,
   .cz-wave,
   .cz-scene .cz-bob,
+  .cz-scene .cz-gallop,
+  .cz-scene .cz-wheel,
   .cz-scene .cz-shot,
   .cz-instructor .cz-instructor-art {
     animation: none !important;

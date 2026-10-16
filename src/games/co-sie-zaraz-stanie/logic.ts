@@ -20,8 +20,13 @@ export type Actor = {
   pose?: 'walk' | 'run' | 'wave'
   ease?: 'in' | 'out'
   facing?: Facing
-  /** Fraction of the clip after which the actor stays at `toX`/`toY`. */
+  /** Fractions of the clip between which the actor travels from `x`/`y` to `toX`/`toY`. */
+  startAt?: number
   stopAt?: number
+  /** Height above the ground at depth `y`, in the same units as `y` (a box on a van roof). */
+  lift?: number
+  /** After `stopAt` the actor falls from `lift` to the ground. */
+  drop?: boolean
 }
 export type Scene = {
   title: string
@@ -46,6 +51,29 @@ export function dealScenes(rng: Rng = Math.random): Scene[] {
 
 export function facingOf(actor: Actor): Facing {
   return actor.facing ?? (actor.toX < actor.x ? 'left' : 'right')
+}
+
+const EASINGS = {
+  in: (p: number) => p * p,
+  out: (p: number) => 1 - (1 - p) ** 2,
+  inOut: (p: number) => (p < 0.5 ? 2 * p * p : 1 - 2 * (1 - p) ** 2),
+}
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value))
+const lerp = (from: number, to: number, p: number) => from + (to - from) * p
+export const DROP_TIME = 0.2
+
+/** Sprite scale at depth `y`: the farther up the frame, the smaller. */
+export function depthScale(y: number): number {
+  return 0.3 + y * 0.022
+}
+
+/** Where the actor is at clip time `t` (0–1): position, height above the ground and tilt in degrees. */
+export function poseAt(actor: Actor, t: number) {
+  const start = actor.startAt ?? 0
+  const stop = actor.stopAt ?? 1
+  const p = EASINGS[actor.ease ?? 'inOut'](clamp01((t - start) / (stop - start)))
+  const fall = actor.drop ? EASINGS.in(clamp01((t - stop) / DROP_TIME)) : 0
+  return { x: lerp(actor.x, actor.toX, p), y: lerp(actor.y, actor.toY, p), lift: (actor.lift ?? 0) * (1 - fall), tilt: fall * 14 }
 }
 
 export type Phase = 'lobby' | 'rewind' | 'paused' | 'playing' | 'verdict' | 'result'

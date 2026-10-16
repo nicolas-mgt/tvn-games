@@ -576,6 +576,7 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 - **Dźwięki:** pisk opon (noise sweep), klakson (tone), stłuczka (Impact metal), szum silnika w tle, klik pauzy. Jingle 8-Bit albo Hit, niewykorzystane.
 - **Logika i testy:** `logic.ts` z tasowaniem odpowiedzi i przemapowaniem indeksu poprawnej (test, że poprawna odpowiedź zostaje poprawna).
 - **Rozstrzygnięte:**
-  - `data.json` przeszedł z emoji na typy aktorów: `{ kind, x, y, toX, toY, color?, pose?, ease?, facing?, stopAt? }`, a scena dostała `effect` (`crash | brake | horn`) i nowe tła `intersection`, `garage`, `forest`;
-  - pula 8 scen bez zmian treści; `stopAt` zatrzymuje aktora w trakcie nagrania (box dachowy na belce);
+  - `data.json` przeszedł z emoji na typy aktorów: `{ kind, x, y, toX, toY, color?, pose?, ease?, facing?, startAt?, stopAt?, lift?, drop? }`, a scena dostała `effect` (`crash | brake | horn`) i nowe tła `intersection`, `garage`, `forest`;
+  - `y` to głębia sceny: skala aktora zależy od bieżącego `y` (`depthScale`), a pozycję w chwili nagrania liczy `poseAt`; `startAt`/`stopAt` wyznaczają okno ruchu (drugi autobus, box), `lift` unosi aktora nad ziemię (box na dachu, belka), `drop` zrzuca go po zatrzymaniu;
+  - pula 8 scen bez zmian treści; kaczki i krowy przechodzą przez drogę w głąb kadru, kierowcy na skrzyżowaniu machają z okien (`pose: 'wave'` dla aut);
   - w zestawie Hit nie było wolnego jingla z rosnącą melodią, więc `good` to 8-Bit NES03, a `bad` to Hit HIT13.

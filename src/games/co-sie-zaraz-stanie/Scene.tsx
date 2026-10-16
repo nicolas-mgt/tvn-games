@@ -1,11 +1,10 @@
-import { motion } from 'motion/react'
-import type { ReactNode } from 'react'
+import { animate, useReducedMotion } from 'motion/react'
+import { useEffect, useRef, type ReactNode } from 'react'
 import { ActorSprite } from './Actors'
-import { facingOf, PLAY_SECONDS, type Actor, type Background, type Scene as SceneData } from './logic'
+import { depthScale, facingOf, PLAY_SECONDS, poseAt, type Actor, type Background, type Scene as SceneData } from './logic'
 
 export type ScenePhase = 'rewind' | 'paused' | 'playing' | 'verdict'
 
-const EASES = { in: 'easeIn', out: 'easeOut', inOut: 'easeInOut' } as const
 const WINDOWS = Array.from({ length: 24 }, (_, i) => ({ x: 40 + (i % 12) * 130, y: 70 + Math.floor(i / 12) * 90 }))
 const PINES = [60, 210, 330, 470, 600, 860, 990, 1120, 1260, 1400, 1530]
 
@@ -48,31 +47,41 @@ function City() {
   )
 }
 
+const crossLeft = (y: number) => 730 - 0.5556 * (y - 180)
+const crossRight = (y: number) => 870 + 0.5556 * (y - 180)
+
+function zebra(y0: number, y1: number) {
+  const at = (y: number, f: number) => crossLeft(y) + (crossRight(y) - crossLeft(y)) * f
+  return Array.from({ length: 7 }, (_, i) => {
+    const [f0, f1] = [(i + 0.15) / 7, (i + 0.65) / 7]
+    return `M${at(y0, f0)} ${y0} L${at(y0, f1)} ${y0} L${at(y1, f1)} ${y1} L${at(y1, f0)} ${y1} Z`
+  }).join(' ')
+}
+
 function Intersection() {
   return (
     <>
-      <rect width="1600" height="900" fill="#8ab060" />
-      {[
-        [0, 0],
-        [1000, 0],
-        [0, 640],
-        [1000, 640],
-      ].map(([x, y]) => (
-        <rect key={`${x}-${y}`} x={x} y={y} width="600" height="260" fill="#c0c0b8" />
+      <rect width="1600" height="900" fill="#a8c8e8" />
+      {[0, 180, 320, 520, 980, 1160, 1300, 1460].map((x, i) => (
+        <rect key={x} x={x} y={90 + (i % 3) * 20} width="150" height={90 - (i % 3) * 20} fill={['#b8a898', '#a8b0c0', '#c8b8a0'][i % 3]} />
       ))}
-      <rect x="600" width="400" height="900" fill="#55575f" />
-      <rect y="380" width="1600" height="260" fill="#55575f" />
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <g key={i} fill="#f4f4f0">
-          <rect x={620 + i * 64} y="330" width="36" height="40" />
-          <rect x={620 + i * 64} y="650" width="36" height="40" />
+      <rect y="180" width="1600" height="720" fill="#8ab060" />
+      <rect y="372" width="1600" height="68" fill="#c0c0b8" />
+      <rect y="620" width="1600" height="90" fill="#c0c0b8" />
+      <rect y="440" width="1600" height="180" fill="#55575f" />
+      <path d={`M${crossLeft(180)} 180 H${crossRight(180)} L${crossRight(900)} 900 H${crossLeft(900)} Z`} fill="#55575f" />
+      <path d={zebra(400, 432)} fill="#f4f4f0" />
+      <path d={zebra(632, 694)} fill="#f4f4f0" />
+      <path d={`M0 530 H${crossLeft(530) - 30} M${crossRight(530) + 30} 530 H1600 M800 190 V390 M800 710 V900`} stroke="#f4f4f0" strokeWidth="6" strokeDasharray="60 50" />
+      {[120, 300, 1300, 1480].map((x) => (
+        <g key={x} transform={`translate(${x} 380)`}>
+          <rect x="-5" y="-50" width="10" height="50" fill="#6a4a2a" />
+          <circle cy="-70" r="34" fill="#4a8a3a" />
         </g>
       ))}
-      <path d="M0 510 H560 M1040 510 H1600 M800 0 V320 M800 720 V900" stroke="#f4f4f0" strokeWidth="6" strokeDasharray="60 50" />
-      <path d="M566 400 V500 M1034 520 V620" stroke="#f4f4f0" strokeWidth="10" strokeDasharray="14 10" />
-      <g transform="translate(560 640)">
-        <rect x="-4" y="0" width="8" height="110" fill="#3a3a44" />
-        <path d="M0 8 L34 66 H-34 Z" fill="#fff" stroke="#e8323a" strokeWidth="8" strokeLinejoin="round" transform="translate(0 -4) rotate(180 0 37)" />
+      <g transform="translate(380 720)">
+        <rect x="-5" y="-120" width="10" height="120" fill="#3a3a44" />
+        <path d="M0 -60 L-40 -130 H40 Z" fill="#fff" stroke="#e8323a" strokeWidth="9" strokeLinejoin="round" />
       </g>
     </>
   )
@@ -82,23 +91,23 @@ function Parking() {
   return (
     <>
       <rect width="1600" height="900" fill="#a8c8e8" />
-      <rect y="40" width="1600" height="200" fill="#e8e0d0" />
-      <rect x="560" y="70" width="480" height="70" rx="10" fill="#e8323a" />
-      <text x="800" y="128" textAnchor="middle" fontSize="60" fill="#fff" className="cz-sign">
+      <rect y="30" width="1600" height="170" fill="#e8e0d0" />
+      <rect x="560" y="50" width="480" height="64" rx="10" fill="#e8323a" />
+      <text x="800" y="104" textAnchor="middle" fontSize="56" fill="#fff" className="cz-sign">
         MARKET
       </text>
-      <rect x="300" y="160" width="1000" height="80" fill="#8ac0e0" opacity="0.6" />
-      <rect y="240" width="1600" height="660" fill="#6a6c74" />
-      {Array.from({ length: 9 }, (_, i) => (
+      <rect x="300" y="130" width="1000" height="70" fill="#8ac0e0" opacity="0.6" />
+      <rect y="200" width="1600" height="700" fill="#6a6c74" />
+      {Array.from({ length: 10 }, (_, i) => (
         <g key={i} stroke="#f4f4f0" strokeWidth="6">
-          <path d={`M${120 + i * 180} 470 l-40 130`} />
-          <path d={`M${160 + i * 180} 680 l-40 130`} />
+          <path d={`M${60 + i * 170} 300 l-14 90`} />
+          <path d={`M${40 + i * 180} 600 l-30 170`} />
         </g>
       ))}
-      <path d="M0 260 L1600 640" stroke="#7a7c84" strokeWidth="30" opacity="0.4" />
-      <g transform="translate(150 240)" stroke="#9aa8b8" strokeWidth="5" fill="none">
-        <path d="M0 0 V-50 H120 V0" />
-        <path d="M0 -25 H120" />
+      <path d="M0 210 L1600 720" stroke="#7a7c84" strokeWidth="30" opacity="0.4" />
+      <g transform="translate(150 215)" stroke="#9aa8b8" strokeWidth="4" fill="none">
+        <path d="M0 0 V-40 H110 V0" />
+        <path d="M0 -20 H110" />
       </g>
     </>
   )
@@ -113,7 +122,6 @@ function Country() {
       {Array.from({ length: 7 }, (_, i) => (
         <path key={i} d={`M0 ${200 + i * 34} H1600`} stroke="#d8c060" strokeWidth="14" opacity="0.6" />
       ))}
-      <path d="M1060 150 H1180 L1200 460 H1040 Z" fill="#6a6c74" />
       <Road y={460} h={150} dash={false} />
       <rect y="618" width="1600" height="282" fill="#7aa850" />
       {Array.from({ length: 14 }, (_, i) => (
@@ -167,24 +175,34 @@ function Forest() {
 
 const BACKGROUND_ART: Record<Background, () => ReactNode> = { city: City, intersection: Intersection, parking: Parking, country: Country, garage: Garage, forest: Forest }
 
-const placeAt = (x: number, y: number) => ({ x: x * 16, y: y * 9 })
+function transformAt(actor: Actor, t: number) {
+  const { x, y, lift, tilt } = poseAt(actor, t)
+  const scale = depthScale(y)
+  const flip = facingOf(actor) === 'left' ? -1 : 1
+  return `translate(${x * 16} ${(y - lift) * 9}) rotate(${tilt * flip}) scale(${flip * scale} ${scale})`
+}
 
 function ActorView({ actor, moved, pace }: { actor: Actor; moved: boolean; pace: number }) {
-  const start = placeAt(actor.x, actor.y)
-  const end = placeAt(actor.toX, actor.toY)
-  const ease = EASES[actor.ease ?? 'inOut']
-  const depth = (0.7 + ((actor.y + actor.toY) / 2) * 0.006) * 1.6
-  const flip = facingOf(actor) === 'left' ? -1 : 1
-  const target = !moved ? start : actor.stopAt ? { x: [start.x, end.x, end.x], y: [start.y, end.y, end.y] } : end
-  const transition = !moved ? { duration: 0 } : { duration: PLAY_SECONDS * pace, ease: actor.stopAt ? [ease, 'linear' as const] : ease, times: actor.stopAt ? [0, actor.stopAt, 1] : undefined }
+  const ref = useRef<SVGGElement>(null)
+  const reducedMotion = useReducedMotion()
+  const moving = actor.x !== actor.toX || actor.y !== actor.toY
+
+  useEffect(() => {
+    const place = (t: number) => ref.current?.setAttribute('transform', transformAt(actor, t))
+    if (!moved || reducedMotion || pace === 0) {
+      place(moved ? 1 : 0)
+      return
+    }
+    const controls = animate(0, 1, { duration: PLAY_SECONDS * pace, ease: 'linear', onUpdate: place })
+    return () => controls.stop()
+  }, [actor, moved, pace, reducedMotion])
+
   return (
-    <motion.g data-testid="actor" data-kind={actor.kind} initial={false} animate={target} transition={transition}>
-      <g transform={`scale(${flip * depth} ${depth})`}>
-        <g className={(actor.kind === 'person' || actor.kind.startsWith('duck')) && actor.x !== actor.toX ? 'cz-bob' : undefined}>
-          <ActorSprite actor={actor} />
-        </g>
+    <g ref={ref} data-testid="actor" data-kind={actor.kind} className={moving ? 'cz-moving' : undefined} transform={transformAt(actor, 0)}>
+      <g className={!moving ? undefined : actor.kind === 'deer' ? 'cz-gallop' : actor.kind === 'person' || actor.kind.startsWith('duck') ? 'cz-bob' : undefined}>
+        <ActorSprite actor={actor} />
       </g>
-    </motion.g>
+    </g>
   )
 }
 
@@ -199,7 +217,11 @@ function Shot({ scene, moved, pace }: { scene: SceneData; moved: boolean; pace: 
           <stop offset="0.5" stopColor="#c86a5a" />
           <stop offset="1" stopColor="#f0b070" />
         </linearGradient>
-        <linearGradient id="cz-garage-light" x1="0" y1="0" x2="1" y2="0">
+          <linearGradient id="cz-beam-fade" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#fff6c0" stopOpacity="0.45" />
+            <stop offset="1" stopColor="#fff6c0" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="cz-garage-light" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0" stopColor="#3a3c44" />
           <stop offset="1" stopColor="#16181e" stopOpacity="0" />
         </linearGradient>

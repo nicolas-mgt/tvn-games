@@ -10,8 +10,11 @@ type SpriteProps = { color: string; pose: NonNullable<Actor['pose']> }
 function Wheel({ x, r = 18 }: { x: number; r?: number }) {
   return (
     <g transform={`translate(${x} ${-r})`}>
-      <circle r={r} fill={TIRE} />
-      <circle r={r * 0.45} fill="#9aa0aa" />
+      <g className="cz-wheel">
+        <circle r={r} fill={TIRE} />
+        <circle r={r * 0.45} fill="#9aa0aa" />
+        <path d={`M${-r * 0.45} 0 H${r * 0.45}`} stroke={TIRE} strokeWidth="3" />
+      </g>
     </g>
   )
 }
@@ -19,13 +22,25 @@ function Wheel({ x, r = 18 }: { x: number; r?: number }) {
 function Lights({ front, back, y }: { front: number; back: number; y: number }) {
   return (
     <>
+      <path d={`M${front} ${y + 4} L${front + 420} ${y - 50} V${y + 70} Z`} fill="url(#cz-beam-fade)" className="cz-beam" />
       <rect x={front - 10} y={y} width="12" height="9" rx="3" fill="#fff2a8" />
       <rect x={back - 2} y={y} width="10" height="9" rx="3" fill="#e8323a" />
     </>
   )
 }
 
-function Car({ color }: SpriteProps) {
+function WavingArm({ x, y }: { x: number; y: number }) {
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      <g className="cz-wave">
+        <path d="M0 0 L8 -34 L12 -52" stroke={SKIN} strokeWidth="8" strokeLinecap="round" fill="none" />
+        <circle cx="13" cy="-58" r="8" fill={SKIN} />
+      </g>
+    </g>
+  )
+}
+
+function Car({ color, pose }: SpriteProps) {
   return (
     <g>
       <path d="M-100 -22 V-46 Q-98 -56 -84 -58 L-50 -62 L-28 -86 H34 L62 -60 L92 -54 Q102 -50 102 -38 V-22 Z" fill={color} stroke="#0003" strokeWidth="3" />
@@ -33,11 +48,12 @@ function Car({ color }: SpriteProps) {
       <Lights front={100} back={-100} y={-48} />
       <Wheel x={-58} />
       <Wheel x={60} />
+      {pose === 'wave' && <WavingArm x={18} y={-74} />}
     </g>
   )
 }
 
-function Suv({ color }: SpriteProps) {
+function Suv({ color, pose }: SpriteProps) {
   return (
     <g>
       <path d="M-110 -24 V-74 Q-110 -96 -88 -98 H44 L74 -66 L104 -60 Q112 -56 112 -44 V-24 Z" fill={color} stroke="#0003" strokeWidth="3" />
@@ -46,6 +62,7 @@ function Suv({ color }: SpriteProps) {
       <Lights front={110} back={-110} y={-56} />
       <Wheel x={-66} r={22} />
       <Wheel x={66} r={22} />
+      {pose === 'wave' && <WavingArm x={28} y={-84} />}
     </g>
   )
 }
@@ -131,9 +148,8 @@ function Person({ color, pose }: SpriteProps) {
     run: 'M6 -80 L-12 -66 L-20 -76 M6 -80 L22 -64 L32 -74',
     wave: 'M0 -80 L-10 -52',
   }[pose]
-  const lean = pose === 'run' ? 'rotate(10)' : undefined
   return (
-    <g strokeLinecap="round" fill="none" transform={lean}>
+    <g strokeLinecap="round" fill="none" transform={pose === 'run' ? 'scale(0.75) rotate(10)' : 'scale(0.75)'}>
       <path d={legs} stroke="#2a3a5a" strokeWidth="9" />
       <path d="M0 -84 V-46" stroke={color} strokeWidth="18" />
       <path d={arms} stroke={color} strokeWidth="7" />
@@ -151,7 +167,7 @@ function Person({ color, pose }: SpriteProps) {
 
 function Scooter({ color }: SpriteProps) {
   return (
-    <g strokeLinecap="round" fill="none">
+    <g strokeLinecap="round" fill="none" transform="scale(0.8)">
       <path d="M-30 -12 H26 L20 -106 M10 -106 H32" stroke="#3a3a44" strokeWidth="6" />
       <Wheel x={-30} r={9} />
       <Wheel x={26} r={9} />
@@ -239,13 +255,13 @@ function Roofbox() {
 function Gauge() {
   return (
     <g>
-      <path d="M20 -260 V10 M360 -260 V10" stroke="#8a8a90" strokeWidth="5" strokeDasharray="10 5" />
-      <rect x="0" y="10" width="380" height="60" rx="4" fill="#f2c830" stroke="#1a1a1a" strokeWidth="3" />
-      {Array.from({ length: 8 }, (_, i) => (
-        <path key={i} d={`M${18 + i * 48} 10 l26 0 l-26 60 h-22 Z`} fill="#1a1a1a" />
+      <path d="M16 -420 V-60 M284 -420 V-60" stroke="#8a8a90" strokeWidth="5" strokeDasharray="10 5" />
+      <rect x="0" y="-60" width="300" height="60" rx="4" fill="#f2c830" stroke="#1a1a1a" strokeWidth="3" />
+      {Array.from({ length: 6 }, (_, i) => (
+        <path key={i} d={`M${22 + i * 48} -60 l26 0 l-26 60 h-22 Z`} fill="#1a1a1a" />
       ))}
-      <rect x="130" y="22" width="120" height="36" rx="6" fill="#fff" />
-      <text x="190" y="52" textAnchor="middle" fontSize="32" fill="#1a1a1a" className="cz-sign">
+      <rect x="90" y="-48" width="120" height="36" rx="6" fill="#fff" />
+      <text x="150" y="-18" textAnchor="middle" fontSize="32" fill="#1a1a1a" className="cz-sign">
         2,1 m
       </text>
     </g>
