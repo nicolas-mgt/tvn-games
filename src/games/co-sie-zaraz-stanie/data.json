@@ -2,12 +2,12 @@
   {
     "title": "Skrzyżowanie równorzędne, godzina 7:58",
     "setup": "Dwa auta dojeżdżają do skrzyżowania w tym samym momencie. Obaj kierowcy się spieszą.",
-    "background": "city",
+    "background": "intersection",
     "actors": [
-      { "emoji": "🚗", "x": 15, "y": 55, "toX": 38, "toY": 55 },
-      { "emoji": "🚙", "x": 85, "y": 55, "toX": 62, "toY": 55 },
-      { "emoji": "🙋", "x": 38, "y": 30, "toX": 38, "toY": 30 },
-      { "emoji": "🙋‍♂️", "x": 62, "y": 30, "toX": 62, "toY": 30 }
+      { "kind": "car", "color": "#d8323a", "x": 15, "y": 55, "toX": 38, "toY": 55, "ease": "out" },
+      { "kind": "suv", "color": "#3a6ab0", "x": 85, "y": 55, "toX": 62, "toY": 55, "ease": "out" },
+      { "kind": "person", "pose": "wave", "color": "#f2b830", "x": 38, "y": 30, "toX": 38, "toY": 30 },
+      { "kind": "person", "pose": "wave", "color": "#5ab060", "x": 62, "y": 30, "toX": 62, "toY": 30, "facing": "left" }
     ],
     "options": ["Zderzają się na środku", "Obaj machają „pan pierwszy” przez 40 sekund", "Jeden zawraca", "Wjeżdża trzecie auto i jedzie pierwsze"],
     "answer": 1,
@@ -17,10 +17,11 @@
     "title": "Parking pod marketem, lekki spadek",
     "setup": "Ktoś zostawił wózek sklepowy przy krawędzi parkingu. Wieje wiatr.",
     "background": "parking",
+    "effect": "crash",
     "actors": [
-      { "emoji": "🛒", "x": 15, "y": 25, "toX": 66, "toY": 62 },
-      { "emoji": "🚘", "x": 72, "y": 65, "toX": 72, "toY": 65 },
-      { "emoji": "🚗", "x": 35, "y": 70, "toX": 35, "toY": 70 }
+      { "kind": "cart", "x": 15, "y": 25, "toX": 58, "toY": 66, "ease": "in" },
+      { "kind": "suv", "color": "#1a1a22", "x": 72, "y": 65, "toX": 72, "toY": 65, "facing": "left" },
+      { "kind": "car", "color": "#c8c8d0", "x": 35, "y": 70, "toX": 35, "toY": 70 }
     ],
     "options": ["Wózek staje na krawężniku", "Wózek toczy się prosto w drzwi najdroższego auta", "Ochroniarz łapie go w biegu", "Wózek trafia do zatoczki na wózki"],
     "answer": 1,
@@ -30,11 +31,12 @@
     "title": "Wiejska droga, przejście kaczek",
     "setup": "Na drogę wchodzi mama kaczka z młodymi. Z naprzeciwka jedzie ciężarówka.",
     "background": "country",
+    "effect": "brake",
     "actors": [
-      { "emoji": "🦆", "x": 10, "y": 55, "toX": 85, "toY": 55 },
-      { "emoji": "🐥", "x": 4, "y": 58, "toX": 79, "toY": 58 },
-      { "emoji": "🐥", "x": -2, "y": 58, "toX": 73, "toY": 58 },
-      { "emoji": "🚛", "x": 70, "y": 20, "toX": 70, "toY": 30 }
+      { "kind": "duck", "x": 10, "y": 55, "toX": 85, "toY": 55 },
+      { "kind": "duckling", "x": 4, "y": 58, "toX": 79, "toY": 58 },
+      { "kind": "duckling", "x": -2, "y": 58, "toX": 73, "toY": 58 },
+      { "kind": "truck", "color": "#e8a030", "x": 70, "y": 20, "toX": 70, "toY": 30, "ease": "out", "facing": "left" }
     ],
     "options": ["Ciężarówka trąbi i kaczki uciekają", "Ciężarówka staje, a kaczki przechodzą w swoim tempie", "Kaczki zawracają", "Kaczki odlatują"],
     "answer": 1,
@@ -43,11 +45,12 @@
   {
     "title": "Wjazd do garażu podziemnego, prześwit 2,1 m",
     "setup": "Kierowca vana z boxem dachowym wjeżdża do garażu galerii handlowej.",
-    "background": "city",
+    "background": "garage",
+    "effect": "crash",
     "actors": [
-      { "emoji": "🚐", "x": 10, "y": 60, "toX": 70, "toY": 60 },
-      { "emoji": "🧳", "x": 12, "y": 45, "toX": 45, "toY": 45 },
-      { "emoji": "🚧", "x": 48, "y": 35, "toX": 48, "toY": 35 }
+      { "kind": "van", "color": "#f4f4f0", "x": 10, "y": 60, "toX": 70, "toY": 60 },
+      { "kind": "roofbox", "x": 12, "y": 35, "toX": 42, "toY": 35, "ease": "in", "stopAt": 0.5 },
+      { "kind": "gauge", "x": 48, "y": 20, "toX": 48, "toY": 20 }
     ],
     "options": ["Mieści się na styk", "Box dachowy zostaje na belce wjazdu", "Kierowca zawraca w ostatniej chwili", "Szlaban sam się podnosi wyżej"],
     "answer": 1,
@@ -58,10 +61,10 @@
     "setup": "Sportowe auto stoi za stadem krów przechodzących przez drogę. Obok, polem, jedzie ciągnik.",
     "background": "country",
     "actors": [
-      { "emoji": "🏎️", "x": 15, "y": 60, "toX": 22, "toY": 60 },
-      { "emoji": "🐄", "x": 40, "y": 60, "toX": 45, "toY": 60 },
-      { "emoji": "🐄", "x": 50, "y": 62, "toX": 54, "toY": 62 },
-      { "emoji": "🚜", "x": 10, "y": 22, "toX": 90, "toY": 22 }
+      { "kind": "sportscar", "color": "#e8d020", "x": 15, "y": 60, "toX": 19, "toY": 60, "ease": "out" },
+      { "kind": "cow", "x": 40, "y": 60, "toX": 45, "toY": 60 },
+      { "kind": "cow", "x": 50, "y": 62, "toX": 54, "toY": 62, "facing": "left" },
+      { "kind": "tractor", "color": "#3a9a4a", "x": 10, "y": 22, "toX": 90, "toY": 22 }
     ],
     "options": ["Sportowe auto przeskakuje krowy", "Ciągnik polem wyprzedza sportowe auto", "Krowy wsiadają do auta", "Kierowca wysiada i robi selfie"],
     "answer": 1,
@@ -71,10 +74,11 @@
     "title": "Przystanek autobusowy, ostatnie sekundy",
     "setup": "Pasażer biegnie do autobusu, który właśnie zamyka drzwi.",
     "background": "city",
+    "effect": "horn",
     "actors": [
-      { "emoji": "🏃", "x": 5, "y": 55, "toX": 50, "toY": 55 },
-      { "emoji": "🚌", "x": 60, "y": 55, "toX": 110, "toY": 55 },
-      { "emoji": "🚍", "x": -20, "y": 55, "toX": 60, "toY": 55 }
+      { "kind": "person", "pose": "run", "color": "#3a6ab0", "x": 5, "y": 55, "toX": 50, "toY": 55 },
+      { "kind": "bus", "color": "#d8323a", "x": 60, "y": 55, "toX": 110, "toY": 55, "ease": "in" },
+      { "kind": "bus", "color": "#f2b830", "x": -20, "y": 55, "toX": 60, "toY": 55, "ease": "out" }
     ],
     "options": ["Kierowca otwiera drzwi z uśmiechem", "Autobus odjeżdża, a zaraz za nim podjeżdża pusty", "Pasażer dogania autobus na światłach", "Pasażer rezygnuje i idzie pieszo"],
     "answer": 1,
@@ -84,11 +88,12 @@
     "title": "Hulajnoga elektryczna na chodniku",
     "setup": "Hulajnogista mknie chodnikiem między przechodniami, patrząc w telefon.",
     "background": "city",
+    "effect": "brake",
     "actors": [
-      { "emoji": "🛴", "x": 5, "y": 50, "toX": 82, "toY": 30 },
-      { "emoji": "🚶", "x": 40, "y": 55, "toX": 40, "toY": 55 },
-      { "emoji": "🚶‍♀️", "x": 60, "y": 45, "toX": 60, "toY": 45 },
-      { "emoji": "🌳", "x": 85, "y": 25, "toX": 85, "toY": 25 }
+      { "kind": "scooter", "color": "#5ab060", "x": 5, "y": 50, "toX": 82, "toY": 30 },
+      { "kind": "person", "pose": "walk", "color": "#9a5ad0", "x": 40, "y": 55, "toX": 40, "toY": 55, "facing": "left" },
+      { "kind": "person", "pose": "walk", "color": "#e86a9a", "x": 60, "y": 45, "toX": 60, "toY": 45 },
+      { "kind": "tree", "x": 85, "y": 25, "toX": 85, "toY": 25 }
     ],
     "options": ["Zgrabnie omija wszystkich", "Hamuje… w krzakach", "Zatrzymuje go policja", "Przesiada się na rower"],
     "answer": 1,
@@ -97,10 +102,11 @@
   {
     "title": "Droga przez las, zmierzch",
     "setup": "Przy poboczu stoi jeleń i patrzy w światła nadjeżdżającego auta.",
-    "background": "country",
+    "background": "forest",
+    "effect": "brake",
     "actors": [
-      { "emoji": "🚗", "x": 0, "y": 60, "toX": 35, "toY": 60 },
-      { "emoji": "🦌", "x": 55, "y": 30, "toX": 75, "toY": 15 }
+      { "kind": "car", "color": "#4a6a9a", "x": 0, "y": 60, "toX": 35, "toY": 60, "ease": "out" },
+      { "kind": "deer", "x": 55, "y": 52, "toX": 80, "toY": 30, "ease": "in" }
     ],
     "options": ["Jeleń wbiega pod koła", "Kierowca zwalnia, a jeleń spokojnie wraca do lasu", "Jeleń biegnie obok auta", "Kierowca trąbi i jeleń zamiera na drodze"],
     "answer": 1,

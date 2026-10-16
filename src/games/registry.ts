@@ -285,8 +285,9 @@ export const GAMES: GameMeta[] = [
     inspirationNote: 'Program TVN Turbo z nagraniami z kamer samochodowych i komentarzem, od sytuacji absurdalnych po naprawdę groźne.',
     category: 'Newsy, show-biznes, codzienność',
     size: 'S',
-    description: 'Scena drogowa zatrzymana sekundę przed zdarzeniem. Przewidź, co się wydarzy.',
+    description: 'Nagranie z kamerki samochodowej zatrzymane sekundę przed zdarzeniem. Przewidź, co się stanie, a instruktor skomentuje.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./co-sie-zaraz-stanie')),
   },
 ]

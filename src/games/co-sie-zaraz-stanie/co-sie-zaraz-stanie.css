@@ -1,0 +1,642 @@
+.cz-sign {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.06em;
+}
+.cz-hand {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+/* Backdrop */
+.cz-backdrop {
+  background: #15171e;
+}
+.cz-layer,
+.cz-glow,
+.cz-hazard-glow,
+.cz-tint {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.cz-glow {
+  opacity: 0;
+  background: radial-gradient(ellipse 50% 30% at 50% 75%, rgb(90 220 120 / 0.3), transparent 70%), rgb(255 190 110 / 0.08);
+  transition: opacity 0.6s;
+}
+.cz-hazard-glow {
+  opacity: 0;
+  background: radial-gradient(ellipse 30% 50% at 0% 70%, rgb(255 150 30 / 0.55), transparent 70%), radial-gradient(ellipse 30% 50% at 100% 70%, rgb(255 150 30 / 0.55), transparent 70%);
+}
+.cz-tint {
+  background: transparent;
+  transition: background 0.8s;
+}
+.cz-lane {
+  stroke-dashoffset: 0;
+}
+.cz-needle,
+.cz-freshener {
+  transform-box: fill-box;
+  transition: transform 0.8s;
+}
+.cz-needle {
+  transform-origin: 50% 100%;
+  transform: rotate(-120deg);
+}
+.cz-freshener {
+  transform-origin: 50% 0;
+}
+.cz-warnings,
+.cz-tick {
+  opacity: 0.15;
+  transition: opacity 0.4s;
+}
+.cz-screen {
+  fill: #0a0c12;
+  transition: fill 0.6s;
+}
+.cz-screen-text {
+  fill: #2a2d36;
+}
+.cz-ok {
+  fill: #1a2a1e;
+}
+.cz-led {
+  opacity: 0.3;
+}
+
+/* Moods */
+[data-mood='idle'] .cz-tint {
+  background: rgb(4 6 12 / 0.55);
+}
+[data-mood='paused'] .cz-warnings {
+  opacity: 1;
+}
+[data-mood='paused'] .cz-tint {
+  background: rgb(4 6 12 / 0.25);
+}
+:not([data-mood='idle']) > svg .cz-tick {
+  opacity: 0.9;
+}
+:not([data-mood='idle']) > svg .cz-led {
+  animation: cz-blink 1s steps(2) infinite;
+}
+:not([data-mood='idle']) > svg .cz-screen {
+  fill: #12303a;
+}
+:not([data-mood='idle']) > svg .cz-screen-text {
+  fill: #e8323a;
+}
+[data-mood='playing'] .cz-lane {
+  animation: cz-road 0.35s linear infinite;
+}
+[data-mood='playing'] .cz-needle {
+  transform: rotate(-20deg);
+}
+[data-mood='playing'] .cz-freshener {
+  animation: cz-swing 0.9s ease-in-out infinite alternate;
+}
+[data-mood='correct'] .cz-glow {
+  opacity: 1;
+}
+[data-mood='correct'] .cz-ok {
+  fill: #3ad06a;
+}
+[data-mood='wrong'] .cz-hazard-glow,
+[data-mood='wrong'] .cz-hazard-icon {
+  animation: cz-hazard 0.8s steps(2) infinite;
+}
+[data-mood='wrong'] .cz-hazard-icon {
+  stroke: #ff9a1e;
+}
+[data-mood='result'] .cz-tint {
+  background: linear-gradient(rgb(255 160 90 / 0.35), rgb(255 210 150 / 0.08) 60%, transparent);
+}
+
+@keyframes cz-road {
+  to {
+    stroke-dashoffset: -70;
+  }
+}
+@keyframes cz-swing {
+  from {
+    transform: rotate(-9deg);
+  }
+  to {
+    transform: rotate(9deg);
+  }
+}
+@keyframes cz-blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+@keyframes cz-hazard {
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-mood] .cz-lane,
+  [data-mood] .cz-freshener,
+  [data-mood] .cz-led,
+  [data-mood] .cz-hazard-icon {
+    animation: none;
+  }
+  [data-mood='wrong'] .cz-hazard-glow {
+    animation: none;
+    opacity: 0.6;
+  }
+  .cz-glow,
+  .cz-tint,
+  .cz-needle,
+  .cz-freshener,
+  .cz-warnings,
+  .cz-tick,
+  .cz-screen {
+    transition: none;
+  }
+}
+
+/* UI */
+.cz-game {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  color: #f4f6fa;
+}
+.cz-mono {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-weight: 700;
+}
+.cz-lobby {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 1.3rem;
+  border: 2px solid #ffb020;
+  border-radius: 18px;
+  background: rgb(14 16 22 / 0.94);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.5);
+}
+.cz-lobby .cz-instructor {
+  flex: none;
+  width: 13rem;
+}
+.cz-lobby-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.cz-lobby-text h2 {
+  line-height: 0.95;
+}
+.cz-start {
+  margin-top: 0.3rem;
+  padding: 0.45rem 1.8rem;
+  border-radius: 999px;
+  background: #ffb020;
+  color: #15171e;
+  font-size: 1.6rem;
+  white-space: nowrap;
+  box-shadow: 0 5px 0 #a86a10;
+}
+.cz-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.4rem 1rem;
+  border-radius: 10px;
+  background: #ffb020;
+  color: #15171e;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.35);
+}
+.cz-bar-title {
+  margin-right: auto;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+.cz-stat {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.cz-stat b {
+  margin-left: 0.3rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 400;
+}
+.cz-heading {
+  padding: 0.5rem 0.9rem;
+  border-radius: 12px;
+  background: rgb(14 16 22 / 0.88);
+}
+.cz-heading h3 {
+  font-size: 1.7rem;
+  line-height: 1.1;
+  color: #ffb020;
+}
+.cz-heading p {
+  font-size: 0.92rem;
+}
+
+/* Stage */
+.cz-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 13rem;
+  align-items: end;
+  gap: 1rem;
+}
+.cz-scene {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border: 6px solid #0a0b10;
+  border-radius: 18px;
+  background: #000;
+  box-shadow: 0 16px 34px rgb(0 0 0 / 0.55);
+}
+.cz-shot {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cz-scene .cz-shot {
+  filter: saturate(0.92) contrast(1.05);
+  transform: scale(1.02);
+}
+.cz-scan,
+.cz-vignette,
+.cz-rewind {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.cz-scan {
+  background: repeating-linear-gradient(transparent 0 3px, rgb(0 0 0 / 0.12) 3px 4px);
+}
+.cz-vignette {
+  background: radial-gradient(ellipse 75% 70% at 50% 50%, transparent 55%, rgb(0 0 0 / 0.55));
+  box-shadow: inset 0 0 40px rgb(0 0 0 / 0.6);
+  border-radius: 12px;
+}
+.cz-rec,
+.cz-stamp,
+.cz-cam,
+.cz-pause,
+.cz-playing {
+  position: absolute;
+  color: #fff;
+  text-shadow: 0 1px 3px #000;
+}
+.cz-rec {
+  top: 0.6rem;
+  left: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+}
+.cz-rec i {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: #e8323a;
+  animation: cz-blink 1s steps(2) infinite;
+}
+.cz-stamp {
+  right: 0.8rem;
+  bottom: 0.5rem;
+  font-size: 0.8rem;
+}
+.cz-cam {
+  left: 0.8rem;
+  bottom: 0.5rem;
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+.cz-pause,
+.cz-playing {
+  top: 0.5rem;
+  right: 0.8rem;
+  font-size: 1.5rem;
+}
+.cz-pause {
+  padding: 0 0.6rem;
+  border-radius: 6px;
+  background: rgb(0 0 0 / 0.6);
+  animation: cz-blink 1.2s steps(2) infinite;
+}
+.cz-playing {
+  color: #7dff8a;
+}
+.cz-rewind {
+  display: grid;
+  place-items: center;
+  background: repeating-linear-gradient(transparent 0 18px, rgb(255 255 255 / 0.18) 18px 24px, transparent 24px 60px), rgb(10 10 20 / 0.55);
+  animation: cz-noise 0.25s linear infinite;
+}
+.cz-rewind span {
+  font-size: 2.6rem;
+  color: #fff;
+  text-shadow: 0 2px 6px #000;
+}
+.cz-scene[data-impact='true'] .cz-shot {
+  animation: cz-shake 0.4s linear;
+}
+.cz-bob {
+  transform-box: fill-box;
+}
+.cz-scene[data-phase='playing'] .cz-bob {
+  animation: cz-bob 0.3s ease-in-out infinite alternate;
+}
+.cz-wave {
+  transform-box: fill-box;
+  transform-origin: 0 100%;
+  animation: cz-wave 0.5s ease-in-out infinite alternate;
+}
+
+/* Instructor */
+.cz-instructor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.cz-instructor-art {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 8px 12px rgb(0 0 0 / 0.45));
+}
+.cz-instructor[data-mood='approving'] .cz-instructor-art {
+  animation: cz-hop 0.5s ease-out 2;
+}
+.cz-instructor[data-mood='facepalm'] .cz-instructor-art {
+  animation: cz-sag 0.6s ease-out;
+}
+.cz-instructor-line {
+  max-width: 100%;
+  padding: 0.45rem 0.7rem;
+  border-radius: 14px 14px 2px 14px;
+  background: #f4f6fa;
+  color: #15171e;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+}
+.cz-caption {
+  padding: 0 0.7rem;
+  border-radius: 999px;
+  background: rgb(14 16 22 / 0.85);
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Options and verdict */
+.cz-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+.cz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  border: 2px solid #3a3e4a;
+  border-radius: 12px;
+  background: rgb(14 16 22 / 0.97);
+  color: #f4f6fa;
+  font-weight: 600;
+  text-align: left;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    opacity 0.2s;
+}
+.cz-option:not(:disabled):hover {
+  border-color: #ffb020;
+}
+.cz-option kbd {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 6px;
+  background: #ffb020;
+  color: #15171e;
+  font-size: 1.2rem;
+}
+.cz-option[data-state='right'] {
+  border-color: #3ad06a;
+  background: rgb(20 70 36 / 0.95);
+}
+.cz-option[data-state='picked'] {
+  border-color: #e8323a;
+  background: rgb(90 20 24 / 0.95);
+}
+.cz-option[data-state='dim'] {
+  color: rgb(244 246 250 / 0.45);
+}
+.cz-option[data-state='dim'] kbd {
+  background: #6a5a3a;
+}
+.cz-verdict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem 1.2rem;
+  align-self: center;
+  padding: 0.4rem 1rem;
+  border-radius: 16px;
+  background: rgb(14 16 22 / 0.92);
+}
+.cz-verdict strong {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #ff6a5a;
+}
+.cz-verdict[data-correct='true'] strong {
+  color: #7dff8a;
+}
+
+/* Result */
+.cz-tape {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 10px;
+  background: repeating-linear-gradient(90deg, #1a1a1a 0 10px, #2a2a2a 10px 20px);
+}
+.cz-clip {
+  overflow: hidden;
+  border: 3px solid #e8323a;
+  border-radius: 6px;
+  background: #000;
+}
+.cz-clip[data-correct='true'] {
+  border-color: #3ad06a;
+}
+.cz-clip figcaption {
+  padding: 0.15rem 0.3rem;
+  font-size: 0.66rem;
+  color: #f4f6fa;
+  line-height: 1.2;
+}
+[data-testid='result-screen'] .cz-instructor {
+  width: 8rem;
+}
+.cz-footer {
+  align-self: center;
+  margin-top: auto;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: rgb(14 16 22 / 0.85);
+  color: rgb(244 246 250 / 0.8);
+}
+
+@keyframes cz-shake {
+  20% {
+    transform: scale(1.04) translate(-10px, 4px) rotate(-1deg);
+  }
+  45% {
+    transform: scale(1.04) translate(9px, -5px) rotate(1deg);
+  }
+  70% {
+    transform: scale(1.03) translate(-5px, 3px);
+  }
+}
+@keyframes cz-noise {
+  to {
+    background-position: 0 60px;
+  }
+}
+@keyframes cz-bob {
+  to {
+    transform: translateY(-4px);
+  }
+}
+@keyframes cz-wave {
+  from {
+    transform: rotate(-12deg);
+  }
+  to {
+    transform: rotate(12deg);
+  }
+}
+@keyframes cz-hop {
+  40% {
+    transform: translateY(-12px);
+  }
+}
+@keyframes cz-sag {
+  50% {
+    transform: translateY(6px) rotate(-3deg);
+  }
+}
+
+@media (max-width: 767px) {
+  .cz-lobby {
+    flex-direction: column;
+    padding: 0.9rem;
+    text-align: center;
+  }
+  .cz-lobby .cz-instructor {
+    width: 9rem;
+  }
+  .cz-lobby-text {
+    align-items: center;
+  }
+  .cz-start {
+    padding: 0.4rem 1.3rem;
+    font-size: 1.35rem;
+  }
+  .cz-bar-title {
+    font-size: 1.2rem;
+  }
+  .cz-bar {
+    gap: 0.6rem;
+    padding: 0.35rem 0.7rem;
+  }
+  .cz-heading h3 {
+    font-size: 1.35rem;
+  }
+  .cz-heading p {
+    font-size: 0.82rem;
+  }
+  .cz-stage {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .cz-scene {
+    border-width: 4px;
+    border-radius: 12px;
+  }
+  .cz-rec,
+  .cz-stamp,
+  .cz-cam {
+    font-size: 0.6rem;
+  }
+  .cz-pause,
+  .cz-playing {
+    font-size: 1.05rem;
+  }
+  .cz-rewind span {
+    font-size: 1.6rem;
+  }
+  .cz-stage .cz-instructor {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.2rem 0.5rem;
+  }
+  .cz-stage .cz-instructor-art {
+    grid-row: 1 / 3;
+    grid-column: 1;
+  }
+  .cz-stage .cz-instructor-line {
+    grid-column: 2;
+    border-radius: 14px 14px 14px 2px;
+    text-align: left;
+  }
+  .cz-stage .cz-caption {
+    grid-column: 2;
+    justify-self: start;
+  }
+  .cz-options {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.45rem;
+  }
+  .cz-option {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.9rem;
+  }
+  .cz-tape {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cz-rec i,
+  .cz-pause,
+  .cz-rewind,
+  .cz-wave,
+  .cz-scene .cz-bob,
+  .cz-scene .cz-shot,
+  .cz-instructor .cz-instructor-art {
+    animation: none !important;
+  }
+}

@@ -37,8 +37,9 @@ Dokument opisuje, jak zamieniamy POC gry w wersję z pełną oprawą („tryb im
 | Kto to powiedział? | salon jak w Gogglebox: telewizor przełączający kanały z cytatem w napisach, lampka ON AIR, trzy klikalne źródła na kanapach | `kt-` | gwiazda, rodzina i robot jako własne SVG, salon SVG, 30 fikcyjnych cytatów |
 | To Pan tego nie wie | poranne studio śniadaniowe: okno na miasto o świcie, kanapa z poduszkami, dziecko na za dużym fotelu z dymkiem, kafelki liter, rysunek kredkami za trafienie | `tp-` | dzieci z `LOOKS` i prowadząca jako własne SVG, studio SVG, 30 dziecięcych definicji |
 | Pogodynka | studio prognozy pogody: mapa Polski na ekranie z animowanymi ikonami, termometry-suwaki, zegar do rozliczenia, słupki typ kontra rzeczywistość, rozgrzewka „Jak było wczoraj?” | `pg-` | prezenterka i studio SVG, obrys Polski z Natural Earth, dane Open-Meteo |
+| Co się zaraz stanie? | nagranie z kamerki samochodowej: kabina auta z deską rozdzielczą, kadr z REC i znacznikiem czasu, stopklatka PAUZA, odegranie sceny, wstrząs przy zderzeniu, przewijanie taśmy między scenami | `cz-` | instruktor pan Henryk, 6 teł i 17 typów aktorów jako własne SVG |
 
-Została 1 gra (sekcja 10).
+Wszystkie gry z sekcji 10 mają oprawę.
 
 ## 3. Proces pracy nad jedną grą
 
@@ -167,8 +168,8 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
   - Sax: SAX00, SAX01, SAX02, SAX05, SAX10, SAX11, SAX12, SAX14, SAX15, SAX16;
   - Steel: STEEL00, STEEL01, STEEL02, STEEL10, STEEL12, STEEL14, STEEL15;
   - Pizzicato: PIZZI01, PIZZI02, PIZZI05, PIZZI10, PIZZI11, PIZZI12, PIZZI14, PIZZI15, PIZZI16;
-  - 8-Bit: NES04, NES08, NES11, NES12, NES14;
-  - Hit: HIT02, HIT11, HIT16.
+  - 8-Bit: NES03, NES04, NES08, NES11, NES12, NES14;
+  - Hit: HIT02, HIT11, HIT13, HIT16.
 
   Po każdej grze dopisz tu nowe.
 
@@ -561,6 +562,8 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 
 ### 10.12 Co się zaraz stanie? (`co-sie-zaraz-stanie`, inspiracja: Co tu się odjechało?)
 
+Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
+
 - **Mechanika:**
   - 6 scen z puli 8, scena zatrzymana sekundę przed zdarzeniem, 3–4 odpowiedzi do wyboru;
   - po odpowiedzi scena odgrywa się przez 2 s; 1 pkt za trafienie, maksimum 6;
@@ -572,4 +575,7 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 - **Grafika:** własne SVG pojazdów (osobówka, bus, rower, hulajnoga, ciągnik, pieszy, pies…), po jednym komponencie na typ aktora, z kolorem z danych.
 - **Dźwięki:** pisk opon (noise sweep), klakson (tone), stłuczka (Impact metal), szum silnika w tle, klik pauzy. Jingle 8-Bit albo Hit, niewykorzystane.
 - **Logika i testy:** `logic.ts` z tasowaniem odpowiedzi i przemapowaniem indeksu poprawnej (test, że poprawna odpowiedź zostaje poprawna).
-- **Do rozstrzygnięcia:** czy `data.json` przechodzi z emoji na typy aktorów (zalecane, np. `kind: 'car' | 'bike' | ...`).
+- **Rozstrzygnięte:**
+  - `data.json` przeszedł z emoji na typy aktorów: `{ kind, x, y, toX, toY, color?, pose?, ease?, facing?, stopAt? }`, a scena dostała `effect` (`crash | brake | horn`) i nowe tła `intersection`, `garage`, `forest`;
+  - pula 8 scen bez zmian treści; `stopAt` zatrzymuje aktora w trakcie nagrania (box dachowy na belce);
+  - w zestawie Hit nie było wolnego jingla z rosnącą melodią, więc `good` to 8-Bit NES03, a `bad` to Hit HIT13.

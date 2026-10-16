@@ -25,6 +25,7 @@ import { applyEffects, chefMood, endingFor, ownerMood, START_STATS, statLevel } 
 import stylizacja from './stylizacja/data.json'
 import { jurorMood, jurorScore, SLOTS, themeFit, type Item, type Outfit } from './stylizacja/logic'
 import gadgets from './ustrojstwo/data.json'
+import { BACKGROUNDS, dealScenes, facingOf, instructorMood, KINDS, SCENES, SCENES_PER_GAME, stampFor, type Actor } from './co-sie-zaraz-stanie/logic'
 import zonk from './zonk/data.json'
 import { banish, gameStatus, PLAYER, residentMood, statementText, type Resident } from './zdrajca/logic'
 import { addMontyResult, hostOpens, remainingDoor } from './zonk/logic'
@@ -232,6 +233,45 @@ describe('Zdrajca', () => {
 
   it('banishes the resident with the most votes', () => {
     expect(banish([{ voter: 0, target: 2 }, { voter: 1, target: 2 }, { voter: 2, target: 1 }], () => 0)).toBe(2)
+  })
+})
+
+describe('Co się zaraz stanie', () => {
+  it('keeps the correct option correct after shuffling', () => {
+    const deck = dealScenes()
+    expect(deck).toHaveLength(SCENES_PER_GAME)
+    expect(new Set(deck.map((s) => s.title)).size).toBe(SCENES_PER_GAME)
+    for (const scene of deck) {
+      const original = SCENES.find((s) => s.title === scene.title)!
+      expect(scene.options[scene.answer]).toBe(original.options[original.answer])
+      expect([...scene.options].sort()).toEqual([...original.options].sort())
+    }
+  })
+
+  it('has a drawing for every actor kind and background in the data', () => {
+    expect(SCENES.filter((s) => !BACKGROUNDS.includes(s.background)).map((s) => s.title)).toEqual([])
+    expect(SCENES.flatMap((s) => s.actors.filter((a) => !KINDS.includes(a.kind)).map((a) => a.kind))).toEqual([])
+  })
+
+  it('faces actors in the direction they move unless told otherwise', () => {
+    const actor = (x: number, toX: number, facing?: Actor['facing']): Actor => ({ kind: 'car', x, y: 50, toX, toY: 50, facing })
+    expect(facingOf(actor(10, 40))).toBe('right')
+    expect(facingOf(actor(80, 40))).toBe('left')
+    expect(facingOf(actor(50, 50))).toBe('right')
+    expect(facingOf(actor(50, 50, 'left'))).toBe('left')
+  })
+
+  it('makes the instructor react only to the verdict', () => {
+    expect(instructorMood('paused', null)).toBe('calm')
+    expect(instructorMood('playing', true)).toBe('calm')
+    expect(instructorMood('verdict', true)).toBe('approving')
+    expect(instructorMood('verdict', false)).toBe('facepalm')
+  })
+
+  it('stamps the recording with the time from the title', () => {
+    const date = new Date(2026, 9, 16)
+    expect(stampFor(SCENES[0], 0, date)).toBe('16.10.2026 07:58:00')
+    expect(stampFor(SCENES[1], 1, date)).toMatch(/^16\.10\.2026 \d\d:\d\d:00$/)
   })
 })
 
