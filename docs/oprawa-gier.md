@@ -32,8 +32,9 @@ Dokument opisuje, jak zamieniamy POC gry w wersję z pełną oprawą („tryb im
 | Danie po składnikach | studio kulinarne, składniki spod kloszy, trzech jurorów | `dp-` | OpenMoji, zdjęcia CC dań, 3 jurorów SVG |
 | Stylizacja w 60 sekund | kulisy pokazu mody, wybieg z fleszami, czworo jurorów | `st-` | modelka Ola i 29 rzeczy jako własne SVG |
 | Poukładani: upchnij to | mieszkanie w bloku: szafa w przedpokoju, regał w pokoju dziecka, bagażnik pod blokiem | `pk-` | Pani Krysia i 23 przedmioty jako własne SVG |
+| Gdzie jest Martyna? | dziennik podróżniczki: biurko z notesem, polaroid, lot samolotu, paszport ze stemplami | `gm-` | zdjęcia CC miejsc, Martyna SVG, mapa świata SVG z Natural Earth |
 
-Zostało 6 gier (sekcja 10).
+Zostało 5 gier (sekcja 10).
 
 ## 3. Proces pracy nad jedną grą
 
@@ -160,7 +161,7 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
 - **Jingle `good` i `bad` dobieramy analizą przebiegu wysokości dźwięku** (autokorelacja na ramkach po 2048 próbek). `good` musi wyraźnie rosnąć (stosunek końca do początku > 1,15), a `bad` wyraźnie opadać (< 0,8). Zestaw dobieramy do klimatu: Sax do noir i studia, Steel do tropików, Pizzicato do komedii, 8-Bit do retro.
 - **Nie powtarzamy plików jingli między grami.** Na pewno są już zajęte:
   - Sax: SAX00, SAX01, SAX02, SAX05, SAX10, SAX11, SAX12, SAX14, SAX15, SAX16;
-  - Steel: STEEL01, STEEL02, STEEL10, STEEL14, STEEL15;
+  - Steel: STEEL00, STEEL01, STEEL02, STEEL10, STEEL12, STEEL14, STEEL15;
   - Pizzicato: PIZZI01, PIZZI02, PIZZI05, PIZZI10, PIZZI12, PIZZI14, PIZZI15;
   - 8-Bit: NES11, NES12.
 
@@ -457,6 +458,8 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 - **Do rozstrzygnięcia:** czy każdy poziom ma inny mebel (zalecane).
 
 ### 10.7 Gdzie jest Martyna? (`gdzie-jest-martyna`, inspiracja: Kobieta na krańcu świata)
+
+Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 
 - **Mechanika:**
   - 5 rund z ok. 21 miejsc; zgadywanie kliknięciem na mapie Leaflet;

@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { DISHES, dishScore, ingredientIcon, juryMood } from './danie-po-skladnikach/logic'
 import dishIcons from './danie-po-skladnikach/icons.json'
 import { playLeg, placeOf, slowestTeam, START_TEAMS, teamMood, travel, type Team } from './express-za-dolara/logic'
-import { distanceKm, MAX_ROUND_SCORE, roundScore } from './gdzie-jest-martyna/logic'
+import martynaPlaces from './gdzie-jest-martyna/data.json'
+import { distanceKm, MAX_ROUND_SCORE, MAX_SCORE as MARTYNA_MAX_SCORE, project, roundScore, travelerMood, unproject } from './gdzie-jest-martyna/logic'
 import cars from './ile-za-grata/data.json'
 import { dealerMood, priceScore } from './ile-za-grata/logic'
 import pallets from './paleta-w-ciemno/data.json'
@@ -33,6 +34,32 @@ describe('Gdzie jest Martyna', () => {
     expect(roundScore(1400)).toBeGreaterThan(2000)
     expect(roundScore(1400)).toBeLessThan(3000)
     expect(roundScore(15000)).toBeLessThan(10)
+    expect(MARTYNA_MAX_SCORE).toBe(25000)
+  })
+
+  it('projects onto the map and back', () => {
+    const warsaw = project({ lat: 52.23, lng: 21.01 })
+    expect(warsaw.x).toBeCloseTo(2010.1)
+    expect(warsaw.y).toBeCloseTo(277.7)
+    const { x, y } = project({ lat: -33.9, lng: 151.2 })
+    const back = unproject(x, y)
+    expect(back.lat).toBeCloseTo(-33.9)
+    expect(back.lng).toBeCloseTo(151.2)
+  })
+
+  it('maps distance to the traveler mood', () => {
+    expect(travelerMood(0)).toBe('thrilled')
+    expect(travelerMood(500)).toBe('thrilled')
+    expect(travelerMood(501)).toBe('pleased')
+    expect(travelerMood(2500)).toBe('pleased')
+    expect(travelerMood(2501)).toBe('worried')
+  })
+
+  it('has a unique id and a credited photo for every place', () => {
+    const photos = import.meta.glob('/public/gdzie-jest-martyna/places/*.jpg')
+    expect(new Set(martynaPlaces.map((p) => p.id)).size).toBe(martynaPlaces.length)
+    expect(martynaPlaces.filter((p) => !photos[`/public/gdzie-jest-martyna/places/${p.id}.jpg`]).map((p) => p.id)).toEqual([])
+    expect(martynaPlaces.filter((p) => !p.photo.author || !p.photo.license || !p.photo.source).map((p) => p.id)).toEqual([])
   })
 })
 

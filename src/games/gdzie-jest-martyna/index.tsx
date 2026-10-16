@@ -1,72 +1,81 @@
-import 'leaflet/dist/leaflet.css'
-import { useEffect, useState } from 'react'
-import { CircleMarker, MapContainer, Polyline, TileLayer, useMapEvents } from 'react-leaflet'
+import '@fontsource/bebas-neue'
+import '@fontsource/caveat/700.css'
+import { MotionConfig, motion, useReducedMotion } from 'motion/react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { pickN } from '@/shared/daily'
-import { Hud, ResultScreen } from '@/shared/GameShell'
+import { MuteButton, ResultScreen } from '@/shared/GameShell'
 import places from './data.json'
-import { distanceKm, MAX_ROUND_SCORE, roundScore, type LatLng } from './logic'
+import { Backdrop, type BackdropMood } from './Desk'
+import { CLOSE_KM, distanceKm, MAX_SCORE, ROUNDS, roundScore, travelerMood, type LatLng } from './logic'
+import { Martyna } from './Martyna'
+import { Postcard } from './Postcard'
+import { play, sfx } from './sfx'
+import { WorldMap } from './WorldMap'
 
-const ROUNDS = 5
+type Phase = 'lobby' | 'guess' | 'reveal' | 'postcard' | 'result'
 type Place = (typeof places)[number]
 
-async function fetchPhotoUrl(wikiTitle: string): Promise<string> {
-  const params = new URLSearchParams({
-    action: 'query',
-    titles: wikiTitle,
-    prop: 'pageimages',
-    piprop: 'thumbnail',
-    pithumbsize: '900',
-    format: 'json',
-    origin: '*',
-  })
-  const response = await fetch(`https://en.wikipedia.org/w/api.php?${params}`)
-  if (!response.ok) throw new Error(`Wikipedia API: ${response.status}`)
-  const body = await response.json()
-  const page = Object.values(body.query.pages)[0] as { thumbnail?: { source: string } }
-  if (!page.thumbnail) throw new Error(`Brak zdjęcia dla „${wikiTitle}”`)
-  return page.thumbnail.source
-}
-
-function ClickToGuess({ onGuess }: { onGuess: (point: LatLng) => void }) {
-  useMapEvents({ click: (event) => onGuess({ lat: event.latlng.lat, lng: event.latlng.lng }) })
-  return null
-}
+const FLIGHT_MS = 1600
+const formatKm = (km: number) => Math.round(km).toLocaleString('pl-PL')
+const shareSquare = (km: number) => (km <= CLOSE_KM ? '🟩' : travelerMood(km) === 'pleased' ? '🟨' : '🟥')
 
 export default function GdzieJestMartynaGame() {
+  const [phase, setPhase] = useState<Phase>('lobby')
   const [rounds, setRounds] = useState<Place[]>(() => pickN(places, ROUNDS))
   const [index, setIndex] = useState(0)
-  const [photo, setPhoto] = useState<{ title: string; url: string } | null>(null)
-  const [photoError, setPhotoError] = useState<string | null>(null)
   const [guess, setGuess] = useState<LatLng | null>(null)
   const [scores, setScores] = useState<{ km: number; points: number }[]>([])
+  const reducedMotion = useReducedMotion()
+  const pace = reducedMotion ? 0.15 : 1
 
   const place = rounds[index]
-  const revealed = scores.length > index
-  const total = scores.reduce((sum, s) => sum + s.points, 0)
+  const score = scores[index]
+  const total = scores.slice(0, phase === 'reveal' ? index : scores.length).reduce((sum, s) => sum + s.points, 0)
+  const last = index === ROUNDS - 1
+  const mood = phase === 'postcard' ? travelerMood(score.km) : 'curious'
 
-  useEffect(() => {
-    if (!place) return
-    let cancelled = false
-    fetchPhotoUrl(place.wikiTitle)
-      .then((url) => !cancelled && setPhoto({ title: place.wikiTitle, url }))
-      .catch((error: Error) => !cancelled && setPhotoError(error.message))
-    return () => {
-      cancelled = true
-    }
-  }, [place])
-
-  function confirmGuess() {
-    const km = distanceKm(guess!, place)
-    setScores([...scores, { km, points: roundScore(km) }])
+  function startRound() {
+    setPhase('guess')
+    play('page')
+    setTimeout(() => play('shutter'), 250 * pace)
   }
 
-  function nextRound() {
+  function enter() {
+    sfx.unlock()
+    startRound()
+  }
+
+  function placeGuess(point: LatLng) {
+    setGuess(point)
+    play('pin')
+  }
+
+  function confirm() {
+    if (!guess) return
+    const km = distanceKm(guess, place)
+    setScores([...scores, { km, points: roundScore(km) }])
+    setPhase('reveal')
+    play('plane', (FLIGHT_MS / 1000) * pace)
+  }
+
+  function landed() {
+    play('pin')
+    setTimeout(() => {
+      setPhase('postcard')
+      play('page')
+    }, 450 * pace)
+  }
+
+  function next() {
+    if (last) {
+      setPhase('result')
+      play('stamp')
+      return
+    }
     setIndex(index + 1)
     setGuess(null)
-    setPhoto(null)
-    setPhotoError(null)
+    startRound()
   }
 
   function restart() {
@@ -74,75 +83,134 @@ export default function GdzieJestMartynaGame() {
     setScores([])
     setIndex(0)
     setGuess(null)
-    setPhoto(null)
-    setPhotoError(null)
+    startRound()
   }
 
-  if (index >= rounds.length) {
-    return (
-      <ResultScreen
-        slug="gdzie-jest-martyna"
-        score={total}
-        maxScore={ROUNDS * MAX_ROUND_SCORE}
-        summary={
-          <ul className="text-sm">
-            {rounds.map((p, i) => (
-              <li key={p.name}>
-                {p.name} ({p.country}): {Math.round(scores[i].km).toLocaleString('pl-PL')} km, {scores[i].points} pkt
-              </li>
-            ))}
-          </ul>
-        }
-        onRestart={restart}
-      />
-    )
+  function backdropMood(): BackdropMood {
+    if (phase === 'lobby') return 'idle'
+    if (phase === 'postcard') return score.km <= CLOSE_KM ? 'close' : 'far'
+    return phase
   }
 
-  const currentPhoto = photo?.title === place.wikiTitle ? photo.url : null
   return (
-    <>
-      <Hud items={[['Runda', `${index + 1}/${ROUNDS}`], ['Punkty', total]]} />
-      <Card className="py-0">
-        <CardContent className="flex flex-col gap-3 p-3">
-          <div className="flex h-64 items-center justify-center overflow-hidden rounded-lg bg-muted">
-            {currentPhoto ? (
-              <img src={currentPhoto} alt="Gdzie zrobiono to zdjęcie?" className="h-full w-full object-cover" data-testid="place-photo" />
-            ) : (
-              <p className="text-sm text-muted-foreground">{photoError ?? 'Ładowanie zdjęcia…'}</p>
+    <MotionConfig reducedMotion="user">
+      <Backdrop mood={backdropMood()} />
+      <MuteButton sfx={sfx} />
+
+      {phase === 'lobby' && (
+        <motion.div className="gm-lobby mx-auto flex max-w-xl flex-col items-center gap-4 text-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <Martyna mood="pleased" className="gm-traveler-big" />
+          <p className="gm-hand text-3xl text-amber-800">Martyna · podróżniczka z plecakiem</p>
+          <h2 className="font-display text-6xl tracking-wider text-[#3a2418] sm:text-8xl">Gdzie jest Martyna?</h2>
+          <p className="text-[#4a3424]">
+            Martyna przysyła polaroidy z drugiego końca świata, ale nie pisze, skąd. Wbij pinezkę na mapie. Im bliżej trafisz, tym więcej punktów: do 5000 za każdy z {ROUNDS} etapów podróży.
+          </p>
+          <Button size="lg" className="h-14 px-10 font-display text-2xl tracking-widest" onClick={enter} data-testid="start">
+            Otwórz dziennik
+          </Button>
+        </motion.div>
+      )}
+
+      {(phase === 'guess' || phase === 'reveal' || phase === 'postcard') && (
+        <div className="flex flex-col gap-3">
+          <header className="gm-bar">
+            <strong className="gm-bar-title">
+              <span>
+                Etap podróży {index + 1}/{ROUNDS}
+              </span>
+              <em>dziennik Martyny</em>
+            </strong>
+            <span className="gm-stat" data-testid="total" data-value={total}>
+              Suma <b>{total}</b>
+            </span>
+          </header>
+
+          <div className="gm-notebook" data-phase={phase}>
+            <section className="gm-page gm-page-left">
+              <figure className="gm-polaroid" key={place.id}>
+                <div className="gm-polaroid-photo">
+                  <img src={`/gdzie-jest-martyna/places/${place.id}.jpg`} alt="Gdzie zrobiono to zdjęcie?" data-testid="place-photo" />
+                </div>
+                <figcaption data-testid="photo-credit">
+                  Fot.{' '}
+                  <a href={place.photo.source} target="_blank" rel="noreferrer">
+                    {place.photo.author}
+                  </a>
+                  , {place.photo.license}, Wikimedia Commons
+                </figcaption>
+              </figure>
+              <div className="gm-host">
+                <Martyna mood={mood} className="gm-traveler" />
+                {phase !== 'postcard' && (
+                  <motion.p key={phase} className="gm-bubble gm-hand" data-testid="bubble" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+                    {phase === 'guess' ? 'Zgadniesz, gdzie jestem?' : 'Leć do mnie!'}
+                  </motion.p>
+                )}
+              </div>
+            </section>
+
+            <div className="gm-spiral" aria-hidden="true" />
+
+            <section className="gm-page gm-page-right">
+              <WorldMap key={index} guess={guess} target={phase === 'guess' ? null : place} flightMs={FLIGHT_MS * pace} onGuess={phase === 'guess' ? placeGuess : undefined} onFlightEnd={landed} />
+              {phase === 'guess' && (
+                <div className="gm-confirm-row">
+                  <p className="gm-hint">{guess ? 'Pinezkę można przestawić.' : 'Kliknij mapę, żeby wbić pinezkę. Przybliżysz kółkiem, dwoma palcami albo +/−.'}</p>
+                  <button type="button" className="gm-go" disabled={!guess} onClick={confirm} data-testid="confirm">
+                    Tu jest Martyna!
+                  </button>
+                </div>
+              )}
+            </section>
+
+            {phase === 'postcard' && (
+              <div className="gm-postcard-slot">
+                <Postcard place={place} km={score.km} points={score.points} mood={travelerMood(score.km)} last={last} pace={pace} onNext={next} />
+              </div>
             )}
           </div>
-          <div className="h-80 overflow-hidden rounded-lg" data-testid="guess-map">
-            <MapContainer center={[20, 20]} zoom={2} minZoom={2} worldCopyJump className="h-full w-full">
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              {!revealed && <ClickToGuess onGuess={setGuess} />}
-              {guess && <CircleMarker center={guess} radius={8} pathOptions={{ color: '#2563eb' }} />}
-              {revealed && guess && (
-                <>
-                  <CircleMarker center={place} radius={8} pathOptions={{ color: '#16a34a' }} />
-                  <Polyline positions={[guess, place]} pathOptions={{ color: '#dc2626', dashArray: '6' }} />
-                </>
-              )}
-            </MapContainer>
+        </div>
+      )}
+
+      {phase === 'result' && (
+        <ResultScreen
+          slug="gdzie-jest-martyna"
+          score={total}
+          maxScore={MAX_SCORE}
+          summary={
+            <ul className="text-sm">
+              {rounds.map((p, i) => (
+                <li key={p.id}>
+                  {p.name} ({p.country}): {formatKm(scores[i].km)} km, {scores[i].points} pkt
+                </li>
+              ))}
+            </ul>
+          }
+          shareLine={scores.map((s) => shareSquare(s.km)).join('')}
+          onRestart={restart}
+        >
+          <div className="gm-passport" data-testid="passport">
+            {rounds.map((p, i) => (
+              <motion.div
+                key={p.id}
+                className="gm-visa"
+                data-testid="stamp"
+                data-kind={scores[i].km <= CLOSE_KM ? 'close' : 'far'}
+                initial={{ scale: 1.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: (0.2 + i * 0.25) * pace, type: 'spring', stiffness: 420, damping: 20 }}
+                style={{ rotate: `${((i * 7) % 13) - 6}deg` }}
+              >
+                <span className="gm-sign">{p.country}</span>
+                <small>{p.name}</small>
+                <b>{scores[i].points} pkt</b>
+              </motion.div>
+            ))}
           </div>
-          {revealed ? (
-            <div className="flex flex-col items-center gap-2 text-center">
-              <p>
-                To <strong>{place.name}</strong> ({place.country}). Pomyłka:{' '}
-                {Math.round(scores[index].km).toLocaleString('pl-PL')} km → <strong>{scores[index].points} pkt</strong>
-              </p>
-              <Button onClick={nextRound}>{index === ROUNDS - 1 ? 'Podsumowanie' : 'Dalej'}</Button>
-            </div>
-          ) : (
-            <Button disabled={!guess} onClick={confirmGuess}>
-              {guess ? 'Tu jest Martyna!' : 'Kliknij na mapie, gdzie zrobiono zdjęcie'}
-            </Button>
-          )}
-          <p className="text-xs text-muted-foreground">Zdjęcia: Wikipedia / Wikimedia Commons. Mapa: OpenStreetMap.</p>
-        </CardContent>
-      </Card>
-    </>
+        </ResultScreen>
+      )}
+
+      <p className="gm-footer text-center text-[11px]">Zdjęcia: Wikimedia Commons (autorzy przy zdjęciach) · Mapa: Natural Earth (domena publiczna) · Dźwięki: Kenney (CC0) · Martyna jest fikcyjna</p>
+    </MotionConfig>
   )
 }

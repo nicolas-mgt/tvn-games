@@ -203,8 +203,9 @@ export const GAMES: GameMeta[] = [
     inspiration: 'Kobieta na krańcu świata, Jestem z Polski',
     category: 'Lifestyle i kuchnia',
     size: 'M',
-    description: 'Zdjęcie z podróży i mapa świata. Im bliżej trafisz, tym więcej punktów.',
+    description: 'Martyna przysyła polaroid z podróży. Wbij pinezkę na mapie świata. Im bliżej trafisz, tym więcej punktów.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./gdzie-jest-martyna')),
   },
   {
