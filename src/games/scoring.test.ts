@@ -25,6 +25,23 @@ import { applyEffects, chefMood, endingFor, ownerMood, START_STATS, statLevel } 
 import stylizacja from './stylizacja/data.json'
 import { jurorMood, jurorScore, SLOTS, themeFit, type Item, type Outfit } from './stylizacja/logic'
 import gadgets from './ustrojstwo/data.json'
+import {
+  archivistMood,
+  dayNumber,
+  dealQuestions,
+  keysFor,
+  matchAnswer,
+  MAX_SCORE as TVNISZOWO_MAX_SCORE,
+  normalize,
+  QUESTIONS as TVNISZOWO_QUESTIONS,
+  ROUNDS as TVNISZOWO_ROUNDS,
+  roundResult,
+  TIER_IDS,
+  TIERS,
+  totalScore,
+  verdictFor,
+  type TierId,
+} from './tvniszowo/logic'
 import { BACKGROUNDS, dealScenes, depthScale, facingOf, instructorMood, KINDS, poseAt, SCENES, SCENES_PER_GAME, stampFor, type Actor } from './co-sie-zaraz-stanie/logic'
 import zonk from './zonk/data.json'
 import { banish, gameStatus, PLAYER, residentMood, statementText, type Resident } from './zdrajca/logic'
@@ -115,7 +132,11 @@ describe('To Pan tego nie wie', () => {
     expect(hintFor('kawa', 0)).toBeNull()
     expect(hintFor('kawa', 1)).toEqual(['', '', '', ''])
     expect(hintFor('kawa', 2)).toEqual(['k', '', '', ''])
-    expect(hintFor('rachunek za prąd', 2)?.map((t) => t || '_').join('')).toBe('r_______ __ ____')
+    expect(
+      hintFor('rachunek za prąd', 2)
+        ?.map((t) => t || '_')
+        .join(''),
+    ).toBe('r_______ __ ____')
   })
 
   it('gives every kid a stable, valid look', () => {
@@ -212,8 +233,7 @@ describe('Zdrajca', () => {
   })
 
   const calm = { alive: true, unmasked: false, votesAgainst: 0, votedByPlayer: false, accusesPlayer: false }
-  const castle = (roles: Resident['role'][], dead: number[] = []): Resident[] =>
-    roles.map((role, i) => ({ name: `R${i}`, role, alive: !dead.includes(i) }))
+  const castle = (roles: Resident['role'][], dead: number[] = []): Resident[] => roles.map((role, i) => ({ name: `R${i}`, role, alive: !dead.includes(i) }))
 
   it('picks the resident mood in priority order', () => {
     expect(residentMood(calm)).toBe('calm')
@@ -232,7 +252,16 @@ describe('Zdrajca', () => {
   })
 
   it('banishes the resident with the most votes', () => {
-    expect(banish([{ voter: 0, target: 2 }, { voter: 1, target: 2 }, { voter: 2, target: 1 }], () => 0)).toBe(2)
+    expect(
+      banish(
+        [
+          { voter: 0, target: 2 },
+          { voter: 1, target: 2 },
+          { voter: 2, target: 1 },
+        ],
+        () => 0,
+      ),
+    ).toBe(2)
   })
 })
 
@@ -435,7 +464,9 @@ describe('Poukładani', () => {
   it('gives every piece of every level a named item and art', () => {
     expect(FURNITURE).toHaveLength(LEVELS.length)
     LEVELS.forEach((layout, i) => {
-      const ids = parseLevel(layout).pieces.map((p) => p.id).sort()
+      const ids = parseLevel(layout)
+        .pieces.map((p) => p.id)
+        .sort()
       expect(Object.keys(FURNITURE[i].items).sort()).toEqual(ids)
     })
     const arts = FURNITURE.flatMap((f) => Object.values(f.items).map((item) => item.art))
@@ -611,5 +642,111 @@ describe('Stylizacja w 60 sekund', () => {
   it('has consistent themes and items', () => {
     expect(stylizacja.themes.filter((t) => !t.wanted.length || !t.forbidden.length).map((t) => t.name)).toEqual([])
     expect(items.filter((i) => !(SLOTS as readonly string[]).includes(i.slot)).map((i) => i.id)).toEqual([])
+  })
+})
+
+describe('TVNiszowo', () => {
+  const question = (id: string) => TVNISZOWO_QUESTIONS.find((q) => q.id === id)!
+  const kanaly = question('tvn-kanaly')
+
+  it('keeps every question valid: known tiers, one golden button, at most one obvious-but-not and no shared keys', () => {
+    expect(new Set(TVNISZOWO_QUESTIONS.map((q) => q.id)).size).toBe(TVNISZOWO_QUESTIONS.length)
+    for (const q of TVNISZOWO_QUESTIONS) {
+      expect(
+        q.answers.filter((a) => !TIER_IDS.includes(a.tier)).map((a) => a.name),
+        q.id,
+      ).toEqual([])
+      expect(
+        q.answers.filter((a) => a.tier === 'zloty'),
+        q.id,
+      ).toHaveLength(1)
+      expect(q.answers.filter((a) => a.tier === 'oczywista').length, q.id).toBeLessThanOrEqual(1)
+      const owners = new Map<string, string>()
+      for (const answer of q.answers) {
+        for (const { key } of keysFor(answer).filter((k) => k.priority === 0)) {
+          expect(owners.get(key) ?? answer.name, `${q.id}: ${key}`).toBe(answer.name)
+          owners.set(key, answer.name)
+        }
+      }
+    }
+  })
+
+  it('normalizes case, Polish letters, punctuation and web prefixes', () => {
+    expect(normalize('  Dzień Dobry TVN! ')).toBe('dzien dobry tvn')
+    expect(normalize('https://www.TVN24.pl/')).toBe('tvn24.pl')
+    expect(normalize('Rock & Roll')).toBe('rock i roll')
+  })
+
+  it('matches exact answers, aliases, word order and short forms', () => {
+    const winners = question('mam-talent-zwyciezcy')
+    expect(matchAnswer(winners, 'marcin wyrostek')).toMatchObject({ kind: 'exact', answer: { name: 'Marcin Wyrostek' } })
+    expect(matchAnswer(winners, 'Wyrostek Marcin')).toMatchObject({ kind: 'exact', answer: { name: 'Marcin Wyrostek' } })
+    expect(matchAnswer(winners, 'Dinkalife')).toMatchObject({ kind: 'exact', answer: { name: 'Liza i Dina' } })
+    expect(matchAnswer(question('tvn-strony-www'), 'https://www.tvn24.pl')).toMatchObject({ kind: 'exact', answer: { name: 'tvn24.pl' } })
+  })
+
+  it('asks for confirmation on typos but never mixes up channel numbers', () => {
+    expect(matchAnswer(question('mam-talent-zwyciezcy'), 'Marcin Wyrostk')).toMatchObject({ kind: 'fuzzy', answer: { name: 'Marcin Wyrostek' } })
+    expect(matchAnswer(kanaly, 'TVN 25').kind).not.toBe('fuzzy')
+  })
+
+  it('asks for the full name when only a fragment was typed and rejects the rest', () => {
+    expect(matchAnswer(question('mam-talent-zwyciezcy'), 'Wyrostek')).toEqual({ kind: 'partial' })
+    expect(matchAnswer(question('mam-talent-zwyciezcy'), 'Kamil Bednarek')).toEqual({ kind: 'none' })
+    expect(matchAnswer(kanaly, '   ')).toEqual({ kind: 'none' })
+  })
+
+  it('deals the same seven questions per seed, one per category first', () => {
+    const seeded = () => {
+      let state = 7
+      return () => (state = (state * 16807) % 2147483647) / 2147483647
+    }
+    const deal = dealQuestions(seeded())
+    expect(deal).toHaveLength(TVNISZOWO_ROUNDS)
+    expect(new Set(deal.map((q) => q.category)).size).toBe(TVNISZOWO_ROUNDS)
+    expect(dealQuestions(seeded()).map((q) => q.id)).toEqual(deal.map((q) => q.id))
+  })
+
+  it('scores rounds by tier and sums the game', () => {
+    const answer = kanaly.answers.find((a) => a.tier === 'zloty')!
+    const hit = roundResult(kanaly, answer, answer.name)
+    const miss = roundResult(kanaly, null, null)
+    expect(hit).toMatchObject({ tier: 'zloty', score: 100 })
+    expect(miss).toMatchObject({ tier: null, score: 0, answer: null })
+    expect(totalScore([hit, miss, hit])).toBe(200)
+    expect(TVNISZOWO_MAX_SCORE).toBe(700)
+    expect(TIER_IDS.map((id) => TIERS[id].score)).toEqual([10, 15, 30, 60, 85, 100])
+  })
+
+  it('picks the verdict band and numbers the daily schedule', () => {
+    expect([0, 150, 151, 251, 351, 450, 700].map(verdictFor).map((v) => v.split('.')[0])).toEqual([
+      'Widz okazjonalny',
+      'Widz okazjonalny',
+      'Stały widz',
+      'Koneser',
+      'Archiwista',
+      'Jeden na milion',
+      'Jeden na milion',
+    ])
+    expect(dayNumber('2026-10-15')).toBe(1)
+    expect(dayNumber('2026-10-16')).toBe(2)
+    expect(dayNumber('2026-11-01')).toBe(18)
+  })
+
+  it('sets the archivist mood by phase, time, tier and final score', () => {
+    expect(archivistMood({ phase: 'lobby' })).toBe('calm')
+    expect(archivistMood({ phase: 'preview' })).toBe('calm')
+    expect(archivistMood({ phase: 'answering', secondsLeft: 12 })).toBe('focused')
+    expect(archivistMood({ phase: 'answering', secondsLeft: 4 })).toBe('worried')
+    expect(archivistMood({ phase: 'answering', secondsLeft: 4, rejected: true })).toBe('doubtful')
+    expect((['primetime', 'stalywidz', 'koneser', 'archiwum', 'zloty', null] as (TierId | null)[]).map((tier) => archivistMood({ phase: 'feedback', tier }))).toEqual([
+      'pleased',
+      'pleased',
+      'amazed',
+      'amazed',
+      'starstruck',
+      'sad',
+    ])
+    expect([100, 151, 251, 351].map((score) => archivistMood({ phase: 'result', score }))).toEqual(['sad', 'pleased', 'amazed', 'starstruck'])
   })
 })

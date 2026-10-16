@@ -38,6 +38,7 @@ Dokument opisuje, jak zamieniamy POC gry w wersję z pełną oprawą („tryb im
 | To Pan tego nie wie | poranne studio śniadaniowe: okno na miasto o świcie, kanapa z poduszkami, dziecko na za dużym fotelu z dymkiem, kafelki liter, rysunek kredkami za trafienie | `tp-` | dzieci z `LOOKS` i prowadząca jako własne SVG, studio SVG, 30 dziecięcych definicji |
 | Pogodynka | studio prognozy pogody: mapa Polski na ekranie z animowanymi ikonami, termometry-suwaki, zegar do rozliczenia, słupki typ kontra rzeczywistość, rozgrzewka „Jak było wczoraj?” | `pg-` | prezenterka i studio SVG, obrys Polski z Natural Earth, dane Open-Meteo |
 | Co się zaraz stanie? | nagranie z kamerki samochodowej: kabina auta z deską rozdzielczą, kadr z REC i znacznikiem czasu, stopklatka PAUZA, odegranie sceny, wstrząs przy zderzeniu, przewijanie taśmy między scenami | `cz-` | instruktor pan Henryk, 6 teł i 17 typów aktorów jako własne SVG |
+| TVNiszowo (gra Konrada Mielnika, przeniesiona na platformę) | podziemne archiwum taśm TVN: regały z kasetami, kołyszące się lampy, skarbiec otwierany złotym przyciskiem, karta katalogowa z pytaniem, kaseta VHS jako stoper, winda „głębi archiwum” zjeżdżająca na piętro trafionego poziomu | `ar-` | archiwistka pani Halinka jako własne SVG, 20 pytań i 593 odpowiedzi z Wikipedii i tvn.pl (źródła w ściądze po grze) |
 
 Wszystkie gry z sekcji 10 mają oprawę.
 
@@ -165,11 +166,11 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
 - Typowy zestaw na grę to 5–7 próbek (wejście rekwizytu, akcja, błąd, mocny akcent, jingle `good` i `bad`) plus 2–4 syntezy (tykanie, szum, werbel, stukot).
 - **Jingle `good` i `bad` dobieramy analizą przebiegu wysokości dźwięku** (autokorelacja na ramkach po 2048 próbek). `good` musi wyraźnie rosnąć (stosunek końca do początku > 1,15), a `bad` wyraźnie opadać (< 0,8). Zestaw dobieramy do klimatu: Sax do noir i studia, Steel do tropików, Pizzicato do komedii, 8-Bit do retro.
 - **Nie powtarzamy plików jingli między grami.** Na pewno są już zajęte:
-  - Sax: SAX00, SAX01, SAX02, SAX05, SAX10, SAX11, SAX12, SAX14, SAX15, SAX16;
+  - Sax: SAX00, SAX01, SAX02, SAX04, SAX05, SAX10, SAX11, SAX12, SAX14, SAX15, SAX16;
   - Steel: STEEL00, STEEL01, STEEL02, STEEL10, STEEL12, STEEL14, STEEL15;
   - Pizzicato: PIZZI01, PIZZI02, PIZZI05, PIZZI10, PIZZI11, PIZZI12, PIZZI14, PIZZI15, PIZZI16;
   - 8-Bit: NES03, NES04, NES08, NES11, NES12, NES14;
-  - Hit: HIT02, HIT11, HIT13, HIT16.
+  - Hit: HIT02, HIT07, HIT11, HIT13, HIT16.
 
   Po każdej grze dopisz tu nowe.
 

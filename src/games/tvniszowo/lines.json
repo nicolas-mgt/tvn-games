@@ -1,0 +1,14 @@
+{
+  "lobby": ["Wchodź, tylko nie potknij się o Betacamy.", "Wszystko, co TVN nadał, leży gdzieś tutaj.", "Kawa jest, latarka jest. Możemy schodzić."],
+  "preview": ["Szukam właściwej półki…", "Zaraz, gdzie ja to odłożyłam…", "Przewijam na początek taśmy.", "Ta kaseta ma etykietę jeszcze z ołówka."],
+  "answering": ["Pisz śmiało, pomyłki nic nie kosztują.", "Im głębiej sięgniesz, tym więcej punktów.", "Prime time każdy pamięta. A coś rzadszego?"],
+  "reject": ["Tego u mnie nie ma. Próbuj dalej!", "Przejrzałam półkę – pusto.", "Hmm, nie ten regał."],
+  "partial": ["Ciepło! Dopisz resztę.", "Prawie, potrzebuję pełnej nazwy na etykietę."],
+  "confirm": ["Chyba wiem, o co chodzi. Potwierdzasz?", "Literówka? Wciśnij Enter jeszcze raz."],
+  "urgent": ["Szybko, światło zaraz zgaśnie!", "Taśma się kończy!"],
+  "hit": ["Mam! Leżało na samym wierzchu.", "Jest, z półki przy wejściu.", "Dobra, to się zgadza."],
+  "rare": ["No proszę, aż tak głęboko?", "Tej kasety dawno nikt nie wypożyczał!", "Musiałam zejść piętro niżej. Szacunek."],
+  "gold": ["Złoty przycisk! Otwieram sejf!", "Tego nie wiedział nikt. Nikt!"],
+  "miss": ["Światło zgasło. Następnym razem!", "Nie zdążyliśmy. Odkładam taśmę."],
+  "result": ["Wszystko zaksięgowane w kartotece.", "Klucz do magazynu zostawiam pod wycieraczką."]
+}

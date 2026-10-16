@@ -54,7 +54,14 @@ export function GameShell({ game, children }: { game: GameMeta; children: ReactN
           <Link to="/" className="shrink-0 text-sm text-white/70 hover:text-white">
             ← Wszystkie gry
           </Link>
-          <h1 className="truncate font-display text-2xl tracking-wider text-white">{game.title}</h1>
+          <div className="flex min-w-0 flex-col sm:flex-row sm:items-baseline sm:gap-3">
+            <h1 className="truncate font-display text-2xl tracking-wider text-white">{game.title}</h1>
+            {game.author && (
+              <span className="truncate text-xs text-white/60 sm:text-sm" data-testid="game-author">
+                by {game.author}
+              </span>
+            )}
+          </div>
         </header>
         <main className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-6">{children}</main>
       </div>
@@ -69,6 +76,7 @@ export function GameShell({ game, children }: { game: GameMeta; children: ReactN
         </Link>
         <h1 className="flex-1 text-2xl font-bold">
           {game.emoji} {game.title}
+          {game.author && <span className="ml-2 text-sm font-normal text-muted-foreground">by {game.author}</span>}
         </h1>
         <Badge variant="secondary">inspiracja: {game.inspiration}</Badge>
       </header>
@@ -137,9 +145,7 @@ export function ResultScreen({ slug, score, maxScore, summary, shareLine, onRest
   }, [slug, score])
 
   const scoreText = maxScore === undefined ? `${score}` : `${score}/${maxScore}`
-  const shareText = [`${game?.emoji ?? ''} ${game?.title ?? slug}: ${scoreText} ${game?.scoreLabel ?? ''}`, shareLine, location.href]
-    .filter(Boolean)
-    .join('\n')
+  const shareText = [`${game?.emoji ?? ''} ${game?.title ?? slug}: ${scoreText} ${game?.scoreLabel ?? ''}`, shareLine, location.href].filter(Boolean).join('\n')
 
   async function copyResult() {
     await navigator.clipboard.writeText(shareText)

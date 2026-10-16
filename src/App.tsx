@@ -14,7 +14,7 @@ function HubPage() {
         <div>
           <h1 className="text-3xl font-black">TVN Games</h1>
           <p className="text-muted-foreground">
-            20 prostych gier przeglądarkowych inspirowanych jesienną ramówką grupy TVN. Wersja POC.
+            {GAMES.length} prostych gier przeglądarkowych inspirowanych jesienną ramówką grupy TVN. Wersja POC.
           </p>
         </div>
         <ThemeSwitcher />

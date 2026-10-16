@@ -1,10 +1,6 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 
-export type GameCategory =
-  | 'Teleturnieje i zgadywanki'
-  | 'Reality i strategia'
-  | 'Lifestyle i kuchnia'
-  | 'Newsy, show-biznes, codzienność'
+export type GameCategory = 'Teleturnieje i zgadywanki' | 'Reality i strategia' | 'Lifestyle i kuchnia' | 'Newsy, show-biznes, codzienność'
 
 export type GameMeta = {
   slug: string
@@ -17,17 +13,14 @@ export type GameMeta = {
   size: 'S' | 'M'
   description: string
   scoreLabel: string
+  /** Shown next to the title for games contributed by someone else. */
+  author?: string
   /** Full-viewport dark layout; the game draws its own backdrop. */
   immersive?: boolean
   Component: LazyExoticComponent<ComponentType>
 }
 
-export const GAME_CATEGORIES: GameCategory[] = [
-  'Teleturnieje i zgadywanki',
-  'Reality i strategia',
-  'Lifestyle i kuchnia',
-  'Newsy, show-biznes, codzienność',
-]
+export const GAME_CATEGORIES: GameCategory[] = ['Teleturnieje i zgadywanki', 'Reality i strategia', 'Lifestyle i kuchnia', 'Newsy, show-biznes, codzienność']
 
 export const GAMES: GameMeta[] = [
   {
@@ -35,7 +28,8 @@ export const GAMES: GameMeta[] = [
     title: 'Podłoga',
     emoji: '🟦',
     inspiration: 'The Floor',
-    inspirationNote: 'Teleturniej TVN, w którym uczestnicy stoją na świecącej podłodze podzielonej na pola. Sąsiedzi pojedynkują się na czas w rozpoznawaniu obrazków, a zwycięzca przejmuje pola przegranego.',
+    inspirationNote:
+      'Teleturniej TVN, w którym uczestnicy stoją na świecącej podłodze podzielonej na pola. Sąsiedzi pojedynkują się na czas w rozpoznawaniu obrazków, a zwycięzca przejmuje pola przegranego.',
     category: 'Teleturnieje i zgadywanki',
     size: 'M',
     description: 'Pojedynki na czas o pola planszy. Rozpoznaj obrazek szybciej niż bot i zajmij całą podłogę.',
@@ -217,7 +211,8 @@ export const GAMES: GameMeta[] = [
     title: 'Gdzie jest Martyna?',
     emoji: '🌍',
     inspiration: 'Kobieta na krańcu świata, Jestem z Polski',
-    inspirationNote: 'W „Kobiecie na krańcu świata” Martyna Wojciechowska odwiedza kobiety w odległych zakątkach świata, od Nowej Zelandii po pustynię Gobi. „Jestem z Polski” pokazuje Polaków żyjących za granicą.',
+    inspirationNote:
+      'W „Kobiecie na krańcu świata” Martyna Wojciechowska odwiedza kobiety w odległych zakątkach świata, od Nowej Zelandii po pustynię Gobi. „Jestem z Polski” pokazuje Polaków żyjących za granicą.',
     category: 'Lifestyle i kuchnia',
     size: 'M',
     description: 'Martyna przysyła polaroid z podróży. Wbij pinezkę na mapie świata. Im bliżej trafisz, tym więcej punktów.',
@@ -259,7 +254,8 @@ export const GAMES: GameMeta[] = [
     inspirationNote: 'Poranny program TVN. W cyklu „To Pan tego nie wie” dzieci tłumaczą po swojemu sprawy dorosłych.',
     category: 'Newsy, show-biznes, codzienność',
     size: 'S',
-    description: 'Poranne studio śniadaniowe: dziecko na za dużym fotelu tłumaczy po swojemu dorosłe sprawy. Zgadnij hasło w trzech próbach, z każdą kolejną odsłaniają się litery. Raz dziennie hasła dnia, potem trening.',
+    description:
+      'Poranne studio śniadaniowe: dziecko na za dużym fotelu tłumaczy po swojemu dorosłe sprawy. Zgadnij hasło w trzech próbach, z każdą kolejną odsłaniają się litery. Raz dziennie hasła dnia, potem trening.',
     scoreLabel: 'pkt',
     immersive: true,
     Component: lazy(() => import('./to-pan-tego-nie-wie')),
@@ -289,6 +285,21 @@ export const GAMES: GameMeta[] = [
     scoreLabel: 'pkt',
     immersive: true,
     Component: lazy(() => import('./co-sie-zaraz-stanie')),
+  },
+  {
+    slug: 'tvniszowo',
+    title: 'TVNiszowo',
+    emoji: '📼',
+    inspiration: 'krillion.io',
+    inspirationNote:
+      'Internetowy quiz, w którym każda poprawna odpowiedź jest dobra, ale im mniej osób by na nią wpadło, tym więcej punktów. Tu pytania dotyczą programów, seriali, prowadzących i kanałów TVN.',
+    category: 'Teleturnieje i zgadywanki',
+    size: 'M',
+    description: 'Siedem pytań o TVN, 25 sekund na każde. Podaj dowolną poprawną odpowiedź, ale im bardziej niszową, tym głębiej zejdziesz do archiwum taśm.',
+    scoreLabel: 'pkt',
+    author: 'Konrad Mielnik',
+    immersive: true,
+    Component: lazy(() => import('./tvniszowo')),
   },
 ]
 
