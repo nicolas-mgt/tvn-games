@@ -1,33 +1,52 @@
-import { motion, type PanInfo } from 'motion/react'
+import '@fontsource/bebas-neue'
+import { MotionConfig, motion, useReducedMotion } from 'motion/react'
 import { useEffect, useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { pickN, shuffle } from '@/shared/daily'
-import { Hud, ResultScreen } from '@/shared/GameShell'
+import { MuteButton, ResultScreen } from '@/shared/GameShell'
 import headlines from './data.json'
+import { HostsDesk } from './Hosts'
+import { buildDeck, DECK_SIZE, hostMoods, quipFor } from './logic'
+import { play, sfx } from './sfx'
+import { Backdrop, Ticker, type BackdropMood } from './Studio'
+import { Teleprinter, type Lean } from './Teleprinter'
 
-const PER_KIND = 5
-const SWIPE_THRESHOLD = 120
-
-type Headline = (typeof headlines)[number]
-
-function buildDeck(): Headline[] {
-  const real = pickN(headlines.filter((h) => h.real), PER_KIND)
-  const fake = pickN(headlines.filter((h) => !h.real), PER_KIND)
-  return shuffle([...real, ...fake])
-}
+type Phase = 'lobby' | 'reading' | 'answered' | 'result'
 
 export default function PrawdaCzySciemaGame() {
-  const [deck, setDeck] = useState(buildDeck)
+  const [phase, setPhase] = useState<Phase>('lobby')
+  const [deck, setDeck] = useState(() => buildDeck(headlines))
   const [index, setIndex] = useState(0)
   const [answers, setAnswers] = useState<boolean[]>([])
-  const answered = answers.length > index
-  const card = deck[index]
-  const finished = index >= deck.length
+  const [lean, setLean] = useState<Lean>(null)
+  const reducedMotion = useReducedMotion()
+  const pace = reducedMotion ? 0.15 : 1
 
-  function answer(saysReal: boolean) {
-    if (answered) return
-    setAnswers([...answers, saysReal])
+  const card = deck[index]
+  const saysReal = phase === 'answered' ? answers[index] : null
+  const correct = saysReal === null ? null : saysReal === card.real
+  const score = answers.filter((answer, i) => answer === deck[i].real).length
+  const last = index === DECK_SIZE - 1
+  const moods = hostMoods(correct)
+
+  function startReading() {
+    setPhase('reading')
+    setLean(null)
+    play('jingle')
+  }
+
+  function enter() {
+    sfx.unlock()
+    startReading()
+  }
+
+  function answer(says: boolean) {
+    if (phase !== 'reading') return
+    setAnswers([...answers, says])
+    setPhase('answered')
+    const hit = says === card.real
+    play('stamp')
+    setTimeout(() => play('whoosh'), 500 * pace)
+    setTimeout(() => play(hit ? 'good' : 'bad'), 850 * pace)
+    if (!hit) play('static')
   }
 
   useEffect(() => {
@@ -39,84 +58,131 @@ export default function PrawdaCzySciemaGame() {
     return () => window.removeEventListener('keydown', onKey)
   })
 
-  function onDragEnd(_: unknown, info: PanInfo) {
-    if (info.offset.x > SWIPE_THRESHOLD) answer(true)
-    else if (info.offset.x < -SWIPE_THRESHOLD) answer(false)
+  function next() {
+    if (last) {
+      setPhase('result')
+      play('jingle')
+      return
+    }
+    setIndex(index + 1)
+    startReading()
   }
 
   function restart() {
-    setDeck(buildDeck())
+    setDeck(buildDeck(headlines))
     setIndex(0)
     setAnswers([])
+    startReading()
   }
 
-  const score = answers.filter((saysReal, i) => saysReal === deck[i].real).length
-
-  if (finished) {
-    const surprising = deck.find((h, i) => h.real && !answers[i]) ?? deck.find((h) => h.real)!
-    return (
-      <ResultScreen
-        slug="prawda-czy-sciema"
-        score={score}
-        maxScore={deck.length}
-        shareLine={deck.map((h, i) => (answers[i] === h.real ? '✅' : '❌')).join('')}
-        summary={
-          <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">Najbardziej zaskakujący prawdziwy news:</p>
-            <p className="font-semibold">„{surprising.headline}”</p>
-          </div>
-        }
-        onRestart={restart}
-      />
-    )
+  function backdropMood(): BackdropMood {
+    if (phase === 'lobby') return 'idle'
+    if (phase === 'reading') return lean ? `swipe-${lean}` : 'reading'
+    if (phase === 'answered') return correct ? 'correct' : 'wrong'
+    return 'result'
   }
 
-  const correct = answered && answers[index] === card.real
+  function tickerText(): string {
+    if (phase === 'lobby') return 'Za chwilę: „Szkiełko i oko”, wieczorne wiadomości, w których nie wszystko jest prawdą'
+    if (phase === 'reading') return `Depesza nr ${index + 1} właśnie spływa z dalekopisu · Prawda czy ściema? · Przesuń kartkę w prawo albo w lewo`
+    if (phase === 'answered') return card.explanation
+    return `Dobranoc! Wynik wieczoru: ${score}/${DECK_SIZE} trafionych depesz`
+  }
+
+  const surprising = deck.find((h, i) => h.real && !answers[i]) ?? deck.find((h) => h.real)!
+
   return (
-    <>
-      <Hud items={[['Nagłówek', `${index + 1}/${deck.length}`], ['Trafione', score]]} />
-      <p className="text-center text-sm text-muted-foreground">
-        Przeciągnij w prawo = prawda, w lewo = ściema (albo strzałki ← →).
-      </p>
-      <div className="flex justify-center">
-        <motion.div
-          key={index}
-          drag={answered ? false : 'x'}
-          dragSnapToOrigin
-          onDragEnd={onDragEnd}
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1, rotate: answered ? (answers[index] ? 4 : -4) : 0 }}
-          whileDrag={{ rotate: 0, cursor: 'grabbing' }}
-          className="w-full max-w-lg cursor-grab"
-        >
-          <Card className={answered ? (correct ? 'border-green-500' : 'border-red-500') : ''}>
-            <CardContent className="flex min-h-48 flex-col justify-center gap-3 text-center">
-              <p className="text-xs uppercase tracking-widest text-muted-foreground">Pilne</p>
-              <p className="text-2xl font-bold">{card.headline}</p>
-              {answered && (
-                <p className="text-sm">
-                  {correct ? '✅ ' : '❌ '}
-                  {card.explanation}
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
-      <div className="flex justify-center gap-3">
-        {answered ? (
-          <Button onClick={() => setIndex(index + 1)}>Dalej</Button>
-        ) : (
+    <MotionConfig reducedMotion="user">
+      <Backdrop mood={backdropMood()} />
+      <MuteButton sfx={sfx} />
+
+      <div className="ps-game">
+        {phase === 'lobby' && (
+          <motion.div className="ps-lobby" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <HostsDesk anchor="deadpan" satirist="grin" quip="Dobry wieczór! Dziś znowu nie wszystko jest prawdą." />
+            <h2 className="font-display text-6xl tracking-wider text-white sm:text-7xl">Prawda czy ściema?</h2>
+            <p>
+              Z dalekopisu spływa {DECK_SIZE} depesz: połowa wydarzyła się naprawdę, resztę zmyśliła redakcja. Przesuń kartkę w prawo, jeśli to prawda, w lewo, jeśli ściema. Możesz też użyć przycisków albo strzałek ← →. Za każde
+              trafienie dostajesz punkt.
+            </p>
+            <button type="button" className="ps-start ps-sign" onClick={enter} data-testid="start">
+              Wchodzimy na antenę
+            </button>
+          </motion.div>
+        )}
+
+        {(phase === 'reading' || phase === 'answered') && (
           <>
-            <Button variant="destructive" onClick={() => answer(false)}>
-              ← Ściema
-            </Button>
-            <Button className="bg-green-600 hover:bg-green-700" onClick={() => answer(true)}>
-              Prawda →
-            </Button>
+            <header className="ps-bar">
+              <strong className="ps-bar-title ps-sign" data-testid="progress">
+                Depesza {index + 1}/{DECK_SIZE}
+                <em>Szkiełko i oko</em>
+              </strong>
+              <span className="ps-stat" data-testid="score" data-value={score}>
+                Trafione <b>{score}</b>
+              </span>
+            </header>
+            <Teleprinter
+              key={card.id}
+              headline={card}
+              number={index + 1}
+              total={DECK_SIZE}
+              saysReal={saysReal}
+              last={last}
+              pace={pace}
+              onAnswer={answer}
+              onLean={setLean}
+              onNext={next}
+            />
+            <HostsDesk anchor={moods.anchor} satirist={moods.satirist} quip={correct === null ? null : quipFor(correct, card.real, index)} />
           </>
         )}
+
+        {phase === 'result' && (
+          <ResultScreen
+            slug="prawda-czy-sciema"
+            score={score}
+            maxScore={DECK_SIZE}
+            shareLine={deck.map((h, i) => (answers[i] === h.real ? '✅' : '❌')).join('')}
+            summary={
+              <div className="ps-surprise space-y-1">
+                <p className="text-sm text-muted-foreground">Najbardziej zaskakujący prawdziwy news:</p>
+                <p className="font-semibold">„{surprising.headline}”</p>
+                <a href={surprising.source} target="_blank" rel="noreferrer">
+                  Źródło: Wikipedia
+                </a>
+              </div>
+            }
+            onRestart={restart}
+          >
+            <div className="ps-strips" data-testid="result-strips">
+              {deck.map((h, i) => (
+                <motion.div
+                  key={h.id}
+                  className="ps-strip"
+                  data-testid="result-strip"
+                  data-correct={answers[i] === h.real}
+                  initial={{ opacity: 0, y: -30, rotate: 0 }}
+                  animate={{ opacity: 1, y: 0, rotate: ((i * 7) % 9) - 4 }}
+                  transition={{ delay: (0.2 + i * 0.12) * pace }}
+                >
+                  <p>{h.headline}</p>
+                  <div className="ps-strip-foot">
+                    <span>{answers[i] === h.real ? '✅' : '❌'}</span>
+                    <span className="ps-stamp ps-sign" data-kind={String(h.real)}>
+                      {h.real ? 'Prawda' : 'Ściema'}
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </ResultScreen>
+        )}
+
+        <p className="ps-footer text-center text-[11px]">Dźwięki: Kenney (CC0) · Studio i prowadzący są fikcyjni · Źródła prawdziwych newsów: Wikipedia</p>
       </div>
-    </>
+
+      <Ticker text={tickerText()} />
+    </MotionConfig>
   )
 }

@@ -33,8 +33,9 @@ Dokument opisuje, jak zamieniamy POC gry w wersję z pełną oprawą („tryb im
 | Stylizacja w 60 sekund | kulisy pokazu mody, wybieg z fleszami, czworo jurorów | `st-` | modelka Ola i 29 rzeczy jako własne SVG |
 | Poukładani: upchnij to | mieszkanie w bloku: szafa w przedpokoju, regał w pokoju dziecka, bagażnik pod blokiem | `pk-` | Pani Krysia i 23 przedmioty jako własne SVG |
 | Gdzie jest Martyna? | dziennik podróżniczki: biurko z notesem, polaroid, lot samolotu, paszport ze stemplami | `gm-` | zdjęcia CC miejsc, Martyna SVG, mapa świata SVG z Natural Earth |
+| Prawda czy ściema? | studio wieczornych wiadomości: ściana ekranów, dalekopis z depeszami, pieczątki PRAWDA/ŚCIEMA, pasek PILNE, prezenterka i satyryk przy biurku | `ps-` | prowadzący i studio SVG, prawdziwe newsy sprawdzone w Wikipedii (link przy każdym) |
 
-Zostało 5 gier (sekcja 10).
+Zostało 4 gry (sekcja 10).
 
 ## 3. Proces pracy nad jedną grą
 
@@ -163,7 +164,8 @@ Do tego `immersive: true` w `registry.ts` i testy w [`src/games/scoring.test.ts`
   - Sax: SAX00, SAX01, SAX02, SAX05, SAX10, SAX11, SAX12, SAX14, SAX15, SAX16;
   - Steel: STEEL00, STEEL01, STEEL02, STEEL10, STEEL12, STEEL14, STEEL15;
   - Pizzicato: PIZZI01, PIZZI02, PIZZI05, PIZZI10, PIZZI12, PIZZI14, PIZZI15;
-  - 8-Bit: NES11, NES12.
+  - 8-Bit: NES11, NES12;
+  - Hit: HIT02, HIT11.
 
   Po każdej grze dopisz tu nowe.
 
@@ -477,6 +479,8 @@ Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 - **Do rozstrzygnięcia:** czy zostawić kafelki OSM (wymagają sieci), czy przejść na własną mapę świata w SVG (np. Natural Earth, domena publiczna). Kafelki OSM mają limity użycia.
 
 ### 10.8 Prawda czy ściema? (`prawda-czy-sciema`, inspiracja: Fakty, Szkło kontaktowe)
+
+Zrobiona (sekcja 2). Poniżej pierwotne wytyczne.
 
 - **Mechanika:**
   - talia 10 nagłówków (5 prawdziwych i 5 zmyślonych) z puli 24;

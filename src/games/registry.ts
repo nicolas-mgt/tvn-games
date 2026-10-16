@@ -233,8 +233,9 @@ export const GAMES: GameMeta[] = [
     inspirationNote: '„Fakty” to główny serwis informacyjny TVN, a „Szkło kontaktowe” w TVN24 komentuje newsy z przymrużeniem oka, z udziałem widzów.',
     category: 'Newsy, show-biznes, codzienność',
     size: 'S',
-    description: 'Absurdalne nagłówki: prawdziwy news czy zmyślony? Przesuń w lewo albo w prawo.',
+    description: 'Wieczorne studio newsów: z dalekopisu wychodzą absurdalne depesze. Przesuń w prawo, jeśli to prawda, w lewo, jeśli ściema. Prowadzący skomentują każdy werdykt.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./prawda-czy-sciema')),
   },
   {

@@ -11,6 +11,8 @@ import { dealersOnlyResult, nextDealerBid } from './paleta-w-ciemno/logic'
 import { distance, emojiImage } from './podloga/logic'
 import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type Temperatures } from './pogodynka/logic'
 import { cellsAt, fits, FURNITURE, LEVELS, MAX_SCORE, organizerMood, parseLevel, rotate } from './poukladani/logic'
+import headlines from './prawda-czy-sciema/data.json'
+import { buildDeck, DECK_SIZE, hostMoods, PER_KIND } from './prawda-czy-sciema/logic'
 import { contestantMood } from './rajskie-rozdanie/logic'
 import sciema from './sciema-z-ogloszenia/data.json'
 import { reporterMood } from './sciema-z-ogloszenia/logic'
@@ -95,6 +97,31 @@ describe('Ściema z ogłoszenia', () => {
     const photos = import.meta.glob('/public/sciema-z-ogloszenia/cars/*.jpg')
     expect(sciema.listings.filter((a) => !photos[`/public/sciema-z-ogloszenia/cars/${a.id}.jpg`]).map((a) => a.id)).toEqual([])
     expect(sciema.listings.filter((a) => !a.photo.author || !a.photo.license || !a.photo.source).map((a) => a.id)).toEqual([])
+  })
+})
+
+describe('Prawda czy ściema', () => {
+  it('always deals five real and five made-up headlines', () => {
+    for (let i = 0; i < 200; i++) {
+      const deck = buildDeck(headlines)
+      expect(deck).toHaveLength(DECK_SIZE)
+      expect(new Set(deck.map((h) => h.id)).size).toBe(DECK_SIZE)
+      expect(deck.filter((h) => h.real)).toHaveLength(PER_KIND)
+    }
+  })
+
+  it('links a Wikipedia source for every real headline and none for made-up ones', () => {
+    expect(new Set(headlines.map((h) => h.id)).size).toBe(headlines.length)
+    expect(headlines.filter((h) => h.real).length).toBeGreaterThanOrEqual(PER_KIND)
+    expect(headlines.filter((h) => !h.real).length).toBeGreaterThanOrEqual(PER_KIND)
+    expect(headlines.filter((h) => h.real && !/^https:\/\/(en|pl)\.wikipedia\.org\/wiki\//.test(h.source ?? '')).map((h) => h.id)).toEqual([])
+    expect(headlines.filter((h) => !h.real && h.source).map((h) => h.id)).toEqual([])
+  })
+
+  it('sets the hosts mood from the answer', () => {
+    expect(hostMoods(null)).toEqual({ anchor: 'deadpan', satirist: 'grin' })
+    expect(hostMoods(true)).toEqual({ anchor: 'smug', satirist: 'cheer' })
+    expect(hostMoods(false)).toEqual({ anchor: 'shocked', satirist: 'mock' })
   })
 })
 
