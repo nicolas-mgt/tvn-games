@@ -246,8 +246,9 @@ export const GAMES: GameMeta[] = [
     inspirationNote: 'Talk-show Kuby Wojewódzkiego z gwiazdami na kanapie oraz „Gogglebox” w TTV, w którym zwykłe rodziny komentują telewizję sprzed swoich telewizorów.',
     category: 'Newsy, show-biznes, codzienność',
     size: 'S',
-    description: 'Gwiazda z kanapy, rodzina sprzed telewizora czy generator bełkotu?',
+    description: 'Wieczór w salonie przed telewizorem: kto wypowiedział cytat z ekranu? Gwiazda z kanapy talk-show, rodzina sprzed telewizora czy generator bełkotu? Kliknij właściwą postać.',
     scoreLabel: 'pkt',
+    immersive: true,
     Component: lazy(() => import('./kto-to-powiedzial')),
   },
   {

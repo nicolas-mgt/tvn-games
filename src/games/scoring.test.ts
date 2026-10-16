@@ -10,6 +10,8 @@ import pallets from './paleta-w-ciemno/data.json'
 import { dealersOnlyResult, nextDealerBid } from './paleta-w-ciemno/logic'
 import { distance, emojiImage } from './podloga/logic'
 import { CITIES, cityPoints, isSettleable, MAX_DAY_POINTS, settle, type Temperatures } from './pogodynka/logic'
+import ktoData from './kto-to-powiedzial/data.json'
+import { buildDeck as buildQuoteDeck, castMood, QUOTES_PER_GAME, SOURCE_IDS } from './kto-to-powiedzial/logic'
 import { cellsAt, fits, FURNITURE, LEVELS, MAX_SCORE, organizerMood, parseLevel, rotate } from './poukladani/logic'
 import headlines from './prawda-czy-sciema/data.json'
 import { buildDeck, DECK_SIZE, hostMoods, PER_KIND } from './prawda-czy-sciema/logic'
@@ -97,6 +99,36 @@ describe('Ściema z ogłoszenia', () => {
     const photos = import.meta.glob('/public/sciema-z-ogloszenia/cars/*.jpg')
     expect(sciema.listings.filter((a) => !photos[`/public/sciema-z-ogloszenia/cars/${a.id}.jpg`]).map((a) => a.id)).toEqual([])
     expect(sciema.listings.filter((a) => !a.photo.author || !a.photo.license || !a.photo.source).map((a) => a.id)).toEqual([])
+  })
+})
+
+describe('Kto to powiedział', () => {
+  it('deals 10 unique quotes split 4/3/3 between the sources', () => {
+    for (let i = 0; i < 200; i++) {
+      const deck = buildQuoteDeck(ktoData.quotes)
+      expect(deck).toHaveLength(QUOTES_PER_GAME)
+      expect(new Set(deck.map((q) => q.id)).size).toBe(QUOTES_PER_GAME)
+      const counts = SOURCE_IDS.map((s) => deck.filter((q) => q.source === s).length).sort()
+      expect(counts).toEqual([3, 3, 4])
+    }
+  })
+
+  it('has ten quotes per known source with unique ids', () => {
+    expect(new Set(ktoData.quotes.map((q) => q.id)).size).toBe(ktoData.quotes.length)
+    expect(ktoData.sources.map((s) => s.id)).toEqual([...SOURCE_IDS])
+    for (const source of SOURCE_IDS) expect(ktoData.quotes.filter((q) => q.source === source)).toHaveLength(10)
+  })
+
+  it('sets each cast member mood from the answer', () => {
+    expect(castMood('celebryta', null, 'generator')).toBe('waiting')
+    expect(castMood('generator', 'generator', 'generator')).toBe('proud')
+    expect(castMood('celebryta', 'generator', 'generator')).toBe('watching')
+    expect(castMood('celebryta', 'celebryta', 'generator')).toBe('denying')
+    expect(castMood('generator', 'celebryta', 'generator')).toBe('proud')
+    expect(castMood('rodzina', 'celebryta', 'generator')).toBe('eyeroll')
+    expect(castMood('rodzina', 'rodzina', 'generator')).toBe('eyeroll')
+    expect(castMood('rodzina', 'generator', 'generator')).toBe('watching')
+    expect(castMood('rodzina', 'celebryta', 'rodzina')).toBe('proud')
   })
 })
 
