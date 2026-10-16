@@ -5,15 +5,19 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/ca
 import { GAME_CATEGORIES, GAMES, getGame } from '@/games/registry'
 import { GameShell } from '@/shared/GameShell'
 import { loadStats } from '@/shared/storage'
+import { ThemeSwitcher } from '@/shared/ThemeSwitcher'
 
 function HubPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <header className="mb-8">
-        <h1 className="text-3xl font-black">TVN Games</h1>
-        <p className="text-muted-foreground">
-          20 prostych gier przeglądarkowych inspirowanych jesienną ramówką grupy TVN. Wersja POC.
-        </p>
+      <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h1 className="text-3xl font-black">TVN Games</h1>
+          <p className="text-muted-foreground">
+            20 prostych gier przeglądarkowych inspirowanych jesienną ramówką grupy TVN. Wersja POC.
+          </p>
+        </div>
+        <ThemeSwitcher />
       </header>
       {GAME_CATEGORIES.map((category) => (
         <section key={category} className="mb-8">
@@ -31,7 +35,6 @@ function HubPage() {
                       <CardDescription>{game.description}</CardDescription>
                       <div className="flex flex-wrap gap-1 pt-1">
                         <Badge variant="secondary">{game.inspiration}</Badge>
-                        <Badge variant="outline">{game.size}</Badge>
                         {stats.plays > 0 && (
                           <Badge variant="outline">
                             rekord: {stats.best} {game.scoreLabel}

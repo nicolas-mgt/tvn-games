@@ -77,6 +77,7 @@ export function Duel({ tile, tokens, onUseToken, onMood, onEnd }: DuelProps) {
   const [playerTime, setPlayerTime] = useState(DUEL_SECONDS)
   const [botTime, setBotTime] = useState(DUEL_SECONDS)
   const [input, setInput] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
   const [bubble, setBubble] = useState<string | null>(null)
   const [hint, setHint] = useState('Zaczynasz! Wpisz, co widzisz, i naciśnij Enter.')
   const [popups, setPopups] = useState<Popup[]>([])
@@ -175,6 +176,10 @@ export function Duel({ tile, tokens, onUseToken, onMood, onEnd }: DuelProps) {
   const removePopup = (id: number) => setPopups((list) => list.filter((p) => p.id !== id))
   const playerTurn = turn === 'player' && !loser
 
+  useEffect(() => {
+    if (playerTurn) inputRef.current?.focus({ preventScroll: true })
+  }, [playerTurn])
+
   return (
     <div className="flex flex-col items-center gap-4" data-testid="duel">
       <div className="flex items-center gap-2 text-white/80">
@@ -272,7 +277,7 @@ export function Duel({ tile, tokens, onUseToken, onMood, onEnd }: DuelProps) {
       </p>
       <form onSubmit={submit} className="flex w-full max-w-xl gap-2">
         <Input
-          autoFocus
+          ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           disabled={!playerTurn}
