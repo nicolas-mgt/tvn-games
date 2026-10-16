@@ -37,6 +37,7 @@ function buildQuestions(): Question[] {
 export default function UstrojstwoGame() {
   const [questions, setQuestions] = useState(buildQuestions)
   const [index, setIndex] = useState(0)
+  const [round, setRound] = useState(0)
   const [phase, setPhase] = useState<Phase>('lobby')
   const [chosen, setChosen] = useState<string | null>(null)
   const [landed, setLanded] = useState(false)
@@ -90,6 +91,7 @@ export default function UstrojstwoGame() {
   }
 
   function restart() {
+    setRound((value) => value + 1)
     setQuestions(buildQuestions())
     setIndex(0)
     setChosen(null)
@@ -131,7 +133,7 @@ export default function UstrojstwoGame() {
               <div className="belt-rail" />
             </div>
             <Parcel
-              key={index}
+              key={`${round}-${index}`}
               gadgetId={question.id}
               number={index + 1}
               total={questions.length}
