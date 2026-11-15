@@ -7,6 +7,7 @@ command = os.environ.get('SSH_ORIGINAL_COMMAND', '')
 match = re.fullmatch(r'deploy (ghcr\.io/nicolas-mgt/tvn-games@sha256:[0-9a-f]{64})', command)
 if not match:
     raise SystemExit('Only deployment of a TVN Games image digest is allowed')
+os.environ['KUBECONFIG'] = os.path.expanduser('~/.kube/config')
 
 subprocess.run([
     '/usr/local/bin/kubectl', '-n', 'tvn-games', 'set', 'image',
