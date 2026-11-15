@@ -35,7 +35,7 @@ export function ThemeSwitcher() {
         }}
         className="h-10 rounded-md border border-input bg-background px-3 text-foreground focus-visible:outline-2 focus-visible:outline-ring"
       >
-        <option value="system">System</option>
+        <option value="system">Systemowy</option>
         <option value="light">Jasny</option>
         <option value="dark">Ciemny</option>
       </select>
