@@ -1,4 +1,3 @@
-import base64
 import json
 import os
 from pathlib import Path
@@ -7,38 +6,53 @@ import shlex
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
-SERVER = Path(os.environ.get('MMGT_SERVER_DIR', '/Users/home/Documents/Server'))
-image = (ROOT / '.state/image.txt').read_text().strip()
+STATE = ROOT / '.state'
+STATE.mkdir(exist_ok=True, mode=0o700)
+image = (STATE / 'image.txt').read_text().strip()
 if not re.fullmatch(r'ghcr\.io/nicolas-mgt/tvn-games@sha256:[0-9a-f]{64}', image):
     raise SystemExit('Run make push first to record the image digest')
-host = json.loads((SERVER / '.local/connection.json').read_text())['host']
-args = ['ssh', '-i', str(SERVER / '.local/admin-key'), '-o', 'BatchMode=yes',
-        '-o', 'StrictHostKeyChecking=yes', '-o', f'UserKnownHostsFile={SERVER / ".local/known_hosts"}',
-        '-o', 'ConnectTimeout=12', '-o', 'ServerAliveInterval=15', host]
-pull_auth = base64.b64encode(('nicolas-mgt:' + (SERVER / '.local/ghcr-read-token').read_text().strip()).encode()).decode()
-pull_secret = {'apiVersion': 'v1', 'kind': 'Secret', 'type': 'kubernetes.io/dockerconfigjson',
-               'metadata': {'name': 'ghcr', 'namespace': 'tvn-games'},
-               'stringData': {'.dockerconfigjson': json.dumps({'auths': {'ghcr.io': {'auth': pull_auth}}})}}
+values = {}
+ssh_file = Path(os.environ.get('SSH_ENV', ROOT / '.env.ssh'))
+for raw in ssh_file.read_text().splitlines():
+    line = raw.strip()
+    if line and not line.startswith('#'):
+        key, value = line.removeprefix('export ').split('=', 1)
+        values[key.strip()] = shlex.split(value)[0]
+connection = shlex.split(values['CONN'])
+if connection[0] == 'ssh':
+    connection = connection[1:]
+args = ['ssh', '-o', 'ConnectTimeout=12', '-o', 'ServerAliveInterval=15',
+        '-o', 'StrictHostKeyChecking=accept-new', '-o',
+        f'UserKnownHostsFile={STATE / "known_hosts"}', *connection]
+env = os.environ.copy()
+if values.get('PASS'):
+    args = ['sshpass', '-e', *args]
+    env['SSHPASS'] = values['PASS']
 remote = """
 import json
 import subprocess
 import sys
 
 def kubectl(*args, data=None, sensitive=False):
-    result = subprocess.run(['sudo', 'k3s', 'kubectl', *args], input=json.dumps(data) if data is not None else None,
+    result = subprocess.run(['kubectl', *args], input=json.dumps(data) if data is not None else None,
                             text=True, capture_output=True)
     if result.returncode:
         raise SystemExit('Registry credential operation failed' if sensitive else result.stderr)
     return result.stdout
 
-payload = json.load(sys.stdin)
+manifest = json.load(sys.stdin)
 print(kubectl('apply', '-f', '-', data={'apiVersion':'v1', 'kind':'Namespace', 'metadata':{'name':'tvn-games'}}).strip())
-kubectl('apply', '-f', '-', data=payload['pull_secret'], sensitive=True)
-print(kubectl('apply', '--dry-run=server', '-f', '-', data=payload['manifest']).strip())
-print(kubectl('apply', '-f', '-', data=payload['manifest']).strip())
+if not kubectl('-n', 'tvn-games', 'get', 'secret', 'ghcr-pull', '--ignore-not-found', '-o', 'name').strip():
+    original = json.loads(kubectl('-n', 'ai-gateway', 'get', 'secret', 'ghcr-pull', '-o', 'json', sensitive=True))
+    pull = {'apiVersion':'v1', 'kind':'Secret', 'metadata':{'name':'ghcr-pull','namespace':'tvn-games'},
+            'type':original['type'], 'data':original['data']}
+    kubectl('create', '-f', '-', data=pull, sensitive=True)
+print(kubectl('apply', '--dry-run=server', '-f', '-', data=manifest).strip())
+print(kubectl('apply', '-f', '-', data=manifest).strip())
 print(kubectl('-n', 'tvn-games', 'rollout', 'status', 'deployment/tvn-games', '--timeout=240s').strip())
+print(kubectl('-n', 'tvn-games', 'wait', '--for=condition=Ready', 'certificate/tvn-games-tls', '--timeout=180s').strip())
 """
 manifest = json.loads((ROOT / 'deploy/k8s.json').read_text().replace('$IMAGE', image))
-subprocess.run([*args, 'python3 -c ' + shlex.quote(remote)],
-               input=json.dumps({'manifest': manifest, 'pull_secret': pull_secret}), text=True, check=True)
+subprocess.run([*args, 'python3 -c ' + shlex.quote(remote)], input=json.dumps(manifest),
+               text=True, env=env, check=True)
 print('Deployed: https://home.mmgt.dev/tvn-games/')

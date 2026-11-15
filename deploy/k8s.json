@@ -29,7 +29,7 @@
             "automountServiceAccountToken": false,
             "imagePullSecrets": [
               {
-                "name": "ghcr"
+                "name": "ghcr-pull"
               }
             ],
             "containers": [
@@ -92,128 +92,51 @@
       }
     },
     {
-      "apiVersion": "networking.k8s.io/v1",
-      "kind": "Ingress",
+      "apiVersion": "cert-manager.io/v1",
+      "kind": "Certificate",
       "metadata": {
-        "name": "tvn-games",
-        "namespace": "tvn-games",
-        "annotations": {
-          "traefik.ingress.kubernetes.io/router.entrypoints": "websecure",
-          "traefik.ingress.kubernetes.io/router.tls": "true",
-          "traefik.ingress.kubernetes.io/router.tls.certresolver": "production"
-        }
+        "name": "tvn-games-tls",
+        "namespace": "tvn-games"
       },
       "spec": {
-        "ingressClassName": "traefik",
-        "tls": [
-          {
-            "hosts": [
-              "home.mmgt.dev"
-            ]
-          }
+        "secretName": "tvn-games-tls",
+        "dnsNames": [
+          "home.mmgt.dev"
         ],
-        "rules": [
+        "issuerRef": {
+          "kind": "ClusterIssuer",
+          "name": "letsencrypt-prod"
+        }
+      }
+    },
+    {
+      "apiVersion": "traefik.io/v1alpha1",
+      "kind": "IngressRoute",
+      "metadata": {
+        "name": "tvn-games",
+        "namespace": "tvn-games"
+      },
+      "spec": {
+        "entryPoints": [
+          "websecure"
+        ],
+        "tls": {
+          "secretName": "tvn-games-tls"
+        },
+        "routes": [
           {
-            "host": "home.mmgt.dev",
-            "http": {
-              "paths": [
-                {
-                  "path": "/tvn-games",
-                  "pathType": "Prefix",
-                  "backend": {
-                    "service": {
-                      "name": "tvn-games",
-                      "port": {
-                        "number": 80
-                      }
-                    }
-                  }
-                }
-              ]
-            }
+            "kind": "Rule",
+            "match": "Host(`home.mmgt.dev`) && (Path(`/tvn-games`) || PathPrefix(`/tvn-games/`))",
+            "priority": 150,
+            "services": [
+              {
+                "name": "tvn-games",
+                "port": 80
+              }
+            ]
           }
         ]
       }
-    },
-    {
-      "apiVersion": "v1",
-      "kind": "ServiceAccount",
-      "metadata": {
-        "name": "ci-deploy",
-        "namespace": "tvn-games"
-      },
-      "automountServiceAccountToken": false
-    },
-    {
-      "apiVersion": "v1",
-      "kind": "Secret",
-      "type": "kubernetes.io/service-account-token",
-      "metadata": {
-        "name": "ci-deploy-token",
-        "namespace": "tvn-games",
-        "annotations": {
-          "kubernetes.io/service-account.name": "ci-deploy"
-        }
-      }
-    },
-    {
-      "apiVersion": "rbac.authorization.k8s.io/v1",
-      "kind": "Role",
-      "metadata": {
-        "name": "ci-deploy",
-        "namespace": "tvn-games"
-      },
-      "rules": [
-        {
-          "apiGroups": [
-            "apps"
-          ],
-          "resources": [
-            "deployments"
-          ],
-          "resourceNames": [
-            "tvn-games"
-          ],
-          "verbs": [
-            "get",
-            "patch",
-            "watch"
-          ]
-        },
-        {
-          "apiGroups": [
-            "apps"
-          ],
-          "resources": [
-            "deployments",
-            "replicasets"
-          ],
-          "verbs": [
-            "list",
-            "watch"
-          ]
-        }
-      ]
-    },
-    {
-      "apiVersion": "rbac.authorization.k8s.io/v1",
-      "kind": "RoleBinding",
-      "metadata": {
-        "name": "ci-deploy",
-        "namespace": "tvn-games"
-      },
-      "roleRef": {
-        "apiGroup": "rbac.authorization.k8s.io",
-        "kind": "Role",
-        "name": "ci-deploy"
-      },
-      "subjects": [
-        {
-          "kind": "ServiceAccount",
-          "name": "ci-deploy",
-          "namespace": "tvn-games"
-        }
-      ]
     }
   ]
 }

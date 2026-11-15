@@ -38,7 +38,7 @@ jobs:
         run: |
           printf '%s' "$GHCR_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
           make push
-      - name: Deploy to k3s (Contabo)
+      - name: Deploy to k3s
         env:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
@@ -51,11 +51,11 @@ jobs:
             -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
             -o UserKnownHostsFile="$RUNNER_TEMP/deploy-ssh/known_hosts" \
             -o ConnectTimeout=15 -o ServerAliveInterval=15 \
-            tvn-games-deploy@84.247.135.165 "deploy $(cat .state/image.txt)"
+            mmgt@home.mmgt.dev "deploy $(cat .state/image.txt)"
       - name: Check public site
         run: |
           curl --fail --silent --show-error --retry 3 --retry-all-errors --max-time 20 \
-            --resolve home.mmgt.dev:443:84.247.135.165 https://home.mmgt.dev/tvn-games/ -o /dev/null
+            https://home.mmgt.dev/tvn-games/ -o /dev/null
       - name: Remove deployment credentials
         if: always()
         run: |
